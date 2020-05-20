@@ -1,0 +1,260 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>ec232abe-e676-482b-ad01-170202bc4b5d</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>main.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Web launcher</LaunchProvider>
+    <WebBrowserUrl>http://localhost</WebBrowserUrl>
+    <OutputPath>.</OutputPath>
+    <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
+    <Name>Return_To_Work</Name>
+    <RootNamespace>Return_To_Work</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="api.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="static\css\addons\datatables-select.min.css" />
+    <Content Include="static\css\addons\datatables-select.min.css.map" />
+    <Content Include="static\css\addons\datatables-select2.min.css" />
+    <Content Include="static\css\addons\datatables-select2.min.css.map" />
+    <Content Include="static\css\addons\datatables.min.css" />
+    <Content Include="static\css\addons\datatables.min.css.map" />
+    <Content Include="static\css\addons\datatables2.min.css" />
+    <Content Include="static\css\addons\datatables2.min.css.map" />
+    <Content Include="static\css\addons\directives.min.css" />
+    <Content Include="static\css\addons\directives.min.css.map" />
+    <Content Include="static\css\addons\flag.min.css" />
+    <Content Include="static\css\addons\flag.min.css.map" />
+    <Content Include="static\css\addons\jquery.zmd.hierarchical-display.min.css" />
+    <Content Include="static\css\addons\jquery.zmd.hierarchical-display.min.css.map" />
+    <Content Include="static\css\addons\rating.min.css" />
+    <Content Include="static\css\addons\rating.min.css.map" />
+    <Content Include="static\css\bootstrap.css" />
+    <Content Include="static\css\bootstrap.min.css" />
+    <Content Include="static\css\mdb.css" />
+    <Content Include="static\css\mdb.lite.css" />
+    <Content Include="static\css\mdb.lite.min.css" />
+    <Content Include="static\css\mdb.lite.min.css.map" />
+    <Content Include="static\css\mdb.min.css" />
+    <Content Include="static\css\mdb.min.css.map" />
+    <Content Include="static\css\modules\animations-extended.min.css" />
+    <Content Include="static\css\modules\animations-extended.min.css.map" />
+    <Content Include="static\js\addons\datatables-select.min.js" />
+    <Content Include="static\js\addons\datatables-select.min.js.map" />
+    <Content Include="static\js\addons\datatables-select2.min.js" />
+    <Content Include="static\js\addons\datatables-select2.min.js.map" />
+    <Content Include="static\js\addons\datatables.min.js" />
+    <Content Include="static\js\addons\datatables.min.js.map" />
+    <Content Include="static\js\addons\datatables2.min.js" />
+    <Content Include="static\js\addons\datatables2.min.js.map" />
+    <Content Include="static\js\addons\directives.min.js" />
+    <Content Include="static\js\addons\directives.min.js.map" />
+    <Content Include="static\js\addons\flag.min.js" />
+    <Content Include="static\js\addons\flag.min.js.map" />
+    <Content Include="static\js\addons\imagesloaded.pkgd.min.js" />
+    <Content Include="static\js\addons\imagesloaded.pkgd.min.js.map" />
+    <Content Include="static\js\addons\jquery.zmd.hierarchical-display.min.js" />
+    <Content Include="static\js\addons\jquery.zmd.hierarchical-display.min.js.map" />
+    <Content Include="static\js\addons\masonry.pkgd.min.js" />
+    <Content Include="static\js\addons\masonry.pkgd.min.js.map" />
+    <Content Include="static\js\addons\rating.min.js" />
+    <Content Include="static\js\addons\rating.min.js.map" />
+    <Content Include="static\js\bootstrap.js" />
+    <Content Include="static\js\bootstrap.min.js" />
+    <Content Include="static\js\custom.js" />
+    <Content Include="static\js\jquery.js" />
+    <Content Include="static\js\jquery.min.js" />
+    <Content Include="static\js\mdb.js" />
+    <Content Include="static\js\mdb.lite.min.js.map" />
+    <Content Include="static\js\mdb.min.js" />
+    <Content Include="static\js\mdb.min.js.map" />
+    <Content Include="static\js\modules\animations-extended.min.js" />
+    <Content Include="static\js\modules\animations-extended.min.js.map" />
+    <Content Include="static\js\modules\forms-free.min.js" />
+    <Content Include="static\js\modules\forms-free.min.js.map" />
+    <Content Include="static\js\modules\scrolling-navbar.min.js" />
+    <Content Include="static\js\modules\scrolling-navbar.min.js.map" />
+    <Content Include="static\js\modules\treeview.min.js" />
+    <Content Include="static\js\modules\treeview.min.js.map" />
+    <Content Include="static\js\modules\wow.min.js" />
+    <Content Include="static\js\modules\wow.min.js.map" />
+    <Content Include="static\js\popper.js" />
+    <Content Include="static\js\popper.min.js" />
+    <Content Include="static\img\overlays\01.png" />
+    <Content Include="static\img\overlays\02.png" />
+    <Content Include="static\img\overlays\03.png" />
+    <Content Include="static\img\overlays\04.png" />
+    <Content Include="static\img\overlays\05.png" />
+    <Content Include="static\img\overlays\06.png" />
+    <Content Include="static\img\overlays\07.png" />
+    <Content Include="static\img\overlays\08.png" />
+    <Content Include="static\img\overlays\09.png" />
+    <Content Include="static\css\style.css" />
+    <Content Include="static\src\js\free\forms-free.js" />
+    <Content Include="static\src\js\free\scrolling-navbar.js" />
+    <Content Include="static\src\js\free\treeview.js" />
+    <Content Include="static\src\js\free\wow.js" />
+    <Content Include="static\src\js\vendor\addons\datatables-select.js" />
+    <Content Include="static\src\js\vendor\addons\datatables-select2.js" />
+    <Content Include="static\src\js\vendor\addons\datatables.js" />
+    <Content Include="static\src\js\vendor\addons\datatables2.js" />
+    <Content Include="static\src\js\vendor\addons\imagesloaded.pkgd.min.js" />
+    <Content Include="static\src\js\vendor\addons\jquery.zmd.hierarchical-display.js" />
+    <Content Include="static\src\js\vendor\addons\masonry.pkgd.min.js" />
+    <Content Include="static\src\js\vendor\addons\rating.js" />
+    <Content Include="static\src\js\vendor\free\bs-custom-file-input.js" />
+    <Content Include="static\src\js\vendor\free\chart.js" />
+    <Content Include="static\src\js\vendor\free\chartjs-datalabels.js" />
+    <Content Include="static\src\js\vendor\free\enhanced-modals.js" />
+    <Content Include="static\src\js\vendor\free\jquery.easing.js" />
+    <Content Include="static\src\js\vendor\free\velocity.js" />
+    <Content Include="static\src\js\vendor\free\waves.js" />
+    <Content Include="static\img\svg\arrow_left.svg" />
+    <Content Include="static\img\svg\arrow_right.svg" />
+    <Content Include="static\img\TM.png" />
+    <Content Include="static\img\TrendIcon.ico" />
+    <Content Include="static\img\trendlogo.png" />
+    <Content Include="static\scss\addons\_datatables-select.scss" />
+    <Content Include="static\scss\addons\_datatables-select2.scss" />
+    <Content Include="static\scss\addons\_datatables.scss" />
+    <Content Include="static\scss\addons\_datatables2.scss" />
+    <Content Include="static\scss\addons\_directives.scss" />
+    <Content Include="static\scss\addons\_flag.scss" />
+    <Content Include="static\scss\addons\_hierarchical-display.scss" />
+    <Content Include="static\scss\addons\_rating.scss" />
+    <Content Include="static\scss\core\bootstrap\_functions.scss" />
+    <Content Include="static\scss\core\bootstrap\_rfs.scss" />
+    <Content Include="static\scss\core\bootstrap\_variables.scss" />
+    <Content Include="static\scss\core\_colors.scss" />
+    <Content Include="static\scss\core\_global.scss" />
+    <Content Include="static\scss\core\_helpers.scss" />
+    <Content Include="static\scss\core\_masks.scss" />
+    <Content Include="static\scss\core\_mixins.scss" />
+    <Content Include="static\scss\core\_typography.scss" />
+    <Content Include="static\scss\core\_variables.scss" />
+    <Content Include="static\scss\core\_waves.scss" />
+    <Content Include="static\scss\free\modules\animations-extended\animations-extended.scss" />
+    <Content Include="static\scss\free\modules\animations-extended\_module.scss" />
+    <Content Include="static\scss\free\_animations-basic.scss" />
+    <Content Include="static\scss\free\_badges.scss" />
+    <Content Include="static\scss\free\_buttons.scss" />
+    <Content Include="static\scss\free\_cards.scss" />
+    <Content Include="static\scss\free\_carousels.scss" />
+    <Content Include="static\scss\free\_depreciated.scss" />
+    <Content Include="static\scss\free\_dropdowns.scss" />
+    <Content Include="static\scss\free\_footers.scss" />
+    <Content Include="static\scss\free\_forms.scss" />
+    <Content Include="static\scss\free\_input-group.scss" />
+    <Content Include="static\scss\free\_list-group.scss" />
+    <Content Include="static\scss\free\_loader.scss" />
+    <Content Include="static\scss\free\_modals.scss" />
+    <Content Include="static\scss\free\_msc.scss" />
+    <Content Include="static\scss\free\_navbars.scss" />
+    <Content Include="static\scss\free\_pagination.scss" />
+    <Content Include="static\scss\free\_steppers.scss" />
+    <Content Include="static\scss\free\_tables.scss" />
+    <Content Include="static\scss\free\_treeview.scss" />
+    <Content Include="static\scss\mdb-free.scss" />
+    <Content Include="static\scss\mdb-lite-free.scss" />
+    <Content Include="static\scss\_custom-styles.scss" />
+    <Content Include="static\scss\_custom-variables.scss" />
+    <Content Include="static\img\TM.jpg" />
+    <Content Include="templates\Home.html" />
+    <Content Include="templates\About.html" />
+    <Content Include="templates\index.html" />
+    <Content Include="templates\index1.html" />
+    <Content Include="templates\register.html" />
+    <Content Include="templates\Template.html" />
+    <Content Include="templates\Login.html" />
+    <Content Include="templates\update.html" />
+    <Content Include="templates\userProfile.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="api\" />
+    <Folder Include="static\" />
+    <Folder Include="static\css\" />
+    <Folder Include="static\css\addons\" />
+    <Folder Include="static\css\modules\" />
+    <Folder Include="static\js\" />
+    <Folder Include="static\js\addons\" />
+    <Folder Include="static\js\modules\" />
+    <Folder Include="static\img\" />
+    <Folder Include="static\img\overlays\" />
+    <Folder Include="static\src\" />
+    <Folder Include="static\src\js\" />
+    <Folder Include="static\src\js\free\" />
+    <Folder Include="static\src\js\vendor\" />
+    <Folder Include="static\src\js\vendor\addons\" />
+    <Folder Include="static\src\js\vendor\free\" />
+    <Folder Include="static\img\svg\" />
+    <Folder Include="static\scss\" />
+    <Folder Include="static\scss\addons\" />
+    <Folder Include="static\scss\core\" />
+    <Folder Include="static\scss\core\bootstrap\" />
+    <Folder Include="static\scss\free\" />
+    <Folder Include="static\scss\free\modules\" />
+    <Folder Include="static\scss\free\modules\animations-extended\" />
+    <Folder Include="templates\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

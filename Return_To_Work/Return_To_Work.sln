@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Return_To_Work", "Return_To_Work\Return_To_Work.pyproj", "{EC232ABE-E676-482B-AD01-170202BC4B5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC232ABE-E676-482B-AD01-170202BC4B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC232ABE-E676-482B-AD01-170202BC4B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC232ABE-E676-482B-AD01-170202BC4B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC232ABE-E676-482B-AD01-170202BC4B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC01DBF5-C900-4A95-A694-E046747FE199}
+	EndGlobalSection
+EndGlobal
