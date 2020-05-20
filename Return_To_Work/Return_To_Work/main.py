@@ -62,11 +62,32 @@ def home():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
+        inputuser = request.form['username']
+        inputpassword = request.form['password']
+        # Check if account exists using MySQL
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE Username = %s AND Password = %s', (inputuser, inputpassword))
+        # Fetch one record and return result
+        account = cursor.fetchone()
+
+        if account is not None:
+            # Create session data, we can access this data in other routes
+            session['loggedin'] = True
+            session['id'] = account['A_ID']
+            session['username'] = account['Username']
+            # Assign each value of fetched value into variables
+            user = str(account['Username'])
+            password = str(account['Password'])
+            # Redirect to home page
+            error = 'Welcome %s!' % (user)
+            #return redirect(url_for('about'))
+            return render_template('userProfile.html',error=error)
         else:
-            return redirect(url_for('about'))
-    return render_template('index.html', error=error)
+            # Account doesnt exist or username/password incorrect
+            error = 'Incorrect Username/Password.'
+
+    # Show the login form with message (if any)
+    return render_template('index.html',error=error)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -111,10 +132,13 @@ def update():
     r1 = requests.get(link1)
     test1 = r1.json()
     for num in test1:
+        print(num['name'])
         holder1 = str(num).replace("\'", "\"")
         holder2 = holder1.replace("T\"Boli","T\'Boli")
         holder3 = holder2.replace("T\"BOLI","T\'BOLI")
-        result1 = json.loads(holder3)
+        holder4 = holder3.replace("M\"Lang","M\'Lang")
+        holder5 = holder4.replace("M\"LANG","M\'LANG")
+        result1 = json.loads(holder5)
         areaid = result1['subAreaOfAreaId']
         City = result1['name']
         Count = result1['count']
