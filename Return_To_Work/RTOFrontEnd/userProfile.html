@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Return to Office - User Profile</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="img/TrendIcon.ico" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Your custom styles (optional) -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="grey lighten-5">
+    <header>
+        <!-- Sidebar -->
+        <div class="sidebar-fixed position-fixed">
+          <a class="logo-wrapper waves-effect">
+              <img src="img/TM.png" class="img-fluid">
+          </a>
+          <div class="list-group list-group-flush">
+            <a href="#" class="list-group-item active waves-effect">
+              <i class="fas fa-chart-pie mr-3"></i>Dashboard
+            </a>
+            <a href="#" class="list-group-item list-group-item-action waves-effect">
+              <i class="fas fa-user mr-3"></i>Profile</a>
+          </div>
+        </div>
+        <!-- Sidebar -->
+      </header>
+
+      <!--Main Layout-->
+      <main class="pt-1 mx-lg-5">
+        <div class="container-fluid mt-1">
+          <!--Heading-->
+          <div class="class mb-4 wow fadeIn">
+            <!--Card Content-->
+            <div class="card-body d-sm-flex justify-content-between">
+              <h4 class="mb-2 mb-sm-0 pt-1">
+                <a href="userProfile.html">Home page</a>
+                <span>/</span>
+                <span>Dashboard</span>
+              </h4>
+            </div>
+        </div>
+        <!--Card-->
+        <div class="card">
+          <!-- Card header -->
+          <div class="card-header">Google map</div>
+          <!--Card content-->
+          <div class="card-body">
+            <!--Google map-->
+            <div id="map-container-google-2" class="z-depth-1-half map-container" style="height: 500px">
+                <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJY96HXyFTQDIRV9opeu-QR3g&key=AIzaSyBw3Knhnxg7gMlCa5VQmnQ2P8C7N3t-zwg" allowfullscreen></iframe>
+            </div>
+            <!--Google Maps-->
+          </div>
+        </div>
+        <!--/.Card-->
+      </main>
+         
+<!--Google Maps JS-->
+<script src="https://maps.google.com/maps/api/js"></script>
+<script>
+  // Regular map
+  function regular_map() {
+    var var_location = new google.maps.LatLng(40.725118, -73.997699);
+
+    var var_mapoptions = {
+      center: var_location,
+      zoom: 14
+    };
+
+    var var_map = new google.maps.Map(document.getElementById("map-container"),
+      var_mapoptions);
+
+    var var_marker = new google.maps.Marker({
+      position: var_location,
+      map: var_map,
+      title: "New York"
+    });
+  }
+
+  new Chart(document.getElementById("horizontalBar"), {
+    "type": "horizontalBar",
+    "data": {
+      "labels": ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Grey"],
+      "datasets": [{
+        "label": "My First Dataset",
+        "data": [22, 33, 55, 12, 86, 23, 14],
+        "fill": false,
+        "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
+          "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
+        ],
+        "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)",
+          "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)",
+          "rgb(201, 203, 207)"
+        ],
+        "borderWidth": 1
+      }]
+    },
+    "options": {
+      "scales": {
+        "xAxes": [{
+          "ticks": {
+            "beginAtZero": true
+          }
+        }]
+      }
+    }
+  });
+
+</script>
+
+  <!-- End your project here-->
+  
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Your custom scripts (optional) -->
+  <script type="text/javascript"></script>
+
+</body>
+</html>
