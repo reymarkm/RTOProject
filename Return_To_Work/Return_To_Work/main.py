@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
+from datetime import date
 import MySQLdb.cursors
 import re
 import json
@@ -15,6 +16,7 @@ import requests
 import bs4
 import time
 import urllib
+
 
 
 
@@ -91,9 +93,56 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    #if request.method == 'POST':
+    error = None
+    if request.method == 'POST':
+        inputFName = request.form['FName']
+        inputLName = request.form['LName']
+        inputEmail = request.form['Email']
+        inputUName = request.form['UName']
+        inputPWord = request.form['PWord']
+        inputCPWord = request.form['CPWord']
+        inputPNumber = request.form['PNumber']
+        inputAddress = request.form['Address']
+        inputCity = request.form['City']
+        inputProvince = request.form['Province']
+        if request.form.get('High') == '1':
+            inputHigh = 1
+        else:
+            inputHigh = 0
+        if request.form.get('Slight') == '1':
+            inputSlight = 1
+        else:
+            inputSlight = 0
+        if request.form.get('LHigh') == '1':
+            inputLHigh = 1
+        else:
+            inputLHigh = 0
+        if request.form['willingness'] == 'True':
+            inputWillingness = 1
+        else:
+            inputWillingness = 0
+        inputProdMachine = request.form['prodMachine']
+        inputTranspo = request.form['transpoAvail']
+        inputDepartment = request.form['Department']
+        inputTeam = request.form['Team']
+        today = date.today()
+        inputDate = today.strftime("%Y/%m/%d")
 
-    return render_template("register.html")
+        if inputPWord == inputCPWord:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM accounts WHERE Username = %s AND Password = %s', (inputUName,inputPWord))
+            user_exists = cursor.fetchone()
+            if user_exists:
+                error='A user with the same Username already exists in the database.'
+            else:
+                cursor.execute('INSERT INTO accounts (Username,Password) values (%s,%s)', (inputUName,inputPWord))
+                mysql.connection.commit()
+                cursor.execute('INSERT INTO rto (FirstName,LastName,Email,Barangay,City,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,inputAddress,inputCity,inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate))
+                mysql.connection.commit()
+        else:
+            error = 'Password does not match.'
+
+    return render_template("register.html",error=error)
 
 
 @app.route("/about")
