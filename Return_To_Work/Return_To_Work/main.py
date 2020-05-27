@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, jsonify
 from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -93,8 +93,22 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     error = None
-    if request.method == 'POST':
+
+    temp = cursor.execute('SELECT city FROM city ORDER BY city ASC')   
+    tempcity = cursor.fetchall()
+    lista = list()
+    for x in tempcity:
+        lista.append(x['city']) 
+
+    temp = cursor.execute('SELECT province FROM province ORDER BY province ASC')   
+    tempcity = cursor.fetchall()
+    listb = list()
+    for x in tempcity:
+        listb.append(x['province']) 
+
+    if request.method == 'POST':       
         inputFName = request.form['FName']
         inputLName = request.form['LName']
         inputEmail = request.form['Email']
@@ -129,7 +143,6 @@ def register():
         inputDate = today.strftime("%Y/%m/%d")
 
         if inputPWord == inputCPWord:
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('SELECT * FROM accounts WHERE Username = %s AND Password = %s', (inputUName,inputPWord))
             user_exists = cursor.fetchone()
             if user_exists:
@@ -142,7 +155,7 @@ def register():
         else:
             error = 'Password does not match.'
 
-    return render_template("register.html",error=error)
+    return render_template("register.html",error=error,lista=lista,listb=listb)
 
 
 @app.route("/about")

@@ -71,10 +71,20 @@
 
         <div class="form-row mt-4 mb-4">
             <div class="col">
-                <input type="text" id="address" class="form-control" placeholder="City" name="City">
+                <select class="browser-default custom-select" name="City">
+                    <option selected>Select City</option>
+                    {% for a in lista %}
+                    <option value="{{ a }}">{{ a }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col">
-                <input type="text" id="address" class="form-control" placeholder="Province" name="Province">
+                <select class="browser-default custom-select" name="Province">
+                    <option selected>Select Province</option>
+                    {% for b in listb %}
+                    <option value="{{ b }}">{{ b }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
 
