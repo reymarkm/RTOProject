@@ -67,10 +67,33 @@
 
         <div class="form-row mt-4 mb-4">
             <div class="col">
-                <input type="text" id="address" class="form-control" placeholder="City" name="City">
+			<!--City dropdown -->
+				<div class="container">
+				  <form>
+					<div class="form-group">
+					 <!--  <label for="sel1">City List (select one):</label> -->
+					    <div>
+         
+						<p>Select Region: </p>
+						<select id="region" class="form-control"></select>
+					
+						
+						
+						<p>Select City: </p>
+						<td><select id="city" class="form-control" ></select></td>
+
+						</div> 
+					</div>
+				  </form>
+				</div>
             </div>
+			
+       
+
+			
             <div class="col">
-                <input type="text" id="address" class="form-control" placeholder="Province" name="Province">
+                <p>Select Provice: </p>
+				<select id="province" class="form-control" ></select>
             </div>
         </div>
 
@@ -183,6 +206,49 @@
   <script type="text/javascript" src="js/mdb.min.js"></script>
   <!-- Your custom scripts (optional) -->
   <script type="text/javascript" src="js/custom.js"></script>
+  
+
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <!-- script type="text/javascript" src="../jquery.ph-locations.js"></script -->
+        <script type="text/javascript" src="js/jquery.ph-locations.js"></script>
+        <script type="text/javascript">
+            
+            var my_handlers = {
+
+                fill_provinces:  function(){
+
+                    var region_code = $(this).val();
+                    $('#province').ph_locations('fetch_list', [{"region_code": region_code}]);
+                    
+                },
+
+                fill_cities: function(){
+
+                    var province_code = $(this).val();
+                    $('#city').ph_locations( 'fetch_list', [{"province_code": province_code}]);
+                },
+
+
+                fill_barangays: function(){
+
+                    var city_code = $(this).val();
+                    $('#barangay').ph_locations('fetch_list', [{"city_code": city_code}]);
+                }
+            };
+
+            $(function(){
+                $('#region').on('change', my_handlers.fill_provinces);
+                $('#province').on('change', my_handlers.fill_cities);
+                $('#city').on('change', my_handlers.fill_barangays);
+
+                $('#region').ph_locations({'location_type': 'regions'});
+                $('#province').ph_locations({'location_type': 'provinces'});
+                $('#city').ph_locations({'location_type': 'cities'});
+                $('#barangay').ph_locations({'location_type': 'barangays'});
+
+                $('#region').ph_locations('fetch_list');
+            });
+        </script>
 
 </body>
 </html>
