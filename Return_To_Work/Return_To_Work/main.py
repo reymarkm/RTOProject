@@ -102,11 +102,23 @@ def register():
     for x in tempcity:
         lista.append(x['city']) 
 
+    temp = cursor.execute('SELECT subareaid FROM city ORDER BY city ASC')   
+    tempcity = cursor.fetchall()
+    listaa = list()
+    for x in tempcity:
+        listaa.append(x['subareaid']) 
+
     temp = cursor.execute('SELECT province FROM province ORDER BY province ASC')   
     tempcity = cursor.fetchall()
     listb = list()
     for x in tempcity:
         listb.append(x['province']) 
+
+    temp = cursor.execute('SELECT areaid FROM province ORDER BY province ASC')   
+    tempcity = cursor.fetchall()
+    listbb = list()
+    for x in tempcity:
+        listbb.append(x['areaid']) 
 
     if request.method == 'POST':       
         inputFName = request.form['FName']
@@ -147,15 +159,18 @@ def register():
             user_exists = cursor.fetchone()
             if user_exists:
                 error='A user with the same Username already exists in the database.'
+                cursor.close()
             else:
                 cursor.execute('INSERT INTO accounts (Username,Password) values (%s,%s)', (inputUName,inputPWord))
                 mysql.connection.commit()
                 cursor.execute('INSERT INTO rto (FirstName,LastName,Email,Barangay,City,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,inputAddress,inputCity,inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate))
                 mysql.connection.commit()
+                cursor.close()
         else:
             error = 'Password does not match.'
+            cursor.close()
 
-    return render_template("register.html",error=error,lista=lista,listb=listb)
+    return render_template("register.html",error=error,list1=zip(lista,listaa),list2=zip(listb,listbb))
 
 
 @app.route("/about")

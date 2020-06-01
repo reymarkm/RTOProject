@@ -73,16 +73,16 @@
             <div class="col">
                 <select class="browser-default custom-select" name="City">
                     <option selected>Select City</option>
-                    {% for a in lista %}
-                    <option value="{{ a }}">{{ a }}</option>
+                    {% for a in list1 %}
+                    <option value="{{ a[0] }}" id="{{ a[1] }}">{{ a[0] }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="col">
                 <select class="browser-default custom-select" name="Province">
                     <option selected>Select Province</option>
-                    {% for b in listb %}
-                    <option value="{{ b }}">{{ b }}</option>
+                    {% for b in list2 %}
+                    <option value="{{ b[0] }}" id="{{ b[1] }}">{{ b[0] }}</option>
                     {% endfor %}
                 </select>
             </div>
