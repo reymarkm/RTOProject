@@ -96,29 +96,37 @@ def register():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     error = None
 
+    #Get Cities
     temp = cursor.execute('SELECT city FROM city ORDER BY city ASC')   
     tempcity = cursor.fetchall()
     lista = list()
     for x in tempcity:
         lista.append(x['city']) 
 
+    #Get Cities Area ID
     temp = cursor.execute('SELECT subareaid FROM city ORDER BY city ASC')   
     tempcity = cursor.fetchall()
     listaa = list()
     for x in tempcity:
-        listaa.append(x['subareaid']) 
+        dummya = str(x['subareaid']).replace(".", "")
+        dummyb = dummya.replace("_1", "")
+        listaa.append(dummyb) 
 
+    #Get Provinces
     temp = cursor.execute('SELECT province FROM province ORDER BY province ASC')   
     tempcity = cursor.fetchall()
     listb = list()
     for x in tempcity:
         listb.append(x['province']) 
 
+    #Get Provinces' Area ID
     temp = cursor.execute('SELECT areaid FROM province ORDER BY province ASC')   
     tempcity = cursor.fetchall()
     listbb = list()
     for x in tempcity:
-        listbb.append(x['areaid']) 
+        dummyc = str(x['areaid']).replace(".", "")
+        dummyd = dummyc.replace("_1", "")
+        listbb.append(dummyd) 
 
     if request.method == 'POST':       
         inputFName = request.form['FName']
@@ -155,14 +163,17 @@ def register():
         inputDate = today.strftime("%Y/%m/%d")
 
         if inputPWord == inputCPWord:
+            #Check if record already exists
             cursor.execute('SELECT * FROM accounts WHERE Username = %s AND Password = %s', (inputUName,inputPWord))
             user_exists = cursor.fetchone()
             if user_exists:
                 error='A user with the same Username already exists in the database.'
                 cursor.close()
             else:
+                #Add Account into DB
                 cursor.execute('INSERT INTO accounts (Username,Password) values (%s,%s)', (inputUName,inputPWord))
                 mysql.connection.commit()
+                #Add details into DB
                 cursor.execute('INSERT INTO rto (FirstName,LastName,Email,Barangay,City,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,inputAddress,inputCity,inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate))
                 mysql.connection.commit()
                 cursor.close()
@@ -179,36 +190,44 @@ def about():
 
 @app.route("/update", methods=['GET', 'POST'])
 def update():
+    #Get Data from Source (Provinces)
     link = "https://api.covidph.info/api/summary/v4/residence/province"
     r = requests.get(link)
     test = r.json()
     for num in test:
+        #Reformat Data for Processing
         holder = str(num).replace("\'", "\"")
         result = json.loads(holder)
         areaid = result['areaId']
         Province = result['name']
         Count = result['count']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        #Add Data to DB
         cursor.execute('SELECT * FROM province WHERE areaid = %s AND province = %s AND provincecasecount = %s', (areaid, Province, Count))
         flag1 = cursor.fetchone()
         if flag1 is not None:
             cursor.close()
         else:
+            #Check if Data already exists in DB
             cursor.execute('SELECT * FROM province WHERE areaid = %s AND province = %s', (areaid, Province))
             flag2 = cursor.fetchone()
             if flag2 is not None:
+                #Update existing Data
                 cursor.execute('UPDATE province SET provincecasecount=%s WHERE areaid=%s AND province=%s', (Count, areaid, Province))
                 mysql.connection.commit()
             else:
+                #Add New Data
                 cursor.execute('INSERT INTO province (areaid,province,provincecasecount) values (%s,%s,%s)', (areaid, Province, Count))
                 mysql.connection.commit()
         cursor.close
 
 
+    #Get Data from Source (Cities)
     link1 = "https://api.covidph.info/api/summary/v4/residence/city"
     r1 = requests.get(link1)
     test1 = r1.json()
     for num in test1:
+        #Reformat Data for Processing
         print(num['name'])
         holder1 = str(num).replace("\'", "\"")
         holder2 = holder1.replace("T\"Boli","T\'Boli")
@@ -220,17 +239,21 @@ def update():
         City = result1['name']
         Count = result1['count']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        #Add Data to DB
         cursor.execute('SELECT * FROM city WHERE subareaid = %s AND city = %s AND citycasecount = %s', (areaid, City, Count))
         flag1 = cursor.fetchone()
         if flag1 is not None:
             cursor.close()
         else:
+            #Check if Data already exists in DB
             cursor.execute('SELECT * FROM city WHERE subareaid = %s AND city = %s', (areaid, City))
             flag2 = cursor.fetchone()
             if flag2 is not None:
+                #Update existing Data
                 cursor.execute('UPDATE city SET citycasecount=%s WHERE subareaid=%s AND city=%s', (Count, areaid, City))
                 mysql.connection.commit()
             else:
+                #Add New Data
                 cursor.execute('INSERT INTO city (subareaid,city,citycasecount) values (%s,%s,%s)', (areaid, City, Count))
                 mysql.connection.commit()
         cursor.close
