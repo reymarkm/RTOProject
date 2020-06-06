@@ -20,10 +20,10 @@
     <link rel="stylesheet" href="/static/css/style.css">
 
     <style>
+
         .custom {
             width: 320px !important;
         }
-
     </style>
 </head>
 <body>
@@ -31,21 +31,24 @@
     <div class="container">
         <!-- Task buttons -->
         <form class="border border-light grey lighten-5 p-5" action="" method="POST">
+                        
             <p class="text-center h2 mb-4">Manager View</p>
 
-            <fieldset class="border border-light grey lighten-5 p-5">
+            <fieldset class="border lighten-5 p-1 ">
                 <legend style="font-weight:bold;">Tasks</legend>
                 <div class="row">
-                    <button type="button" class="btn btn-info custom">View Employee List/What if Scenario</button>
-                    <button type="button" class="btn btn-info custom">Reset Recommendation Data</button>
-                    <button type="button" class="btn btn-info custom">Run Recommendation</button>
+                    <div class="col">
+                        <button type="button" class="btn btn-info custom">View Employee List/What if Scenario</button>
+                        <button type="button" class="btn btn-info custom">Reset Recommendation Data</button>
+                        <button style="float: right" type="button" class="btn btn-info custom">Run Recommendation</button>
+                    </div>
                 </div>
             </fieldset>
 
 
             <!-- Point System -->
 
-            <fieldset class="border border-light grey lighten-5 p-5">
+            <fieldset class="border border-light grey lighten-5 p-3">
 
                 <legend style="font-weight:bold;">Point System</legend>
                 <p style="font-weight:bold" class="mt-4 mb-4">These are the parameters used for the recommendation</p>
@@ -128,19 +131,19 @@
                     <br>
                 </div>
 
-                    <div class="row">
-                        <div class="col text-center">
-                            <input type="submit" class="btn btn-info" value="Save" />
+                <div class="row">
+                    <div class="col text-center">
+                        <input type="submit" class="btn btn-info" value="Save" />
 
-                            <input type="submit" class="btn btn-info" value="Cancel" />
-                        </div>
+                        <input type="submit" class="btn btn-info" value="Cancel" />
                     </div>
+                </div>
             </fieldset>
 
             <fieldset class="border border-light grey lighten-5 p-5">
                 <legend style="font-weight:bold;">My Reports</legend>
                 <div class="row">
-                    
+
                 </div>
             </fieldset>
 
