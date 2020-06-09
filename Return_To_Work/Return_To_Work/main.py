@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from datetime import date
+from math import sin, cos, sqrt, atan2, radians
 import MySQLdb.cursors
 import re
 import json
@@ -51,14 +52,19 @@ def home():
             password = str(account['Password'])
             # Redirect to home page
             error = 'Welcome %s!' % (user)
-            #return redirect(url_for('about'))
-            return render_template('userProfile.html',error=error)
+            cursor.execute('SELECT * FROM rto WHERE ID = %s', (str(account['A_ID'])))
+            temp = cursor.fetchone()
+            session['team'] = temp['Team']
+            update()
+            cursor.close()
+            return redirect(url_for('userprofile',error=error))
         else:
             # Account doesnt exist or username/password incorrect
             error = 'Incorrect Username/Password.'
-
+            cursor.close()
+            return redirect(url_for('login',error=error))
     # Show the login form with message (if any)
-    return render_template('index.html',error=error)
+    return render_template('index.html')
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -82,14 +88,19 @@ def login():
             password = str(account['Password'])
             # Redirect to home page
             error = 'Welcome %s!' % (user)
-            #return redirect(url_for('about'))
-            return render_template('userProfile.html',error=error)
+            cursor.execute('SELECT * FROM rto WHERE ID = %s', (str(account['A_ID'])))
+            temp = cursor.fetchone()
+            session['team'] = temp['Team']
+            update()
+            cursor.close()
+            return redirect(url_for('userprofile',error=error))
         else:
             # Account doesnt exist or username/password incorrect
             error = 'Incorrect Username/Password.'
-
+            cursor.close()
+            return redirect(url_for('login',error=error))
     # Show the login form with message (if any)
-    return render_template('index.html',error=error)
+    return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -97,11 +108,13 @@ def register():
     error = None
 
     #Get Cities
-    temp = cursor.execute('SELECT city FROM city ORDER BY city ASC')   
+    temp = cursor.execute('SELECT * FROM city ORDER BY city ASC')   
     tempcity = cursor.fetchall()
     lista = list()
+    listx = list()
     for x in tempcity:
         lista.append(x['city']) 
+        listx.append(x['idcity'])
 
     #Get Cities Area ID
     temp = cursor.execute('SELECT subareaid FROM city ORDER BY city ASC')   
@@ -136,8 +149,12 @@ def register():
         inputPWord = request.form['PWord']
         inputCPWord = request.form['CPWord']
         inputPNumber = request.form['PNumber']
-        inputAddress = request.form['Address']
-        inputCity = request.form['City']
+        inputStreet = request.form['Street']
+        inputBarangay = request.form['Barangay']
+        inputCityID = request.form['City']
+        cursor.execute('SELECT * FROM city WHERE idcity = %s', [inputCityID]) 
+        tempCity = cursor.fetchone()
+        inputCity = str(tempCity['city'])
         inputProvince = request.form['Province']
         if request.form.get('High') == '1':
             inputHigh = 1
@@ -151,7 +168,7 @@ def register():
             inputLHigh = 1
         else:
             inputLHigh = 0
-        if request.form['willingness'] == 'True':
+        if request.form['wilingness'] == 'True':
             inputWillingness = 1
         else:
             inputWillingness = 0
@@ -161,6 +178,31 @@ def register():
         inputTeam = request.form['Team']
         today = date.today()
         inputDate = today.strftime("%Y/%m/%d")
+        inputProcessed = 0
+
+        #Compute Distance from Barangay to RBC
+        container = '%s, %s, %s', (inputBarangay,inputCity,inputProvince)
+        result = str(container).replace(" ", "+")
+        link = "https://maps.googleapis.com/maps/api/geocode/json?&address=%s&key=AIzaSyA2voIMNubql1et8Uei3ZCLPipEXeXiLk0" % result
+        r = requests.get(link)
+        error = r.json()
+        temp = error['results']
+        temp1 = temp[0]
+
+        #Formula
+        R = 6373.0
+        RBCLat = radians(14.590148)
+        RBCLong = radians(121.067947)
+        inputLat = radians(float(temp1['geometry']['location']['lat']))
+        inputLong = radians(float(temp1['geometry']['location']['lng']))
+        dlon = RBCLong - inputLong
+        dlat = RBCLat - inputLat
+        a = sin(dlat / 2)**2 + cos(inputLat) * cos(RBCLat) * sin(dlon / 2)**2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        distance = R * c
+
+        #Final Distance
+        CalculateDistance = int(distance)
 
         if inputPWord == inputCPWord:
             #Check if record already exists
@@ -174,19 +216,191 @@ def register():
                 cursor.execute('INSERT INTO accounts (Username,Password) values (%s,%s)', (inputUName,inputPWord))
                 mysql.connection.commit()
                 #Add details into DB
-                cursor.execute('INSERT INTO rto (FirstName,LastName,Email,Barangay,City,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,inputAddress,inputCity,inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate))
+                print(inputProvince)
+                cursor.execute('INSERT INTO rto (FirstName,LastName,Email,PhoneNumber,Street,Barangay,City,CityID,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update,Processed,Distance) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,int(inputPNumber),inputStreet,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance))
                 mysql.connection.commit()
                 cursor.close()
+                return redirect(url_for('login',error=error))
         else:
             error = 'Password does not match.'
             cursor.close()
+            return render_template("register.html",error=error,list1=zip(lista,listaa,listx),list2=zip(listb,listbb))
 
-    return render_template("register.html",error=error,list1=zip(lista,listaa),list2=zip(listb,listbb))
+    return render_template("register.html",error=error,list1=zip(lista,listaa,listx),list2=zip(listb,listbb))
 
 
 @app.route("/about")
 def about():
     return render_template("About.html")
+
+@app.route("/userprofile", methods=['GET', 'POST'])
+def userprofile():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    error = None
+    Holder = None
+    userID = str(session['id'])
+
+    #Get Cities
+    temp = cursor.execute('SELECT * FROM city ORDER BY city ASC')   
+    tempcity = cursor.fetchall()
+    lista = list()
+    listx = list()
+    for x in tempcity:
+        lista.append(x['city']) 
+        listx.append(x['idcity'])
+
+    #Get Cities Area ID
+    temp = cursor.execute('SELECT subareaid FROM city ORDER BY city ASC')   
+    tempcity = cursor.fetchall()
+    listaa = list()
+    for x in tempcity:
+        dummya = str(x['subareaid']).replace(".", "")
+        dummyb = dummya.replace("_1", "")
+        listaa.append(dummyb) 
+
+    #Get Provinces
+    temp = cursor.execute('SELECT province FROM province ORDER BY province ASC')   
+    tempcity = cursor.fetchall()
+    listb = list()
+    for x in tempcity:
+        listb.append(x['province']) 
+
+    #Get Provinces' Area ID
+    temp = cursor.execute('SELECT areaid FROM province ORDER BY province ASC')   
+    tempcity = cursor.fetchall()
+    listbb = list()
+    for x in tempcity:
+        dummyc = str(x['areaid']).replace(".", "")
+        dummyd = dummyc.replace("_1", "")
+        listbb.append(dummyd) 
+
+    if request.method == 'GET':
+        cursor.execute('SELECT * FROM accounts WHERE A_ID = %s', (userID))
+        account = cursor.fetchone()
+        cursor.execute('SELECT * FROM rto WHERE ID = %s', (userID))
+        RTORecord = cursor.fetchone()
+
+        inputFName = RTORecord['FirstName']
+        inputLName = RTORecord['LastName']
+        inputEmail = RTORecord['Email']
+        inputUName = account['Username']
+        inputPWord = account['Password']
+        inputCPWord = inputPWord
+        inputPNumber = RTORecord['PhoneNumber']
+        inputStreet = RTORecord['Street']
+        inputBarangay = RTORecord['Barangay']
+        inputCity = RTORecord['CityID']
+        inputProvince = RTORecord['Province']
+        inputHigh = RTORecord['High_Risk']
+        inputSlight = RTORecord['Slight_Risk']
+        inputLHigh = RTORecord['Living_With_High_Risk']
+        inputWilingness = RTORecord['Wilingness']
+        inputProdMachine = RTORecord['Production_Machine']
+        inputTranspo = RTORecord['Transportation_Availability']
+        inputDepartment = RTORecord['Department']
+        inputTeam = RTORecord['Team']
+
+      
+        Holder = list()
+        Holder.append(inputFName)
+        Holder.append(inputLName)
+        Holder.append(inputEmail)
+        Holder.append(inputUName)
+        Holder.append(inputPWord)
+        Holder.append(inputCPWord)
+        Holder.append(inputPNumber)
+        Holder.append(inputStreet)
+        Holder.append(inputBarangay)
+        Holder.append(inputCity)
+        Holder.append(inputProvince)
+        Holder.append(inputHigh)
+        Holder.append(inputSlight)
+        Holder.append(inputLHigh)
+        Holder.append(inputWilingness)
+        Holder.append(inputProdMachine)
+        Holder.append(inputTranspo)
+        Holder.append(inputDepartment)
+        Holder.append(inputTeam)
+       
+    if request.method == 'POST':       
+        inputFName = request.form['FName']
+        inputLName = request.form['LName']
+        inputEmail = request.form['Email']
+        inputUName = request.form['UName']
+        inputPWord = request.form['PWord']
+        inputCPWord = request.form['CPWord']
+        inputPNumber = request.form['PNumber']
+        inputStreet = request.form['Street']
+        inputBarangay = request.form['Barangay']
+        inputCityID = request.form['City']
+        cursor.execute('SELECT * FROM city WHERE idcity = %s', [inputCityID]) 
+        tempCity = cursor.fetchone()
+        inputCity = str(tempCity['city'])
+        inputProvince = request.form['Province']
+        if request.form.get('High') == '1':
+            inputHigh = 1
+        else:
+            inputHigh = 0
+        if request.form.get('Slight') == '1':
+            inputSlight = 1
+        else:
+            inputSlight = 0
+        if request.form.get('LHigh') == '1':
+            inputLHigh = 1
+        else:
+            inputLHigh = 0
+        if request.form['wilingness'] == 'True':
+            inputWillingness = 1
+        else:
+            inputWillingness = 0
+        inputProdMachine = request.form['prodMachine']
+        inputTranspo = request.form['transpoAvail']
+        inputDepartment = request.form['Department']
+        inputTeam = request.form['Team']
+        today = date.today()
+        inputDate = today.strftime("%Y/%m/%d")
+        inputProcessed = 0
+
+        #Compute Distance from Barangay to RBC
+        container = '%s, %s, %s', (inputBarangay,inputCity,inputProvince)
+        result = str(container).replace(" ", "+")
+        link = "https://maps.googleapis.com/maps/api/geocode/json?&address=%s&key=AIzaSyA2voIMNubql1et8Uei3ZCLPipEXeXiLk0" % result
+        r = requests.get(link)
+        error = r.json()
+        temp = error['results']
+        temp1 = temp[0]
+
+        #Formula
+        R = 6373.0
+        RBCLat = radians(14.590148)
+        RBCLong = radians(121.067947)
+        inputLat = radians(float(temp1['geometry']['location']['lat']))
+        inputLong = radians(float(temp1['geometry']['location']['lng']))
+        dlon = RBCLong - inputLong
+        dlat = RBCLat - inputLat
+        a = sin(dlat / 2)**2 + cos(inputLat) * cos(RBCLat) * sin(dlon / 2)**2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        distance = R * c
+
+        #Final Distance
+        CalculateDistance = int(distance)
+
+        if inputPWord == inputCPWord:
+                #Add Account into DB
+                cursor.execute('UPDATE accounts SET Password=%s WHERE Username=%s', (inputPWord,inputUName))
+                mysql.connection.commit()
+                #Add details into DB 
+                cursor.execute('UPDATE rto SET FirstName=%s, LastName=%s, Email=%s, PhoneNumber=%s, Street=%s, Barangay=%s, City=%s, CityID=%s, Province=%s, High_Risk=%s, Slight_Risk=%s, Living_With_High_Risk=%s, Production_Machine=%s, Transportation_Availability=%s, Department=%s, Team=%s, Wilingness=%s, Last_Update=%s, Processed=%s, Distance=%s WHERE ID=%s', (inputFName,inputLName,inputEmail,int(inputPNumber),inputStreet,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,int(userID)))
+                mysql.connection.commit()
+                cursor.close()
+                return redirect(url_for('userprofile',error=error))
+        else:
+            error = 'Password does not match.'
+            cursor.close()
+            return redirect(url_for('userprofile',error=error))
+
+
+    return render_template("userProfile.html",error=error,list1=zip(lista,listaa,listx),list2=zip(listb,listbb),c=Holder)
 
 @app.route("/update", methods=['GET', 'POST'])
 def update():
@@ -228,7 +442,6 @@ def update():
     test1 = r1.json()
     for num in test1:
         #Reformat Data for Processing
-        print(num['name'])
         holder1 = str(num).replace("\'", "\"")
         holder2 = holder1.replace("T\"Boli","T\'Boli")
         holder3 = holder2.replace("T\"BOLI","T\'BOLI")
@@ -238,6 +451,8 @@ def update():
         areaid = result1['subAreaOfAreaId']
         City = result1['name']
         Count = result1['count']
+        Status = result1['quarantineLevel']
+        #print(result1['name'])
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         #Add Data to DB
         cursor.execute('SELECT * FROM city WHERE subareaid = %s AND city = %s AND citycasecount = %s', (areaid, City, Count))
@@ -254,11 +469,149 @@ def update():
                 mysql.connection.commit()
             else:
                 #Add New Data
-                cursor.execute('INSERT INTO city (subareaid,city,citycasecount) values (%s,%s,%s)', (areaid, City, Count))
+                cursor.execute('INSERT INTO city (subareaid,city,citycasecount,citystatus) values (%s,%s,%s,%s)', (areaid, City, Count, Status))
                 mysql.connection.commit()
         cursor.close
 
     return render_template("update.html",error=test)
+
+
+@app.route("/calculate", methods=['GET', 'POST'])
+def calculate():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM rto WHERE Team = %s', (str(session['id'])))
+    container = cursor.fetchall()
+    for x in container:
+        cursor.execute('SELECT * FROM city WHERE subareaid = %s', (x['city']))
+        cityinfo = cursor.fetchone()
+        getUserID = str(x['ID'])
+        getCity = str(cityinfo['city'])
+        getCityInfo = str(cityinfo['citystatus'])
+        getProvince = str(x['Province'])
+        getHighRisk = int(x['High_Risk'])
+        getSlightRisk = int(x['Slight_Risk'])
+        getLivingWithRisk = int(x['Living_With_High_Risk'])
+        getProductionMachine = str(x['Product_Machine'])
+        getTransportation = str(x['Transportation_Availability'])
+        getDepartment = str(x['Department'])
+        getTeam = str(x['Team'])
+        getWilingness = int(x['Wilingness'])
+        getProcessed = int(x['Processed'])
+
+
+        if getProcessed == 0:
+            return NONE
+            #FORMULA FOR CALCULATION HERE...
+            StatusWeight = 0
+            WilingnessWeight = 0
+            RiskWeight = 100
+            MachineWeight = 0
+            DTWeight
+
+    return NONE
+
+@app.route("/Test", methods=['GET', 'POST'])
+def Test():
+    error = None
+    if request.method == 'GET':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        b = 'GSE Night'
+        #cursor.execute('SELECT * FROM rto WHERE Team = %s', (str(session['id'])))
+        cursor.execute('SELECT * FROM rto WHERE Team = %s', [str(session['team'])])
+        print('HERE!')
+        container = cursor.fetchall()
+        for x in container:
+            cursor.execute('SELECT * FROM city WHERE idcity = %s', [str(x['CityID'])])
+            cityinfo = cursor.fetchone()
+            getUserID = str(x['ID'])
+            getCity = str(cityinfo['city'])
+            getCityStatus = str(cityinfo['citystatus'])
+            getProvince = str(x['Province'])
+            getHighRisk = int(x['High_Risk'])
+            getSlightRisk = int(x['Slight_Risk'])
+            getLivingWithRisk = int(x['Living_With_High_Risk'])
+            getProductionMachine = str(x['Production_Machine'])
+            getTransportation = str(x['Transportation_Availability'])
+            getDepartment = str(x['Department'])
+            getTeam = str(x['Team'])
+            getWilingness = int(x['Wilingness'])
+            getDistance = int(x['Distance'])
+            getProcessed = int(x['Processed'])
+
+            if getProcessed == 0:
+            
+                #FORMULA FOR CALCULATION HERE...
+                StatusWeight = 0
+                WilingnessWeight = 0
+                RiskWeight = 100
+                MachineWeight = 0
+                DTWeight = 0
+
+                TranspoWeight = 0
+                LocationScore = 0
+
+                cursor.execute('SELECT * FROM weights')
+                Weights = cursor.fetchone()
+            
+                if getTransportation == 'Mass Transportation':
+                    TranspoWeight = 0.5
+                if getTransportation == 'Private Vehicle':
+                    TranspoWeight = 1
+                LocationScore = (30 - getDistance)/30
+                DTWeight = float((TranspoWeight*LocationScore))
+            
+                if getProductionMachine == 'Laptop':
+                    MachineWeight = float((int(Weights['Laptop']))/100)
+                if getProductionMachine == 'Desktop':
+                    MachineWeight = float((int(Weights['Desktop']))/100)
+
+                if getHighRisk == 1 and RiskWeight != 0:
+                    temp = 100 - int(Weights['HighRisk'])
+                    RiskWeight = RiskWeight - temp
+                    print(RiskWeight)
+                    if RiskWeight < 0:
+                        RiskWeight = 0
+                if getSlightRisk == 1 and RiskWeight != 0:
+                    temp = 100 - int(Weights['SlightRisk'])
+                    RiskWeight = RiskWeight - temp
+                    if RiskWeight < 0:
+                        RiskWeight = 0
+                if getLivingWithRisk == 1 and RiskWeight != 0:
+                    temp = 100 - int(Weights['LivingWithRisk'])
+                    RiskWeight = RiskWeight - temp
+                    if RiskWeight < 0:
+                        RiskWeight = 0
+                RiskWeight = float(RiskWeight/100)
+
+                if getWilingness == 1:
+                    WilingnessWeight = float(int(Weights['WilingnessYes'])/100)
+                else:
+                    WilingnessWeight = float(int(Weights['WilingnessNo'])/100)
+
+                if getCityStatus == 'General Community Quarantine':
+                    StatusWeight = float(int(Weights['GCQ'])/100)
+                if getCityStatus == 'Modified General Community Quarantine':
+                    StatusWeight = float(int(Weights['MECQ'])/100)
+                if getCityStatus == 'Enhanced Community Quarantine':
+                    StatusWeight = float(int(Weights['ECQ'])/100)
+
+                print('DT: %s' % DTWeight)
+                print('Machine: %s' % MachineWeight)
+                print('Risk: %s' % RiskWeight)
+                print('Wilingness: %s' % WilingnessWeight)
+                print('Status: %s' % StatusWeight)
+
+                Final = round(((DTWeight*float(int(Weights['DTOverallWeight'])/100)) + (MachineWeight*float(int(Weights['ProductionMachineOverallWeight'])/100)) + (RiskWeight*float(int(Weights['HealthRiskOverallWeight'])/100)) + (WilingnessWeight*float(int(Weights['WilingnessOverallWeight'])/100)) + (StatusWeight*float(int(Weights['CityStatusOverallWeight'])/100)))*100,2)
+                print('Final: %s' % Final)
+                print(' ')
+                error = str(Final)
+
+                if Final >= 70:
+                    cursor.execute('UPDATE rto SET Processed=%s WHERE ID=%s', (1,getUserID))
+                    mysql.connection.commit()
+
+    return render_template('Test.html',error=error)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

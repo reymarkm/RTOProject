@@ -83,6 +83,7 @@
     <Content Include="static\js\bootstrap.js" />
     <Content Include="static\js\bootstrap.min.js" />
     <Content Include="static\js\custom.js" />
+    <Content Include="static\js\filtercity.js" />
     <Content Include="static\js\jquery.js" />
     <Content Include="static\js\jquery.min.js" />
     <Content Include="static\js\jquery.ph-locations.js" />
@@ -185,12 +186,12 @@
     <Content Include="templates\Home.html" />
     <Content Include="templates\About.html" />
     <Content Include="templates\index.html" />
-    <Content Include="templates\index1.html" />
+    <Content Include="templates\profile.html" />
     <Content Include="templates\register.html" />
-    <Content Include="templates\register1.html" />
     <Content Include="templates\Template.html" />
     <Content Include="templates\Login.html" />
     <Content Include="templates\update.html" />
+    <Content Include="templates\Test.html" />
     <Content Include="templates\userProfile.html" />
   </ItemGroup>
   <ItemGroup>

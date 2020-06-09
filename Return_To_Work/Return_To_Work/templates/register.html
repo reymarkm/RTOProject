@@ -62,12 +62,21 @@
                     </div>
                 </div>
                 <!-- Phone number -->
-                <input type="tel" id="defaultRegisterPhonePassword" class="form-control" placeholder="Phone number" pattern="[0-9]{11}" name="PNumber">
+                <input type="text" id="defaultRegisterPhonePassword" class="form-control" placeholder="Mobile Number" name="PNumber" onkeypress="return isNumber(event)" maxlength="11" >
 
                 <!-- Address -->
 
             <p class="h5 text-center mt-4 mb-4">Address</p>
-            <input type="text" id="address" class="form-control" placeholder="Street/Barangay" name="Province">
+            <div class="form-row mb-4">
+                <div class="col">
+                    <!-- First name -->
+                    <input type="text" id="streetForm" class="form-control" placeholder="Street" name="Street">
+                </div>
+                <div class="col">
+                    <!-- Last name -->
+                    <input type="text" id="barangayForm" class="form-control" placeholder="Barangay" name="Barangay">
+                </div>
+            </div>
 
             <div class="form-row mt-4 mb-4">
                 <div class="col">
@@ -80,9 +89,9 @@
                 </div>
                 <div class="col">
                     <select class="browser-default custom-select" id="selectCity" name="City">
-                        <option selected>Select City</option>                      
+                        <option selected>Select City</option>
                         {% for b in list1 %}
-                        <option value="{{ b[0] }}" class="{{ b[1] }}">{{ b[0] }}</option>
+                        <option value="{{ b[2] }}" class="{{ b[1] }}">{{ b[0] }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -113,13 +122,13 @@
                     <p class="h5 mt-4 mb-4">Willingness to go back to office</p>
                     <label class="custom-control-inline">Are you willing to go back to Office?</label>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="yes" name="willingness" value="True">
+                        <input type="radio" class="custom-control-input" id="yes" name="wilingness" value="True">
                         <label class="custom-control-label" for="yes">Yes</label>
                     </div>
 
                     <!-- Default inline 2-->
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="no" name="willingness" value="False">
+                        <input type="radio" class="custom-control-input" id="no" name="wilingness" value="False">
                         <label class="custom-control-label" for="no">No</label>
                     </div>
                 </div>
@@ -130,7 +139,7 @@
                 <div class="col">
                     <p class="h5 mt-4 mb-4">Production Machine</p>
                     <div class="custom-control custom-radio col-md-10">
-                        <input type="radio" class="custom-control-input" id="desktop" name="prodMachine" value="Dekstop">
+                        <input type="radio" class="custom-control-input" id="desktop" name="prodMachine" value="Desktop">
                         <label class="custom-control-label" for="desktop">Desktop Machine</label>
                     </div>
                     <div class="custom-control custom-radio col-md-10">
@@ -159,7 +168,7 @@
                         <option selected>Select Department</option>
                         <option value="TS Corporate">TS Corporate</option>
                         <option value="TS Consumer">TS Consumer</option>
-                        <option value="Core Teck">Core Tech</option>
+                        <option value="Core Tech">Core Tech</option>
                         <option value="IS">IS</option>
                     </select>
                 </div>
@@ -186,6 +195,17 @@
         </form>
         <!-- Default form register -->
     </div>
+
+    <script>
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+    </script>
 
     <!-- ~~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- jQuery -->
