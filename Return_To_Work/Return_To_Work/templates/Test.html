@@ -6,15 +6,17 @@
     <title></title>
 </head>
 <body>
+    <!--
     <form action="" method="POST">
         <input type="text" placeholder="Barangay" name="Barangay">
         <input type="text" placeholder="City" name="City">
         <input type="text" placeholder="Province" name="Province">
         <input type="submit" value="Submit">
     </form>
-
-
-    <strong>OutPut:</strong> {{ error }}
+    -->
+    {% for x in error %}
+    <p>{{ x }}</p>
+    {% endfor %}
 </body>
 </html>
 

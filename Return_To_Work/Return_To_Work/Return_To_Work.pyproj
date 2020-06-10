@@ -186,6 +186,7 @@
     <Content Include="templates\Home.html" />
     <Content Include="templates\About.html" />
     <Content Include="templates\index.html" />
+    <Content Include="templates\managerview.html" />
     <Content Include="templates\profile.html" />
     <Content Include="templates\register.html" />
     <Content Include="templates\Template.html" />

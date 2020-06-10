@@ -148,6 +148,7 @@ def register():
         inputUName = request.form['UName']
         inputPWord = request.form['PWord']
         inputCPWord = request.form['CPWord']
+        inputAccountRole = 'User'
         inputPNumber = request.form['PNumber']
         inputStreet = request.form['Street']
         inputBarangay = request.form['Barangay']
@@ -181,8 +182,9 @@ def register():
         inputProcessed = 0
 
         #Compute Distance from Barangay to RBC
-        container = '%s, %s, %s', (inputBarangay,inputCity,inputProvince)
-        result = str(container).replace(" ", "+")
+        container = '%s, %s, %s, %s', (inputStreet,inputBarangay,inputCity,inputProvince)
+        tempresult = str(container).replace("#", "")
+        result = str(tempresult).replace(" ", "+")
         link = "https://maps.googleapis.com/maps/api/geocode/json?&address=%s&key=AIzaSyA2voIMNubql1et8Uei3ZCLPipEXeXiLk0" % result
         r = requests.get(link)
         error = r.json()
@@ -199,10 +201,10 @@ def register():
         dlat = RBCLat - inputLat
         a = sin(dlat / 2)**2 + cos(inputLat) * cos(RBCLat) * sin(dlon / 2)**2
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        distance = R * c
+        distance = float(R * c)
 
         #Final Distance
-        CalculateDistance = int(distance)
+        CalculateDistance = round(distance,2)
 
         if inputPWord == inputCPWord:
             #Check if record already exists
@@ -213,7 +215,7 @@ def register():
                 cursor.close()
             else:
                 #Add Account into DB
-                cursor.execute('INSERT INTO accounts (Username,Password) values (%s,%s)', (inputUName,inputPWord))
+                cursor.execute('INSERT INTO accounts (Username,Password,Role) values (%s,%s,%s)', (inputUName,inputPWord,inputAccountRole))
                 mysql.connection.commit()
                 #Add details into DB
                 print(inputProvince)
@@ -362,14 +364,30 @@ def userprofile():
         inputProcessed = 0
 
         #Compute Distance from Barangay to RBC
-        container = '%s, %s, %s', (inputBarangay,inputCity,inputProvince)
-        result = str(container).replace(" ", "+")
+        container = '%s, %s, %s, %s', (inputStreet,inputBarangay,inputCity,inputProvince)
+        tempresult = str(container).replace("#", "")
+        result = str(tempresult).replace(" ", "+")
         link = "https://maps.googleapis.com/maps/api/geocode/json?&address=%s&key=AIzaSyA2voIMNubql1et8Uei3ZCLPipEXeXiLk0" % result
         r = requests.get(link)
         error = r.json()
         temp = error['results']
         temp1 = temp[0]
 
+        #print(temp1['geometry']['location']['lat'])
+        #print(temp1['geometry']['location']['lng'])
+        origin = "%s,%s" % (temp1['geometry']['location']['lat'],temp1['geometry']['location']['lng'])
+        destination = "14.590148,121.067947"
+        link2 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=%s&destinations=%s&mode=driving&key=AIzaSyC2zlaHWthM3MOraTlpAGw7hBF6T8RnmPU" % (origin,destination)
+        r2 = requests.get(link2)
+        dummy = r2.json()
+        dummy1 = dummy['rows']
+        dummy2 = dummy1[0]
+        dummy3 = dummy2['elements']
+        dummy4 = dummy3[0]
+        APIDistance = dummy4['distance']['text']
+        CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
+
+        '''
         #Formula
         R = 6373.0
         RBCLat = radians(14.590148)
@@ -380,10 +398,11 @@ def userprofile():
         dlat = RBCLat - inputLat
         a = sin(dlat / 2)**2 + cos(inputLat) * cos(RBCLat) * sin(dlon / 2)**2
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        distance = R * c
+        distance = float(R * c)
 
         #Final Distance
-        CalculateDistance = int(distance)
+        CalculateDistance = round(distance,2)
+        '''
 
         if inputPWord == inputCPWord:
                 #Add Account into DB
@@ -452,7 +471,7 @@ def update():
         City = result1['name']
         Count = result1['count']
         Status = result1['quarantineLevel']
-        #print(result1['name'])
+        print(result1['name'])
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         #Add Data to DB
         cursor.execute('SELECT * FROM city WHERE subareaid = %s AND city = %s AND citycasecount = %s', (areaid, City, Count))
@@ -474,6 +493,10 @@ def update():
         cursor.close
 
     return render_template("update.html",error=test)
+
+@app.route("/Manager", methods=['GET', 'POST'])
+def manager():
+    return render_template('managerview.html')
 
 
 @app.route("/calculate", methods=['GET', 'POST'])
@@ -515,11 +538,12 @@ def Test():
     error = None
     if request.method == 'GET':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        ListResult = list()
         b = 'GSE Night'
         #cursor.execute('SELECT * FROM rto WHERE Team = %s', (str(session['id'])))
         cursor.execute('SELECT * FROM rto WHERE Team = %s', [str(session['team'])])
-        print('HERE!')
         container = cursor.fetchall()
+
         for x in container:
             cursor.execute('SELECT * FROM city WHERE idcity = %s', [str(x['CityID'])])
             cityinfo = cursor.fetchone()
@@ -568,7 +592,6 @@ def Test():
                 if getHighRisk == 1 and RiskWeight != 0:
                     temp = 100 - int(Weights['HighRisk'])
                     RiskWeight = RiskWeight - temp
-                    print(RiskWeight)
                     if RiskWeight < 0:
                         RiskWeight = 0
                 if getSlightRisk == 1 and RiskWeight != 0:
@@ -601,15 +624,17 @@ def Test():
                 print('Wilingness: %s' % WilingnessWeight)
                 print('Status: %s' % StatusWeight)
 
-                Final = round(((DTWeight*float(int(Weights['DTOverallWeight'])/100)) + (MachineWeight*float(int(Weights['ProductionMachineOverallWeight'])/100)) + (RiskWeight*float(int(Weights['HealthRiskOverallWeight'])/100)) + (WilingnessWeight*float(int(Weights['WilingnessOverallWeight'])/100)) + (StatusWeight*float(int(Weights['CityStatusOverallWeight'])/100)))*100,2)
-                print('Final: %s' % Final)
+                Final = round(((DTWeight*float(int(Weights['DTOverallWeight'])/100)) + (MachineWeight*float(int(Weights['ProductionMachineOverallWeight'])/100)) + (RiskWeight*float(int(Weights['HealthRiskOverallWeight'])/100)) + (WilingnessWeight*float(int(Weights['WilingnessOverallWeight'])/100)) + (StatusWeight*float(int(Weights['CityStatusOverallWeight'])/100)))*100,1)
+                Name = '%s %s' % (x['FirstName'],x['LastName'])
+                print('%s: %s' % (Name,Final))
                 print(' ')
-                error = str(Final)
+                ListResult.append('%s: %s' % (Name,Final))
 
                 if Final >= 70:
                     cursor.execute('UPDATE rto SET Processed=%s WHERE ID=%s', (1,getUserID))
                     mysql.connection.commit()
-
+        cursor.close()
+        error = ListResult
     return render_template('Test.html',error=error)
 
 
