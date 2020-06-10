@@ -155,8 +155,6 @@ def register():
         inputPWord = request.form['PWord']
         inputCPWord = request.form['CPWord']
         inputAccountRole = 'User'
-        inputPNumber = request.form['PNumber']
-        inputStreet = request.form['Street']
         inputBarangay = request.form['Barangay']
         inputCityID = request.form['City']
         cursor.execute('SELECT * FROM city WHERE idcity = %s', [inputCityID]) 
@@ -188,7 +186,7 @@ def register():
         inputProcessed = 0
 
         #Compute Distance from Barangay to RBC
-        container = '%s, %s, %s, %s', (inputStreet,inputBarangay,inputCity,inputProvince)
+        container = '%s, %s, %s', (inputBarangay,inputCity,inputProvince)
         tempresult = str(container).replace("#", "")
         result = str(tempresult).replace(" ", "+")
         link = "https://maps.googleapis.com/maps/api/geocode/json?&address=%s&key=AIzaSyA2voIMNubql1et8Uei3ZCLPipEXeXiLk0" % result
@@ -210,24 +208,6 @@ def register():
         APIDistance = dummy4['distance']['text']
         CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
 
-        '''
-        #Formula
-        R = 6373.0
-        RBCLat = radians(14.590148)
-        RBCLong = radians(121.067947)
-        inputLat = radians(float(temp1['geometry']['location']['lat']))
-        inputLong = radians(float(temp1['geometry']['location']['lng']))
-        dlon = RBCLong - inputLong
-        dlat = RBCLat - inputLat
-        a = sin(dlat / 2)**2 + cos(inputLat) * cos(RBCLat) * sin(dlon / 2)**2
-        c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        distance = float(R * c)
-        
-        #Final Distance
-        CalculateDistance = round(distance,2)
-        '''
-
-
         if inputPWord == inputCPWord:
             #Check if record already exists
             cursor.execute('SELECT * FROM accounts WHERE Username = %s AND Password = %s', (inputUName,inputPWord))
@@ -241,7 +221,7 @@ def register():
                 mysql.connection.commit()
                 #Add details into DB
                 print(inputProvince)
-                cursor.execute('INSERT INTO rto (FirstName,LastName,Email,PhoneNumber,Street,Barangay,City,CityID,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update,Processed,Distance) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,int(inputPNumber),inputStreet,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance))
+                cursor.execute('INSERT INTO rto (FirstName,LastName,Email,Barangay,City,CityID,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update,Processed,Distance) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance))
                 mysql.connection.commit()
                 cursor.close()
                 return redirect(url_for('login',error=error))
@@ -310,8 +290,6 @@ def userprofile():
         inputUName = account['Username']
         inputPWord = account['Password']
         inputCPWord = inputPWord
-        inputPNumber = RTORecord['PhoneNumber']
-        inputStreet = RTORecord['Street']
         inputBarangay = RTORecord['Barangay']
         inputCity = RTORecord['CityID']
         inputProvince = RTORecord['Province']
@@ -332,8 +310,6 @@ def userprofile():
         Holder.append(inputUName)
         Holder.append(inputPWord)
         Holder.append(inputCPWord)
-        Holder.append(inputPNumber)
-        Holder.append(inputStreet)
         Holder.append(inputBarangay)
         Holder.append(inputCity)
         Holder.append(inputProvince)
@@ -353,8 +329,6 @@ def userprofile():
         inputUName = request.form['UName']
         inputPWord = request.form['PWord']
         inputCPWord = request.form['CPWord']
-        inputPNumber = request.form['PNumber']
-        inputStreet = request.form['Street']
         inputBarangay = request.form['Barangay']
         inputCityID = request.form['City']
         cursor.execute('SELECT * FROM city WHERE idcity = %s', [inputCityID]) 
@@ -386,7 +360,7 @@ def userprofile():
         inputProcessed = 0
 
         #Compute Distance from Barangay to RBC
-        container = '%s, %s, %s, %s', (inputStreet,inputBarangay,inputCity,inputProvince)
+        container = '%s, %s, %s', (inputBarangay,inputCity,inputProvince)
         tempresult = str(container).replace("#", "")
         result = str(tempresult).replace(" ", "+")
         link = "https://maps.googleapis.com/maps/api/geocode/json?&address=%s&key=AIzaSyA2voIMNubql1et8Uei3ZCLPipEXeXiLk0" % result
@@ -408,29 +382,12 @@ def userprofile():
         APIDistance = dummy4['distance']['text']
         CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
 
-        '''
-        #Formula Linear
-        R = 6373.0
-        RBCLat = radians(14.590148)
-        RBCLong = radians(121.067947)
-        inputLat = radians(float(temp1['geometry']['location']['lat']))
-        inputLong = radians(float(temp1['geometry']['location']['lng']))
-        dlon = RBCLong - inputLong
-        dlat = RBCLat - inputLat
-        a = sin(dlat / 2)**2 + cos(inputLat) * cos(RBCLat) * sin(dlon / 2)**2
-        c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        distance = float(R * c)
-
-        #Final Distance
-        CalculateDistance = round(distance,2)
-        '''
-
         if inputPWord == inputCPWord:
                 #Add Account into DB
                 cursor.execute('UPDATE accounts SET Password=%s WHERE Username=%s', (inputPWord,inputUName))
                 mysql.connection.commit()
                 #Add details into DB 
-                cursor.execute('UPDATE rto SET FirstName=%s, LastName=%s, Email=%s, PhoneNumber=%s, Street=%s, Barangay=%s, City=%s, CityID=%s, Province=%s, High_Risk=%s, Slight_Risk=%s, Living_With_High_Risk=%s, Production_Machine=%s, Transportation_Availability=%s, Department=%s, Team=%s, Wilingness=%s, Last_Update=%s, Processed=%s, Distance=%s WHERE ID=%s', (inputFName,inputLName,inputEmail,int(inputPNumber),inputStreet,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,int(userID)))
+                cursor.execute('UPDATE rto SET FirstName=%s, LastName=%s, Email=%s, Barangay=%s, City=%s, CityID=%s, Province=%s, High_Risk=%s, Slight_Risk=%s, Living_With_High_Risk=%s, Production_Machine=%s, Transportation_Availability=%s, Department=%s, Team=%s, Wilingness=%s, Last_Update=%s, Processed=%s, Distance=%s WHERE ID=%s', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,int(userID)))
                 mysql.connection.commit()
                 cursor.close()
                 return redirect(url_for('userprofile',error=error))
@@ -547,7 +504,6 @@ def manager():
         container = cursor.fetchall()
         listName = list()
         listAddress = list()
-        listContactNumber = list()
         listRiskLevel = list()
         listProductionMachine = list()
         listTransportation = list()
@@ -632,9 +588,8 @@ def manager():
 
             Name = '%s %s' % (x['FirstName'],x['LastName'])
             listName.append(str(Name))
-            Address = '%s, %s, %s, %s' % (x['Street'],x['Barangay'],x['City'],x['Province'])
+            Address = '%s, %s, %s' % (x['Barangay'],x['City'],x['Province'])
             listAddress.append(str(Address))
-            listContactNumber.append(str(x['PhoneNumber']))
             RiskLevel = '%s%%' % str(Final)
             listRiskLevel.append(str(RiskLevel))
             listProductionMachine.append(str(x['Production_Machine']))
@@ -653,7 +608,7 @@ def manager():
             if str(x['Wilingness']) == '0':
                 Wiling = 'No'
             listWiling.append(Wiling)
-            Output = zip(listName,listAddress,listContactNumber,listRiskLevel,listProductionMachine,listTransportation,listTeam,listRTO,listWiling)
+            Output = zip(listName,listAddress,listRiskLevel,listProductionMachine,listTransportation,listTeam,listRTO,listWiling)
         cursor.close()
 
 

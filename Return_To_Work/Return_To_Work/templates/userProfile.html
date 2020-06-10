@@ -110,18 +110,18 @@
                                 </div>
                             </div>
                             <!-- Phone number -->
-                            <input type="text" id="defaultRegisterPhonePassword" class="form-control" placeholder="Mobile number" name="PNumber" onkeypress="return isNumber(event)" maxlength="11" value="{{ c[6] }}">
+                            <!-- REMOVE NA TO! --><input type="text" id="defaultRegisterPhonePassword" class="form-control" placeholder="Mobile number" name="PNumber" onkeypress="return isNumber(event)" maxlength="11" value="">
 
                             <!-- Address -->
                             <p class="h5 text-center mt-4 mb-4">Address</p>
                             <div class="form-row mb-4">
                                 <div class="col">
                                     <!-- First name -->
-                                    <input type="text" id="streetForm" class="form-control" placeholder="Street" name="Street" value="{{ c[7] }}">
+                                    <!-- REMOVE NA TO! --><input type="text" id="streetForm" class="form-control" placeholder="Street" name="Street" value="">
                                 </div>
                                 <div class="col">
-                                    <!-- Last name -->
-                                    <input type="text" id="barangayForm" class="form-control" placeholder="Barangay" name="Barangay" value="{{ c[8] }}">
+                                    <!-- Barangay -->
+                                    <input type="text" id="barangayForm" class="form-control" placeholder="Barangay" name="Barangay" value="{{ c[6] }}">
                                 </div>
                             </div>
 
@@ -130,7 +130,7 @@
                                     <select class="browser-default custom-select" id="selectProvince" name="Province">
                                         <option>Select Province</option>
                                         {% for a in list2 %}
-                                        {% if a[0] == c[10] %}
+                                        {% if a[0] == c[8] %}
                                         <option value="{{ a[0] }}" class="{{ a[1] }}" selected>{{ a[0] }}</option>
                                         {% else %}
                                         <option value="{{ a[0] }}" class="{{ a[1] }}">{{ a[0] }}</option>
@@ -142,7 +142,7 @@
                                     <select class="browser-default custom-select" id="selectCity" name="City">
                                         <option>Select City</option>
                                         {% for b in list1 %}
-                                        {% if b[2] == c[9] %}
+                                        {% if b[2] == c[7] %}
                                         <option value="{{ b[2] }}" class="{{ b[1] }}" selected>{{ b[0] }}</option>
                                         {% else %}
                                         <option value="{{ b[2] }}" class="{{ b[1] }}">{{ b[0] }}</option>
@@ -158,7 +158,7 @@
                                 <div class="col">
                                     <p class="h5 mt-4 mb-4">Risk Factor</p>
                                     <div class="custom-control custom-checkbox">
-                                        {% if c[11] == 1 %}
+                                        {% if c[9] == 1 %}
                                         <input type="checkbox" class="custom-control-input" id="highrisk" name="High" value="1" checked>
                                         {% else %}
                                         <input type="checkbox" class="custom-control-input" id="highrisk" name="High" value="1">
@@ -167,7 +167,7 @@
                                     </div>
 
                                     <div class="custom-control custom-checkbox">
-                                        {% if c[12] == 1 %}
+                                        {% if c[10] == 1 %}
                                         <input type="checkbox" class="custom-control-input" id="slightrisk" name="Slight" value="1" checked>
                                         {% else %}
                                         <input type="checkbox" class="custom-control-input" id="slightrisk" name="Slight" value="1">
@@ -176,7 +176,7 @@
                                     </div>
 
                                     <div class="custom-control custom-checkbox">
-                                        {% if c[13] == 1 %}
+                                        {% if c[11] == 1 %}
                                         <input type="checkbox" class="custom-control-input" id="withHighrisk" name="LHigh" value="1" checked>
                                         {% else %}
                                         <input type="checkbox" class="custom-control-input" id="withHighrisk" name="LHigh" value="1">
@@ -189,7 +189,7 @@
                                     <p class="h5 mt-4 mb-4">Willingness to go back to office</p>
                                     <label class="custom-control-inline">Are you willing to go back to Office?</label>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        {% if c[14] == 1 %}
+                                        {% if c[12] == 1 %}
                                         <input type="radio" class="custom-control-input" id="yes" name="wilingness" value="True" checked>
                                         {% else %}
                                         <input type="radio" class="custom-control-input" id="yes" name="wilingness" value="True">
@@ -199,7 +199,7 @@
 
                                     <!-- Default inline 2-->
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        {% if c[14] == 0 %}
+                                        {% if c[12] == 0 %}
                                         <input type="radio" class="custom-control-input" id="no" name="wilingness" value="False" checked>
                                         {% else %}
                                         <input type="radio" class="custom-control-input" id="no" name="wilingness" value="False">
@@ -214,7 +214,7 @@
                                 <div class="col">
                                     <p class="h5 mt-4 mb-4">Production Machine</p>
                                     <div class="custom-control custom-radio col-md-10">
-                                        {% if c[15] == 'Desktop' %}
+                                        {% if c[13] == 'Desktop' %}
                                         <input type="radio" class="custom-control-input" id="desktop" name="prodMachine" value="Desktop" checked>
                                         {% else %}
                                         <input type="radio" class="custom-control-input" id="desktop" name="prodMachine" value="Desktop">
@@ -222,7 +222,7 @@
                                         <label class="custom-control-label" for="desktop">Desktop Machine</label>
                                     </div>
                                     <div class="custom-control custom-radio col-md-10">
-                                        {% if c[15] == 'Laptop' %}
+                                        {% if c[13] == 'Laptop' %}
                                         <input type="radio" class="custom-control-input" id="laptop" name="prodMachine" value="Laptop" checked>
                                         {% else %}
                                         <input type="radio" class="custom-control-input" id="laptop" name="prodMachine" value="Laptop">
@@ -234,7 +234,7 @@
                                 <div class="col col-sm">
                                     <p class="h5 mt-4 mb-4">Transportation Availability</p>
                                     <div class="custom-control custom-radio col-md-10">
-                                        {% if c[16] == 'Mass Transportation' %}
+                                        {% if c[14] == 'Mass Transportation' %}
                                         <input type="radio" class="custom-control-input" id="massTranspo" name="transpoAvail" value="Mass Transportation" checked>
                                         {% else %}
                                         <input type="radio" class="custom-control-input" id="massTranspo" name="transpoAvail" value="Mass Transportation">
@@ -242,7 +242,7 @@
                                         <label class="radio custom-control-label" for="massTranspo">Mass Transporation</label>
                                     </div>
                                     <div class="custom-control custom-radio col-md-10">
-                                        {% if c[16] == 'Private Vehicle' %}
+                                        {% if c[14] == 'Private Vehicle' %}
                                         <input type="radio" class="custom-control-input" id="privateVehicle" name="transpoAvail" value="Private Vehicle" checked>
                                         {% else %}
                                         <input type="radio" class="custom-control-input" id="privateVehicle" name="transpoAvail" value="Private Vehicle">
@@ -257,20 +257,20 @@
                                     <p class="h5 mt-4 mb-4">Department</p>
                                     <select class="browser-default custom-select" name="Department">
                                         <option>Select Department</option>
-                                        <option value="TS Corporate" {% if c[17]=='TS Corporate' %}selected{% endif %}>TS Corporate</option>
-                                        <option value="TS Consumer" {% if c[17]=='TS Consumer' %}selected{% endif %}>TS Consumer</option>
-                                        <option value="Core Tech" {% if c[17]=='Core Tech' %}selected{% endif %}>Core Tech</option>
-                                        <option value="IS" {% if c[17]=='IS' %}selected{% endif %}>IS</option>
+                                        <option value="TS Corporate" {% if c[15]= ='TS Corporate' %}selected{% endif %}>TS Corporate</option>
+                                        <option value="TS Consumer" {% if c[15]= ='TS Consumer' %}selected{% endif %}>TS Consumer</option>
+                                        <option value="Core Tech" {% if c[15]= ='Core Tech' %}selected{% endif %}>Core Tech</option>
+                                        <option value="IS" {% if c[15]= ='IS' %}selected{% endif %}>IS</option>
                                     </select>
                                 </div>
                                 <div class="col">
                                     <p class="h5 mt-4 mb-4">Team</p>
                                     <select class="browser-default custom-select" name="Team">
                                         <option>Select Team</option>
-                                        <option value="GSE Night" {% if c[18]=='GSE Night' %}selected{% endif %}>GSE Night</option>
-                                        <option value="GSE Day" {% if c[18]=='GSE Day' %}selected{% endif %}>GSE Day</option>
-                                        <option value="GSE Mid" {% if c[18]=='GSE Mid' %}selected{% endif %}>GSE Mid</option>
-                                        <option value="AMEA" {% if c[18]=='AMEA' %}selected{% endif %}>AMEA</option>
+                                        <option value="GSE Night" {% if c[16]= ='GSE Night' %}selected{% endif %}>GSE Night</option>
+                                        <option value="GSE Day" {% if c[16]= ='GSE Day' %}selected{% endif %}>GSE Day</option>
+                                        <option value="GSE Mid" {% if c[16]= ='GSE Mid' %}selected{% endif %}>GSE Mid</option>
+                                        <option value="AMEA" {% if c[16]= ='AMEA' %}selected{% endif %}>AMEA</option>
                                     </select>
                                 </div>
                             </div>
