@@ -83,6 +83,7 @@
     <Content Include="static\js\bootstrap.js" />
     <Content Include="static\js\bootstrap.min.js" />
     <Content Include="static\js\custom.js" />
+    <Content Include="static\js\customJS.js" />
     <Content Include="static\js\filtercity.js" />
     <Content Include="static\js\jquery.js" />
     <Content Include="static\js\jquery.min.js" />

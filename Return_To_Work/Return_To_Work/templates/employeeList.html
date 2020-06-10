@@ -198,7 +198,7 @@
                                 <div class="row">
                                     <!--Reports Tab-->
                                     <div class="container">
-                                        <table id="datatable" class="table table-sm table-hover employeeList-table" cellspacing="0" width="200%">
+                                        <table id="employeeList" class="table table-sm table-hover" cellspacing="0" width="200%">
                                             <thead class="blue lighten-2">
                                                 <tr>
                                                     <th>Name</th>
@@ -251,7 +251,7 @@
 
     <!-- End your project here-->
     <script>
-        const dataTable = document.getElementById("dataTable");
+        const dataTable = document.getElementById("employeeList");
         const btnExportToCsv = document.getElementById("btnExportToCsv");
     
         btnExportToCsv.addEventListener("click", () => {
