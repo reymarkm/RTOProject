@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Return to Office - Manager Dashboard</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="img/TrendIcon.ico" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Your custom styles (optional) -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- MDBootstrap Datatables  -->
+  <link href="css/addons/datatables.min.css" rel="stylesheet">
+  <style>
+    .custom{
+    width: 320px !important;
+    }
+  </style>
+</head>
+<body class="grey lighten-5">
+    <header>
+        <!-- Sidebar -->
+        <div class="sidebar-fixed position-fixed">
+          <!--Trend Micro Logo-->
+          <a class="logo-wrapper waves-effect">
+              <img src="img/TM.png" class="img-fluid">
+          </a>
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+              aria-controls="v-pills-home" aria-selected="true">Home</a>
+            <a class="nav-link" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab"
+              aria-controls="v-pills-reports" aria-selected="false">Reports</a>
+          </div>
+
+        </div>
+        <!-- Sidebar -->
+    </header>
+    <main class="pt-1 mx-lg-3">
+        <div class="container-fluid mt-2">
+            <div class="card mb-4 wow fadeIn">
+                <div class="card-body d-sm-flex justify-content-between">
+                    <h4 class="mb-2 mb-sm-0 pt-1">
+                        <a href="employeeList.html" target="_blank">Manager Dashboard</a>
+                    </h4>
+                    <!-- Logout Button -->
+                    <form class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-log-out"></span> Log out
+                        </button>
+                    </form>
+                </div>
+            </div>
+        <div class="card">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <div class="container mt-1 mb-3">
+                    <form class="border border-light grey lighten-5 p-5" action="" method="POST">
+                        <fieldset class="border lighten-5 p-1 ">
+                            <legend style="font-weight:bold;">Tasks</legend>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-info custom">View Employee List/What if Scenario</button>
+                                    <button type="button" class="btn btn-info custom">Reset Recommendation Data</button>
+                                    <button style="float: right" type="button" class="btn btn-info custom">Run Recommendation</button>
+                                </div>
+                            </div>
+                        </fieldset>  
+                        <fieldset class="border border-light grey lighten-5 p-3">
+                            <legend style="font-weight:bold;">Point System</legend>
+                            <p style="font-weight:bold" class="mt-2 mb-2">These are the parameters used for the recommendation</p>
+                            <!--Willingness/Quarantine Status-->
+                            <div class="row">
+                                <div class="col">
+                                    <p class="h5 mt-4 mb-4">Willingness</p>
+                                </div>
+                                <div class="col">
+                                    <p class="h5 mt-4 mb-4">Community Quarantine Measures</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="">A - Yes</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                </div>
+                                <div class="col">
+                                    <label class="">ECQ - Enhanced Community Quarantine</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="">B - No</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                </div>
+                                <div class="col">
+                                    <label class="">MECQ - Modified Enhanced Community Quarantine</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                    <br>
+                                    <label class="">
+                                        GCQ - General Community Quarantine <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                        <br>
+                                    </label>
+                                    <br>
+                                    <label class="">
+                                        MGCQ - Modified General Community Quarantine <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                    </label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="h5 mt-4 mb-4">Production Machine</p>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label class="">Risk Threshold</label>
+                                            <input style="float: right" class="col-md-2 alignright" min="0" name="quantity" value="1" type="number">
+                                        </div>
+                                    </div>
+                                    <p class="h5 mt-4 mb-4">Health Risk Score</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="">A - Desktop</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                </div>
+                                <div class="col">
+                                    <label class="">A - High Risk (Asthma, other major illness)</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="">B - Laptop</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                </div>
+                                <div class="col">
+                                    <label class="">B - Slight Risk (Fever, low immune system, etc.)</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                    <br>
+                                    <label class="">
+                                        C - Living with High Risk family members <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
+                                        <br>
+                                        (e.g. elderly, baby, etc.)
+                                    </label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="h5 mt-4 mb-4">Overall Score</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="">Willingness</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
+                                </div>
+                                <div class="col">
+                                    <label class="">Community Quarantine Measure</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="">Production Machine</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
+                                </div>
+                                <div class="col">
+                                    <label class="">Health Risk</label>
+                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
+                                    <br>
+                                    <label class="">
+                                        CQM - Community Quarantine Measure <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
+                                        <br>
+                                    </label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col text-center">
+                                    <input type="submit" class="btn btn-info" value="Save" />
+                                    <input type="submit" class="btn btn-info" value="Cancel" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="border border-light grey lighten-5 p-5">
+                            <legend style="font-weight:bold;">Table List</legend>
+                            <div class="row">
+                                <!--Reports Tab-->
+                                <div class="container">
+                                    <table id="employeeList" class="table table-sm table-hover" cellspacing="0" width="200%">
+                                        <thead class="blue lighten-2">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>Contact Number</th>
+                                                <th>Risk Level</th>
+                                                <th>Production Machine</th>
+                                                <th>Transportation Availability</th>
+                                                <th>Department/Team</th>
+                                                <th>Return to Office Date</th>
+                                                <th>Willingness</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Michael Dwayne Cheng</td>
+                                                <td>6 Sgt. Esguerra Ave, Diliman, Quezon City, 1100 Metro Manila</td>
+                                                <td>+639566504971</td>
+                                                <td>50%</td>
+                                                <td>Desktop</td>
+                                                <td>Mass Transportation</td>
+                                                <td>GSE Night / Endpoint</td>
+                                                <td>2020/12/12</td>
+                                                <td>Yes</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Rey Mark Morillo</td>
+                                                <td>1 Orchard Rd, Bagumbayan, Quezon City, 1800 Metro Manila</td>
+                                                <td>+639215775534</td>
+                                                <td>75%</td>
+                                                <td>Desktop</td>
+                                                <td>Mass Transportation</td>
+                                                <td>GSE Night / Endpoint</td>
+                                                <td>-</td>
+                                                <td>No</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Janica Gem Abalos</td>
+                                                <td>5 Emerald St., Medalva Hills Subd., Angono, Rizal</td>
+                                                <td>+639278638046</td>
+                                                <td>25%</td>
+                                                <td>Laptop</td>
+                                                <td>Private Vehicle</td>
+                                                <td>GSE Night / Endpoint</td>
+                                                <td>2020/11/06</td>
+                                                <td>Yes</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Neil Gallego</td>
+                                                <td>#61 Unit F. Laon Laan Executive Homes, Nicanor Roxas St. Brgy. Lourdes Quezon City</td>
+                                                <td>+639175109950</td>
+                                                <td>75%</td>
+                                                <td>Laptop</td>
+                                                <td>Private Vehicle</td>
+                                                <td>GSE Night / Datacenter</td>
+                                                <td>2020/11/06</td>
+                                                <td>Yes</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mark Andawi</td>
+                                                <td>Tam-awan, Pinsao Proper, Baguio City</td>
+                                                <td>+639952351069</td>
+                                                <td>25%</td>
+                                                <td>Laptop</td>
+                                                <td>Mass Transportation</td>
+                                                <td>GSE Night / WFHS</td>
+                                                <td>-</td>
+                                                <td>No</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Maureen Calpito</td>
+                                                <td>Holy Ghost Extension, Purok 2, Baguio City</td>
+                                                <td>+639491790004</td>
+                                                <td>25%</td>
+                                                <td>Desktop</td>
+                                                <td>Private Vehicle</td>
+                                                <td>GSE Night / WFHS</td>
+                                                <td>2020/12/12</td>
+                                                <td>Yes</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Shalida Mae Domingo</td>
+                                                <td>#476 Urbiztondo St. Binondo, Manila</td>
+                                                <td>+639772184823</td>
+                                                <td>50%</td>
+                                                <td>Desktop</td>
+                                                <td>Mass Transportation</td>
+                                                <td>GSE Night / Endpoint</td>
+                                                <td>2020/11/06</td>
+                                                <td>Yes</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Marcelino Berba</td>
+                                                <td>9 Rhinestone St. Palmera 2-E, Taytay, Rizal</td>
+                                                <td>+639399038769</td>
+                                                <td>75%</td>
+                                                <td>Desktop</td>
+                                                <td>Private Vehicle</td>
+                                                <td>GSE Night / Endpoint</td>
+                                                <td>-</td>
+                                                <td>No</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Apple Bartolome</td>
+                                                <td>165 F. Revera St. Pulo  Valenzuela City PHL</td>
+                                                <td>+639175568929</td>
+                                                <td>75%</td>
+                                                <td>Laptop</td>
+                                                <td>Private Vehicle</td>
+                                                <td>GSE Night</td>
+                                                <td>2020/12/12</td>
+                                                <td>Yes</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aizel Barcia</td>
+                                                <td>40 Catalina Subdivision, GSIS Road. Barangay Rosario Pasig City </td>
+                                                <td>+639162593830</td>
+                                                <td>25%</td>
+                                                <td>Laptop</td>
+                                                <td>Private Vehicle</td>
+                                                <td>GSE Night / Datacenter</td>
+                                                <td>-</td>
+                                                <td>No</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mandy Lee</td>
+                                                <td>135 Manuel Roxas st. Baguio City</td>
+                                                <td>+639953186491</td>
+                                                <td>25%</td>
+                                                <td>Desktop</td>
+                                                <td>Mass Transportation</td>
+                                                <td>GSE Night / WFHS</td>
+                                                <td>2020/11/06</td>
+                                                <td>Yes</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    
+  <!-- End your project here-->
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Your custom scripts (optional) -->
+  <script type="text/javascript" src="js/customJS.js"></script>
+  <!-- MDBootstrap Datatables  -->
+ <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+ 
+<!--To be edited-->
+ <script>
+    $(document).ready(function () {
+    $('#employeeList').DataTable({
+    "scrollX": true,
+    "scrollY": 350,
+    });
+    $('.dataTables_length').addClass('bs-select');
+    });
+ </script>
+</body>
+</html>
