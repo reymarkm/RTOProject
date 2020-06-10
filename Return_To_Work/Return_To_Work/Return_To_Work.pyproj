@@ -183,6 +183,7 @@
     <Content Include="static\scss\_custom-styles.scss" />
     <Content Include="static\scss\_custom-variables.scss" />
     <Content Include="static\img\TM.jpg" />
+    <Content Include="templates\employeeList.html" />
     <Content Include="templates\Home.html" />
     <Content Include="templates\About.html" />
     <Content Include="templates\index.html" />

@@ -52,6 +52,11 @@
                     <h4 class="mb-2 mb-sm-0 pt-1">
                         <a href="userprofile" target="_blank">Profile Page</a>
                     </h4>
+                    <form class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-default btn-sm" id="logout">
+                            <span class="glyphicon glyphicon-log-out"></span> Log out
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -350,6 +355,12 @@
             return true;
         }
     </script>
+    <script type="text/javascript">
+        document.getElementById("logout").onclick = function () {
+            location.href = "/login";
+        };
+    </script>
+
     <!-- End your project here-->
     <!-- jQuery -->
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>

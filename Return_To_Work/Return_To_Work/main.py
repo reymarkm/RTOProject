@@ -57,7 +57,10 @@ def home():
             session['team'] = temp['Team']
             update()
             cursor.close()
-            return redirect(url_for('userprofile',error=error))
+            if str(account['Role']) == 'User':
+                return redirect(url_for('userprofile',error=error))
+            if str(account['Role']) == 'Manager':
+                return redirect(url_for('manager',error=error))
         else:
             # Account doesnt exist or username/password incorrect
             error = 'Incorrect Username/Password.'
@@ -93,7 +96,10 @@ def login():
             session['team'] = temp['Team']
             update()
             cursor.close()
-            return redirect(url_for('userprofile',error=error))
+            if str(account['Role']) == 'User':
+                return redirect(url_for('userprofile',error=error))
+            if str(account['Role']) == 'Manager':
+                return redirect(url_for('manager',error=error))
         else:
             # Account doesnt exist or username/password incorrect
             error = 'Incorrect Username/Password.'
@@ -191,6 +197,20 @@ def register():
         temp = error['results']
         temp1 = temp[0]
 
+        #Distance Matrix API
+        origin = "%s,%s" % (temp1['geometry']['location']['lat'],temp1['geometry']['location']['lng'])
+        destination = "14.590148,121.067947"
+        link2 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=%s&destinations=%s&mode=driving&key=AIzaSyC2zlaHWthM3MOraTlpAGw7hBF6T8RnmPU" % (origin,destination)
+        r2 = requests.get(link2)
+        dummy = r2.json()
+        dummy1 = dummy['rows']
+        dummy2 = dummy1[0]
+        dummy3 = dummy2['elements']
+        dummy4 = dummy3[0]
+        APIDistance = dummy4['distance']['text']
+        CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
+
+        '''
         #Formula
         R = 6373.0
         RBCLat = radians(14.590148)
@@ -202,9 +222,11 @@ def register():
         a = sin(dlat / 2)**2 + cos(inputLat) * cos(RBCLat) * sin(dlon / 2)**2
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
         distance = float(R * c)
-
+        
         #Final Distance
         CalculateDistance = round(distance,2)
+        '''
+
 
         if inputPWord == inputCPWord:
             #Check if record already exists
@@ -373,8 +395,7 @@ def userprofile():
         temp = error['results']
         temp1 = temp[0]
 
-        #print(temp1['geometry']['location']['lat'])
-        #print(temp1['geometry']['location']['lng'])
+        #Distance Matrix API
         origin = "%s,%s" % (temp1['geometry']['location']['lat'],temp1['geometry']['location']['lng'])
         destination = "14.590148,121.067947"
         link2 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=%s&destinations=%s&mode=driving&key=AIzaSyC2zlaHWthM3MOraTlpAGw7hBF6T8RnmPU" % (origin,destination)
@@ -388,7 +409,7 @@ def userprofile():
         CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
 
         '''
-        #Formula
+        #Formula Linear
         R = 6373.0
         RBCLat = radians(14.590148)
         RBCLong = radians(121.067947)
@@ -494,9 +515,175 @@ def update():
 
     return render_template("update.html",error=test)
 
-@app.route("/Manager", methods=['GET', 'POST'])
+@app.route("/manager", methods=['GET', 'POST'])
 def manager():
-    return render_template('managerview.html')
+    Holder = list()
+    Output = None
+    if request.method == 'GET':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM weights')
+        container = cursor.fetchone()
+        Holder.append(str(container['ECQ']))
+        Holder.append(str(container['MECQ']))
+        Holder.append(str(container['GCQ']))
+        Holder.append(str(container['MGCQ']))
+        Holder.append(str(container['WilingnessYes']))
+        Holder.append(str(container['WilingnessNo']))
+        Holder.append(str(container['HighRisk']))          
+        Holder.append(str(container['SlightRisk']))
+        Holder.append(str(container['LivingWithRisk']))
+        Holder.append(str(container['Desktop']))
+        Holder.append(str(container['Laptop']))            
+        Holder.append(str(container['DTOverallWeight']))
+        Holder.append(str(container['ProductionMachineOverallWeight']))
+        Holder.append(str(container['HealthRiskOverallWeight']))
+        Holder.append(str(container['WilingnessOverallWeight']))
+        Holder.append(str(container['CityStatusOverallWeight']))
+
+
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM rto WHERE Team=%s', [str(session['team'])])
+        container = cursor.fetchall()
+        listName = list()
+        listAddress = list()
+        listContactNumber = list()
+        listRiskLevel = list()
+        listProductionMachine = list()
+        listTransportation = list()
+        listTeam = list()
+        listRTO = list()
+        listWiling = list()
+        for x in container:
+            cursor.execute('SELECT * FROM city WHERE idcity = %s', [str(x['CityID'])])
+            cityinfo = cursor.fetchone()
+            getUserID = str(x['ID'])
+            getCity = str(cityinfo['city'])
+            getCityStatus = str(cityinfo['citystatus'])
+            getProvince = str(x['Province'])
+            getHighRisk = int(x['High_Risk'])
+            getSlightRisk = int(x['Slight_Risk'])
+            getLivingWithRisk = int(x['Living_With_High_Risk'])
+            getProductionMachine = str(x['Production_Machine'])
+            getTransportation = str(x['Transportation_Availability'])
+            getDepartment = str(x['Department'])
+            getTeam = str(x['Team'])
+            getWilingness = int(x['Wilingness'])
+            getDistance = int(x['Distance'])
+            getProcessed = int(x['Processed'])
+
+            if getProcessed == 0:
+            
+                #FORMULA FOR CALCULATION HERE...
+                StatusWeight = 0
+                WilingnessWeight = 0
+                RiskWeight = 100
+                MachineWeight = 0
+                DTWeight = 0
+
+                TranspoWeight = 0
+                LocationScore = 0
+
+                cursor.execute('SELECT * FROM weights')
+                Weights = cursor.fetchone()
+            
+                if getTransportation == 'Mass Transportation':
+                    TranspoWeight = 0.5
+                if getTransportation == 'Private Vehicle':
+                    TranspoWeight = 1
+                LocationScore = (30 - getDistance)/30
+                DTWeight = float((TranspoWeight*LocationScore))
+            
+                if getProductionMachine == 'Laptop':
+                    MachineWeight = float((int(Weights['Laptop']))/100)
+                if getProductionMachine == 'Desktop':
+                    MachineWeight = float((int(Weights['Desktop']))/100)
+
+                if getHighRisk == 1 and RiskWeight != 0:
+                    temp = 100 - int(Weights['HighRisk'])
+                    RiskWeight = RiskWeight - temp
+                    if RiskWeight < 0:
+                        RiskWeight = 0
+                if getSlightRisk == 1 and RiskWeight != 0:
+                    temp = 100 - int(Weights['SlightRisk'])
+                    RiskWeight = RiskWeight - temp
+                    if RiskWeight < 0:
+                        RiskWeight = 0
+                if getLivingWithRisk == 1 and RiskWeight != 0:
+                    temp = 100 - int(Weights['LivingWithRisk'])
+                    RiskWeight = RiskWeight - temp
+                    if RiskWeight < 0:
+                        RiskWeight = 0
+                RiskWeight = float(RiskWeight/100)
+
+                if getWilingness == 1:
+                    WilingnessWeight = float(int(Weights['WilingnessYes'])/100)
+                else:
+                    WilingnessWeight = float(int(Weights['WilingnessNo'])/100)
+
+                if getCityStatus == 'General Community Quarantine':
+                    StatusWeight = float(int(Weights['GCQ'])/100)
+                if getCityStatus == 'Modified General Community Quarantine':
+                    StatusWeight = float(int(Weights['MECQ'])/100)
+                if getCityStatus == 'Enhanced Community Quarantine':
+                    StatusWeight = float(int(Weights['ECQ'])/100)
+
+                Final = round(((DTWeight*float(int(Weights['DTOverallWeight'])/100)) + (MachineWeight*float(int(Weights['ProductionMachineOverallWeight'])/100)) + (RiskWeight*float(int(Weights['HealthRiskOverallWeight'])/100)) + (WilingnessWeight*float(int(Weights['WilingnessOverallWeight'])/100)) + (StatusWeight*float(int(Weights['CityStatusOverallWeight'])/100)))*100,1)
+
+            Name = '%s %s' % (x['FirstName'],x['LastName'])
+            listName.append(str(Name))
+            Address = '%s, %s, %s, %s' % (x['Street'],x['Barangay'],x['City'],x['Province'])
+            listAddress.append(str(Address))
+            listContactNumber.append(str(x['PhoneNumber']))
+            RiskLevel = '%s%%' % str(Final)
+            listRiskLevel.append(str(RiskLevel))
+            listProductionMachine.append(str(x['Production_Machine']))
+            listTransportation.append(str(x['Transportation_Availability']))
+            Team = '%s / %s' % (str(x['Department']),str(x['Team']))
+            listTeam.append(str(Team))
+            RTO = None
+            if x['RTODate'] == None:
+                RTO = '-'
+            if x['RTODate'] is not None:
+                RTO = str(x['RTODate'])
+            listRTO.append(RTO)
+            Wiling = None
+            if str(x['Wilingness']) == '1':
+                Wiling = 'Yes'
+            if str(x['Wilingness']) == '0':
+                Wiling = 'No'
+            listWiling.append(Wiling)
+            Output = zip(listName,listAddress,listContactNumber,listRiskLevel,listProductionMachine,listTransportation,listTeam,listRTO,listWiling)
+        cursor.close()
+
+
+
+
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        inputECQ = int(request.form['ECQ'])
+        inputGCQ = int(request.form['GCQ'])
+        inputMECQ = int(request.form['MECQ'])
+        inputMGCQ = int(request.form['MGCQ'])
+        inputWYes = int(request.form['WYes'])
+        inputWNo = int(request.form['WNo'])
+        inputHighRisk = int(request.form['HighRisk'])
+        inputSlightRisk = int(request.form['SlightRisk'])
+        inputLivingWithRisk = int(request.form['LivingWithRisk'])
+        inputDesktop = int(request.form['Desktop'])
+        inputLaptop = int(request.form['Laptop'])
+        inputODT = int(request.form['ODT'])
+        inputOWilingness = int(request.form['OWilingness'])
+        inputOProductionMachine = int(request.form['OProductionMachine'])
+        inputOCityStatus = int(request.form['OCityStatus'])
+        inputORisk = int(request.form['ORisk'])
+
+        cursor.execute('UPDATE weights SET ECQ=%s, GCQ=%s, MECQ=%s, MGCQ=%s, WilingnessYes=%s, WilingnessNo=%s, HighRisk=%s, SlightRisk=%s, LivingWithRisk=%s, Desktop=%s, Laptop=%s, DTOverallWeight=%s, ProductionMachineOverallWeight=%s, HealthRiskOverallWeight=%s, WilingnessOverallWeight=%s, CityStatusOverallWeight=%s WHERE weightID=1', (inputECQ,inputGCQ,inputMECQ,inputMGCQ,inputWYes,inputWNo,inputHighRisk,inputSlightRisk,inputLivingWithRisk,inputDesktop,inputLaptop,inputODT,inputOProductionMachine,inputORisk,inputOWilingness,inputOCityStatus))
+        mysql.connection.commit()
+        cursor.close()
+        return redirect(url_for('manager'))
+
+    return render_template('employeelist.html',Info=Output,a=Holder)
 
 
 @app.route("/calculate", methods=['GET', 'POST'])
@@ -539,7 +726,6 @@ def Test():
     if request.method == 'GET':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         ListResult = list()
-        b = 'GSE Night'
         #cursor.execute('SELECT * FROM rto WHERE Team = %s', (str(session['id'])))
         cursor.execute('SELECT * FROM rto WHERE Team = %s', [str(session['team'])])
         container = cursor.fetchall()
@@ -618,21 +804,13 @@ def Test():
                 if getCityStatus == 'Enhanced Community Quarantine':
                     StatusWeight = float(int(Weights['ECQ'])/100)
 
-                print('DT: %s' % DTWeight)
-                print('Machine: %s' % MachineWeight)
-                print('Risk: %s' % RiskWeight)
-                print('Wilingness: %s' % WilingnessWeight)
-                print('Status: %s' % StatusWeight)
-
                 Final = round(((DTWeight*float(int(Weights['DTOverallWeight'])/100)) + (MachineWeight*float(int(Weights['ProductionMachineOverallWeight'])/100)) + (RiskWeight*float(int(Weights['HealthRiskOverallWeight'])/100)) + (WilingnessWeight*float(int(Weights['WilingnessOverallWeight'])/100)) + (StatusWeight*float(int(Weights['CityStatusOverallWeight'])/100)))*100,1)
                 Name = '%s %s' % (x['FirstName'],x['LastName'])
-                print('%s: %s' % (Name,Final))
-                print(' ')
                 ListResult.append('%s: %s' % (Name,Final))
 
-                if Final >= 70:
-                    cursor.execute('UPDATE rto SET Processed=%s WHERE ID=%s', (1,getUserID))
-                    mysql.connection.commit()
+                #if Final >= 70:
+                #    cursor.execute('UPDATE rto SET Processed=%s WHERE ID=%s', (1,getUserID))
+                #    mysql.connection.commit()
         cursor.close()
         error = ListResult
     return render_template('Test.html',error=error)
