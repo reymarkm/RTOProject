@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Google Fonts Roboto -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <!-- Material Design Bootstrap -->
@@ -18,33 +20,32 @@
   <!-- Your custom styles (optional) -->
   <link rel="stylesheet" href="css/style.css">
   <!-- MDBootstrap Datatables  -->
-  <link href="css/addons/datatables.min.css" rel="stylesheet">
-  <style>
-    .custom{
-    width: 320px !important;
-    }
-  </style>
+  
+
+  <!--Stylesheet for DataTables-->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
 </head>
-<body class="grey lighten-5">
+<body class="grey lighten-3">
     <header>
         <!-- Sidebar -->
-        <div class="sidebar-fixed position-fixed">
-          <!--Trend Micro Logo-->
-          <a class="logo-wrapper waves-effect">
-              <img src="img/TM.png" class="img-fluid">
-          </a>
-          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-              aria-controls="v-pills-home" aria-selected="true">Home</a>
-            <a class="nav-link" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab"
-              aria-controls="v-pills-reports" aria-selected="false">Reports</a>
-          </div>
+        <div class="position-fixed rgba-blue-strong sidebar-fixed">
+            <!--Trend Micro Logo-->
+            <a class="logo-wrapper waves-effect">
+                <img src="img/TM.png" class="img-fluid">
+            </a>
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                   aria-controls="v-pills-home" aria-selected="true">Home</a>
+                <a class="nav-link" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab"
+                   aria-controls="v-pills-reports" aria-selected="false">Reports</a>
+            </div>
 
         </div>
         <!-- Sidebar -->
     </header>
-    <main class="pt-1 mx-lg-3">
-        <div class="container-fluid mt-2">
+    <main class="pt-5 mx-lg-2">
+        <div class="container-fluid">
             <div class="card mb-4 wow fadeIn">
                 <div class="card-body d-sm-flex justify-content-between">
                     <h4 class="mb-2 mb-sm-0 pt-1">
@@ -52,363 +53,449 @@
                     </h4>
                     <!-- Logout Button -->
                     <form class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-default btn-sm">
+                        <button type="button" class="btn btn-default btn-sm" id="logout">
                             <span class="glyphicon glyphicon-log-out"></span> Log out
                         </button>
                     </form>
                 </div>
             </div>
-        <div class="card">
-            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                <div class="container mt-1 mb-3">
-                    <form class="border border-light grey lighten-5 p-5" action="" method="POST">
-                        <!--Task-->
-                        <fieldset class="border lighten-5 p-1 ">
-                            <legend style="font-weight:bold;">Tasks</legend>
-                            <div class="row">
-                                <div class="col">
-                                    <button type="button" class="btn btn-info custom">View Employee List/What if Scenario</button>
-                                    <button type="button" class="btn btn-info custom">Reset Recommendation Data</button>
-                                    <button style="float: right" type="button" class="btn btn-info custom">Run Recommendation</button>
-                                </div>
-                            </div>
-                        </fieldset> 
-                        <br>
-                        <!--Point System--> 
-                        <fieldset class="border border-light grey lighten-5 p-3">
-                            <legend style="font-weight:bold;">Point System</legend>
-                            <p style="font-weight:bold" class="mt-2 mb-2">These are the parameters used for the recommendation</p>
-                            <!--Willingness/Quarantine Status-->
-                            <div class="row">
-                                <div class="col">
-                                    <p class="h5 mt-4 mb-4">Willingness</p>
-                                </div>
-                                <div class="col">
-                                    <p class="h5 mt-4 mb-4">Community Quarantine Measures</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label class="">A - Yes</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                </div>
-                                <div class="col">
-                                    <label class="">ECQ - Enhanced Community Quarantine</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label class="">B - No</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                </div>
-                                <div class="col">
-                                    <label class="">MECQ - Modified Enhanced Community Quarantine</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                    <br>
-                                    <label class="">
-                                        GCQ - General Community Quarantine <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                        <br>
-                                    </label>
-                                    <br>
-                                    <label class="">
-                                        MGCQ - Modified General Community Quarantine <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                    </label>
-                                </div>
-                            </div>
-                            <hr>
-                            <!--Production Machine / Risk Threshold-->
-                            <div class="row">
-                                <div class="col">
-                                    <p class="h5 mt-4 mb-4">Production Machine</p>
-                                </div>
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col">
-                                            <label class="">Risk Threshold</label>
-                                            <input style="float: right" class="col-md-2 alignright" min="0" name="quantity" value="1" type="number">
+            <div class="card">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    <div class="container mt-1 mb-3">
+                        <form class="p-5" style="border:0" action="" method="POST">
+                            <h2 class="text-center" style="font-weight: bold;">Manager View</h2>
+                            <fieldset class="border lighten-5"> 
+                                <legend style="font-weight:bold;">Tasks</legend>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">
+                                    Launch demo modal
+                                  </button>
+                                  <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <!--modal-->
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-center" id="exampleModalLabel">Point System</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <!--modal body-->
+                                            <div class="modal-body">
+                                                ...
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-danger">Save changes</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <p class="h5 mt-4 mb-4">Health Risk Score</p>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label class="">A - Desktop</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                </div>
-                                <div class="col">
-                                    <label class="">A - High Risk (Asthma, other major illness)</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label class="">B - Laptop</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                </div>
-                                <div class="col">
-                                    <label class="">B - Slight Risk (Fever, low immune system, etc.)</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                    <br>
-                                    <label class="">
-                                        C - Living with High Risk family members <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="1" type="number">
-                                        <br>
-                                        (e.g. elderly, baby, etc.)
-                                    </label>
-                                </div>
-                            </div>
-                            <hr>
-                            <!--Overall Score-->
-                            <div class="row">
-                                <div class="col">
-                                    <p class="h5 mt-4 mb-4 text-center">Overall Score</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label class="">Willingness</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
-                                </div>
-                                <div class="col">
-                                    <label class="">Community Quarantine Measure</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label class="">Production Machine</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
-                                </div>
-                                <div class="col">
-                                    <label class="">Health Risk</label>
-                                    <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
-                                    <br>
-                                    <label class="">
-                                        CQM - Community Quarantine Measure <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="quantity" value="100" type="number">
-                                        <br>
-                                    </label>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col text-center">
-                                    <input type="submit" class="btn btn-info" value="Save" />
-                                    <input type="submit" class="btn btn-info" value="Cancel" />
-                                </div>
-                            </div>
-                        </fieldset>
-                        <br>
-                        <!-- Table List-->
-                        <fieldset class="border border-light grey lighten-5 p-5">
-                            <legend style="font-weight:bold;">Table List</legend>
-                            <div class="row">
-                                <!--Reports Tab-->
-                                <div class="container">
-                                    <table id="dataTable" class="table table-sm table-hover employeeList-table" cellspacing="0" width="200%">
-                                        <thead class="blue lighten-2">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Address</th>
-                                                <th>Contact Number</th>
-                                                <th>Risk Level</th>
-                                                <th>Production Machine</th>
-                                                <th>Transportation Availability</th>
-                                                <th>Department/Team</th>
-                                                <th>Return to Office Date</th>
-                                                <th>Willingness</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Michael Dwayne Cheng</td>
-                                                <td>6 Sgt. Esguerra Ave, Diliman, Quezon City, 1100 Metro Manila</td>
-                                                <td>+639566504971</td>
-                                                <td>50%</td>
-                                                <td>Desktop</td>
-                                                <td>Mass Transportation</td>
-                                                <td>GSE Night / Endpoint</td>
-                                                <td>2020/12/12</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Rey Mark Morillo</td>
-                                                <td>1 Orchard Rd, Bagumbayan, Quezon City, 1800 Metro Manila</td>
-                                                <td>+639215775534</td>
-                                                <td>75%</td>
-                                                <td>Desktop</td>
-                                                <td>Mass Transportation</td>
-                                                <td>GSE Night / Endpoint</td>
-                                                <td>-</td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Janica Gem Abalos</td>
-                                                <td>5 Emerald St., Medalva Hills Subd., Angono, Rizal</td>
-                                                <td>+639278638046</td>
-                                                <td>25%</td>
-                                                <td>Laptop</td>
-                                                <td>Private Vehicle</td>
-                                                <td>GSE Night / Endpoint</td>
-                                                <td>2020/11/06</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Neil Gallego</td>
-                                                <td>#61 Unit F. Laon Laan Executive Homes, Nicanor Roxas St. Brgy. Lourdes Quezon City</td>
-                                                <td>+639175109950</td>
-                                                <td>75%</td>
-                                                <td>Laptop</td>
-                                                <td>Private Vehicle</td>
-                                                <td>GSE Night / Datacenter</td>
-                                                <td>2020/11/06</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mark Andawi</td>
-                                                <td>Tam-awan, Pinsao Proper, Baguio City</td>
-                                                <td>+639952351069</td>
-                                                <td>25%</td>
-                                                <td>Laptop</td>
-                                                <td>Mass Transportation</td>
-                                                <td>GSE Night / WFHS</td>
-                                                <td>-</td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Maureen Calpito</td>
-                                                <td>Holy Ghost Extension, Purok 2, Baguio City</td>
-                                                <td>+639491790004</td>
-                                                <td>25%</td>
-                                                <td>Desktop</td>
-                                                <td>Private Vehicle</td>
-                                                <td>GSE Night / WFHS</td>
-                                                <td>2020/12/12</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Shalida Mae Domingo</td>
-                                                <td>#476 Urbiztondo St. Binondo, Manila</td>
-                                                <td>+639772184823</td>
-                                                <td>50%</td>
-                                                <td>Desktop</td>
-                                                <td>Mass Transportation</td>
-                                                <td>GSE Night / Endpoint</td>
-                                                <td>2020/11/06</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Marcelino Berba</td>
-                                                <td>9 Rhinestone St. Palmera 2-E, Taytay, Rizal</td>
-                                                <td>+639399038769</td>
-                                                <td>75%</td>
-                                                <td>Desktop</td>
-                                                <td>Private Vehicle</td>
-                                                <td>GSE Night / Endpoint</td>
-                                                <td>-</td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Apple Bartolome</td>
-                                                <td>165 F. Revera St. Pulo  Valenzuela City PHL</td>
-                                                <td>+639175568929</td>
-                                                <td>75%</td>
-                                                <td>Laptop</td>
-                                                <td>Private Vehicle</td>
-                                                <td>GSE Night</td>
-                                                <td>2020/12/12</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Aizel Barcia</td>
-                                                <td>40 Catalina Subdivision, GSIS Road. Barangay Rosario Pasig City </td>
-                                                <td>+639162593830</td>
-                                                <td>25%</td>
-                                                <td>Laptop</td>
-                                                <td>Private Vehicle</td>
-                                                <td>GSE Night / Datacenter</td>
-                                                <td>-</td>
-                                                <td>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mandy Lee</td>
-                                                <td>135 Manuel Roxas st. Baguio City</td>
-                                                <td>+639953186491</td>
-                                                <td>25%</td>
-                                                <td>Desktop</td>
-                                                <td>Mass Transportation</td>
-                                                <td>GSE Night / WFHS</td>
-                                                <td>2020/11/06</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <br>
-                        <!-- Export Tables-->
-                        <fieldset class="border border-light grey lighten-5 p-5">
-                            <legend style="font-weight:bold;">Export Table</legend>
+                                <!--
                                 <div class="row">
-                                    <div class="col-lg-6">
-                                        <button id="btnExportToCsv" class="btn btn-light-blue btn-lg">Export to CSV</button>
-                                        <button id="exportPDF" class="btn btn-light-blue btn-lg">Export to PDF</button>
+                                    <div class="col">
+                                        <button type="button" class="btn text-center btn-primary btn-md">View Employee List/What if Scenario</button>
+                                        <button type="button" class="btn text-center btn-primary btn-md">Reset Recommendation Data</button>
+                                        <button type="button" class="btn text-center btn-primary btn-md">Run Recommendation</button>
                                     </div>
                                 </div>
-                        </fieldset>
-                    </form>
+                                -->
+                            </fieldset>
+                            
+                            <fieldset class="border border-light grey lighten-5 p-3">
+                                <legend style="font-weight:bold;">Point System</legend>
+                                <p style="font-weight:bold" class="mt-2 mb-2">These are the parameters used for the recommendation</p>
+                                <!--Willingness/Quarantine Status-->
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="h5 mt-4 mb-4">Willingness</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="h5 mt-4 mb-4">Community Quarantine Measures</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="">A - Yes</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="WYes" value="{{ a[4] }}" type="number">
+                                    </div>
+                                    <div class="col">
+                                        <label class="">ECQ - Enhanced Community Quarantine</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="ECQ" value="{{ a[0] }}" type="number">
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="">B - No</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="WNo" value="{{ a[5] }}" type="number">
+                                    </div>
+                                    <div class="col">
+                                        <label class="">MECQ - Modified Enhanced Community Quarantine</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="MECQ" value="{{ a[1] }}" type="number">
+                                        <br>
+                                        <label class="">
+                                            GCQ - General Community Quarantine <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="GCQ" value="{{ a[2] }}" type="number">
+                                            <br>
+                                        </label>
+                                        <br>
+                                        <label class="">
+                                            MGCQ - Modified General Community Quarantine <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="MGCQ" value="{{ a[3] }}" type="number">
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="h5 mt-4 mb-4">Production Machine</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="h5 mt-4 mb-4">Health Risk Score</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="">A - Desktop</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="Desktop" value="{{ a[9] }}" type="number">
+                                    </div>
+                                    <div class="col">
+                                        <label class="">A - High Risk (Asthma, other major illness)</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="HighRisk" value="{{ a[6] }}" type="number">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="">B - Laptop</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="Laptop" value="{{ a[10] }}" type="number">
+                                    </div>
+                                    <div class="col">
+                                        <label class="">B - Slight Risk (Fever, low immune system, etc.)</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="SlightRisk" value="{{ a[7] }}" type="number">
+                                        <br>
+                                        <label class="">
+                                            C - Living with High Risk family members <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="LivingWithRisk" value="{{ a[8] }}" type="number">
+                                            <br>
+                                            (e.g. elderly, baby, etc.)
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="h5 mt-4 mb-4">Overall Score</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="">Willingness</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="OWilingness" value="{{ a[14] }}" type="number">
+                                    </div>
+                                    <div class="col">
+                                        <label class="">Community Quarantine Measure</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="OCityStatus" value="{{ a[15] }}" type="number">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="">Production Machine</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="OProductionMachine" value="{{ a[12] }}" type="number">
+                                    </div>
+                                    <div class="col">
+                                        <label class="">Health Risk</label>
+                                        <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="ORisk" value="{{ a[13] }}" type="number">
+                                        <br>
+                                        <label class="">
+                                            Transportation and Distance  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="ODT" value="{{ a[11] }}" type="number">
+                                            <br>
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col text-center">
+                                        <input type="submit" class="btn btn-danger" value="Save"/>
+                                        <input type="reset" class="btn btn-danger" value="Reset"/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset class="border border-light grey lighten-5 p-5">
+                                <legend style="font-weight:bold;">Table List</legend>
+                                <div class="row">
+                                    <!--Reports Tab-->
+                                    <div class="container">
+                                        <table id="employeeList" class="table table-sm table-bordered table-hover" cellspacing="0" width="200%">
+                                            <thead class="red">
+                                                <tr>
+                                                    <th>RTO</th>
+                                                    <th>Name</th>
+                                                    <th>Address</th>
+                                                    <th>RTO Score</th>
+                                                    <th>Production Machine</th>
+                                                    <th>Transportation Availability</th>
+                                                    <th>Department/Team</th>
+                                                    <th>Return to Office Date</th>
+                                                    <th>Willingness</th>
+                                                </tr>
+                                            </thead>
+                                            
+                                            <tbody>
+                                            <!--
+                                                {% for x in Info %}
+                                                <tr>
+                                                    <td></td>
+                                                    <td>{{ x[0] }}</td>
+                                                    <td>{{ x[1] }}</td>
+                                                    <td>{{ x[2] }}</td>
+                                                    <td>{{ x[3] }}</td>
+                                                    <td>{{ x[4] }}</td>
+                                                    <td>{{ x[5] }}</td>
+                                                    <td>{{ x[6] }}</td>
+                                                    <td>{{ x[7] }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            -->
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Michael</td>
+                                                    <td>Dwayne</td>
+                                                    <td>Cheng</td>
+                                                    <td>asd</td>
+                                                    <td>asd</td>
+                                                    <td>asd</td>
+                                                    <td>asd</td>
+                                                    <td>asd</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Rey</td>
+                                                    <td>Mark</td>
+                                                    <td>Morillo</td>
+                                                    <td>asd</td>
+                                                    <td>asd</td>
+                                                    <td>asd</td>
+                                                    <td>asd</td>
+                                                    <td>asd</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Janica</td>
+                                                    <td>Gem</td>
+                                                    <td>Abalos</td>
+                                                    <td>123</td>
+                                                    <td>a23sd</td>
+                                                    <td>345</td>
+                                                    <td>63</td>
+                                                    <td>as234d</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Ezekiel</td>
+                                                    <td>pogi</td>
+                                                    <td>ddaw</td>
+                                                    <td>Sana</td>
+                                                    <td>13a</td>
+                                                    <td>2asd2</td>
+                                                    <td>3ascz</td>
+                                                    <td>1234</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>asd1</td>
+                                                    <td>asd12eas</td>
+                                                    <td>Cheng</td>
+                                                    <td>zxcaqwd</td>
+                                                    <td>adasdsd</td>
+                                                    <td>axzcsas</td>
+                                                    <td>azxcsd</td>
+                                                    <td>aszxcd</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>as23 </td>
+                                                    <td>Masasd ark</td>
+                                                    <td>Moasdas rillo</td>
+                                                    <td>Pogi</td>
+                                                    <td>1asdaxc12</td>
+                                                    <td>1235sad2</td>
+                                                    <td>3124adscsa</td>
+                                                    <td>412354</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Justine</td>
+                                                    <td>Care</td>
+                                                    <td>asd12</td>
+                                                    <td>a1asd</td>
+                                                    <td>15aad</td>
+                                                    <td>azxcsd</td>
+                                                    <td>aasdsf vsd</td>
+                                                    <td>asascdadd</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Micheal</td>
+                                                    <td>Peter</td>
+                                                    <td>caballo</td>
+                                                    <td>Pogasd12e4ai</td>
+                                                    <td>1s2121</td>
+                                                    <td>2asda</td>
+                                                    <td>3xcs</td>
+                                                    <td>41231256</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Janica</td>
+                                                    <td>Gem</td>
+                                                    <td>Abalos</td>
+                                                    <td>123</td>
+                                                    <td>a23sd</td>
+                                                    <td>345</td>
+                                                    <td>63</td>
+                                                    <td>as234d</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Ezekiel</td>
+                                                    <td>pogi</td>
+                                                    <td>ddaw</td>
+                                                    <td>Sana</td>
+                                                    <td>13a</td>
+                                                    <td>2asd2</td>
+                                                    <td>3ascz</td>
+                                                    <td>1234</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>asd1</td>
+                                                    <td>asd12eas</td>
+                                                    <td>Cheng</td>
+                                                    <td>zxcaqwd</td>
+                                                    <td>adasdsd</td>
+                                                    <td>axzcsas</td>
+                                                    <td>azxcsd</td>
+                                                    <td>aszxcd</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>as23 </td>
+                                                    <td>Masasd ark</td>
+                                                    <td>Moasdas rillo</td>
+                                                    <td>Pogi</td>
+                                                    <td>1asdaxc12</td>
+                                                    <td>1235sad2</td>
+                                                    <td>3124adscsa</td>
+                                                    <td>412354</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Justine</td>
+                                                    <td>Care</td>
+                                                    <td>asd12</td>
+                                                    <td>a1asd</td>
+                                                    <td>15aad</td>
+                                                    <td>azxcsd</td>
+                                                    <td>aasdsf vsd</td>
+                                                    <td>asascdadd</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Micheal</td>
+                                                    <td>Peter</td>
+                                                    <td>caballo</td>
+                                                    <td>Pogasd12e4ai</td>
+                                                    <td>1s2121</td>
+                                                    <td>2asda</td>
+                                                    <td>3xcs</td>
+                                                    <td>41231256</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <br>
+                            <!-- Export Tables-->
+                            <fieldset class="border border-light grey lighten-5 p-5">
+                                <legend style="font-weight:bold;">Export Table</legend>
+                                    <div class="row">
+                                        <div class="col-lg">
+                                            <button id="btnExportToCsv" class="btn btn-danger btn-lg">Export to CSV</button>
+                                        </div>
+                                    </div>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
     </main>
+
+
+    <!-- End your project here-->
+    <!--Export to CSV-->
+    <script>
+        const dataTable = document.getElementById("employeeList");
+        const btnExportToCsv = document.getElementById("btnExportToCsv");
     
+        btnExportToCsv.addEventListener("click", () => {
+            const exporter = new TableCSVExporter(dataTable);
+            const csvOutput = exporter.convertToCSV();
+            const csvBlob = new Blob([csvOutput], { type: "text/csv" });
+            const blobUrl = URL.createObjectURL(csvBlob);
+            const anchorElement = document.createElement("a");
     
-  <!-- End your project here-->
+            anchorElement.href = blobUrl;
+            anchorElement.download = "RTO Recommendation List.csv";
+            anchorElement.click();
+    
+            setTimeout(() => {
+                URL.revokeObjectURL(blobUrl);
+            }, 500);
+        });
+    </script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript" src="js/customJS.js"></script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="js/addons/datatables.min.js"></script>
 
-<script>
-    const dataTable = document.getElementById("dataTable");
-    const btnExportToCsv = document.getElementById("btnExportToCsv");
+    <!--Data tables CDN Bootstrap-->
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+    
+    <!--To be edited-->
+    <!--dataTable Script-->
+    <script>
+        $(document).ready(function () {
+            $('#employeeList').DataTable({
+                "scrollX": true,
+                "scrollY": 350, 
+                columnDefs: [{
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                }],
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                }
+            });
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
 
-    btnExportToCsv.addEventListener("click", () => {
-        const exporter = new TableCSVExporter(dataTable);
-        const csvOutput = exporter.convertToCSV();
-        const csvBlob = new Blob([csvOutput], { type: "text/csv" });
-        const blobUrl = URL.createObjectURL(csvBlob);
-        const anchorElement = document.createElement("a");
+    <!--Log out Script-->
+    <script type="text/javascript">
+        document.getElementById("logout").onclick = function () {
+            location.href = "/login";
+        };
+    </script>
 
-        anchorElement.href = blobUrl;
-        anchorElement.download = "RTO Recommendation List.csv";
-        anchorElement.click();
-
-        setTimeout(() => {
-            URL.revokeObjectURL(blobUrl);
-        }, 500);
-    });
-</script>
-
-  <!-- jQuery -->
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="js/popper.min.js"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="js/bootstrap.min.js"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="js/mdb.min.js"></script>
-  <!-- Your custom scripts (optional) -->
-  <script type="text/javascript" src="js/customJS.js"></script>
-  <!-- MDBootstrap Datatables  -->
- <script type="text/javascript" src="js/addons/datatables.min.js"></script>
- 
-<!--To be edited-->
- <script>
-    $(document).ready(function () {
-    $('#employeeList').DataTable({
-    "scrollX": true,
-    "scrollY": 350,
-    });
-    $('.dataTables_length').addClass('bs-select');
-    });
- </script>
 </body>
 </html>

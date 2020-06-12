@@ -18,40 +18,68 @@
   <!-- Your custom styles (optional) -->
   <link rel="stylesheet" href="css/style.css" src="_blank"> 
 </head>
+<style>
+body, html{
+  height: 100%;
+  background-image: url("https://wfh.trendmicro.com.ph/wp-content/uploads/2020/03/bg-login.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#loginForm {
+  background-color: white;
+}
+</style>
+
+
 <body>
-  <!--Login Page-->  
-<div class="container col-5 mt-5">
-  <form class="text-center border border-light grey lighten-5 p-5" action="" method="post">
-
-    <p class="h4 mb-4">Sign in</p>
-    <!-- Email -->
-    <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Username" name="username">
-    <!-- Password -->
-    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" name="password">
-
-    <div class="d-flex justify-content-around">
+  <!--Login Page--> 
+  <!-- Material form login -->
+<div class="container col-4 mt-2 mb-2 bg-red">
+  <!--Card content-->
+  <div class="card-body"></div>
+    <!-- Form -->
+    <form id="loginForm" class="text-center p-5 mb-5" style="color: #757575;" action="" method="POST">
+      <a class="logo-wrapper waves-effect">
+        <img src="img/login.jpg" class="img-fluid">
+    </a>
+      <!-- Email -->
+      <div class="md-form">
+        <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholde="Username" name="username">
+        <label for="materialLoginFormEmail">Username</label>
+      </div>
+      <!-- Password -->
+      <div class="md-form">
+        <input type="password" id="defaultLoginFormPassword" class="form-control" placeholde="Password" name="password">
+        <label for="materialLoginFormPassword">Password</label>
+      </div>
+      <div class="d-flex justify-content-around">
         <div>
-            <!-- Remember me -->
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
-                <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
-            </div>
+          <!-- Remember me -->
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="materialLoginFormRemember">
+            <label class="form-check-label" for="materialLoginFormRemember">Remember me</label>
+          </div>
         </div>
         <div>
-            <!-- Forgot password -->
-            <a href="">Forgot password?</a>
+          <!-- Forgot password -->
+          <a href="">Forgot password?</a>
         </div>
-    </div>
-
-    <!-- Sign in button -->
-    <input type="submit" class="btn btn-info btn-block my-4" value="Sign in" />
-
-    <!-- Register -->
-    <p>Not a member?
+      </div>
+      <!-- Sign in button -->
+      <button class="btn btn-danger btn-block my-4 waves-effect" type="submit">Sign in</button>
+      <!-- Register -->
+      <p>Not a member?
         <a href="register">Register</a>
-    </p>
-  </form>
+      </p>
+    </form>
+    <!-- Form -->
+
+  </div>
 </div>
+<!-- Material form login -->
 
   <!-- End your project here-->
 
