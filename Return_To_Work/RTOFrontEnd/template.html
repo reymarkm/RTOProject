@@ -31,6 +31,7 @@
     <table id="employeeList" class="display" style="width:100%">
       <thead>
           <tr>
+              <th>RTO</th>
               <th>Name</th>
               <th>Age</th>
               <th>Position</th>
@@ -39,6 +40,12 @@
       </thead>
       <tbody>
           <tr>
+              <td>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="tableDefaultCheck1">
+                  <label class="custom-control-label" for="tableDefaultCheck1">Check 1</label>
+                </div>
+              </td>
               <td>Tiger Nixon</td>
               <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>
               <td><input type="text" id="row-1-position" name="row-1-position" value="System Architect"></td>
@@ -61,6 +68,12 @@
               </select></td>
           </tr>
           <tr>
+            <td>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="tableDefaultCheck2">
+                <label class="custom-control-label" for="tableDefaultCheck2">Check 1</label>
+              </div>
+            </td>
               <td>Garrett Winters</td>
               <td><input type="text" id="row-2-age" name="row-2-age" value="63"></td>
               <td><input type="text" id="row-2-position" name="row-2-position" value="Accountant"></td>
@@ -1300,8 +1313,14 @@
               <th>Position</th>
               <th>Office</th>
           </tr>
+
       </tfoot>
+      
+        <button type="submit" class="btn btn-danger">Submit</button>
+    
   </table>
+
+
 </div>
   <!-- End your project here-->
 

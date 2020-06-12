@@ -17,8 +17,18 @@
   <link rel="stylesheet" href="css/mdb.min.css">
   <!-- Your custom styles (optional) -->
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body, html{
+      height: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+</style>
 </head>
-<body class="grey lighten-5">
+<body class="grey lighten-3">
     <header>
         <!-- Sidebar -->
         <div class="sidebar-fixed position-fixed">
@@ -26,13 +36,6 @@
             <a class="logo-wrapper waves-effect">
                 <img src="img/TM.png" class="img-fluid">
             </a>
-            <!--<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <a class="nav-link active" i  d="v-pills-dashboard-tab" data-toggle="pill" href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard" aria-selected="false">Dashboard</a>
-            </div>
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
-            </div>
-            -->
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                    aria-controls="v-pills-home" aria-selected="true">Dashboard</a>
@@ -43,8 +46,8 @@
         <!-- Sidebar -->
     </header>
     <!--Main Layout-->
-    <main class="pt-1 mx-lg-5">
-        <div class="container-fluid mt-5">
+    <main class="pt-1 mx-lg-5 mb-5">
+        <div class="container-fluid mt-1">
             <!-- Heading -->
             <div class="card mb-4 wow fadeIn">
                 <!--Card content-->
@@ -72,9 +75,9 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                    <div class="container mt-5">
+                    <div class="container mt-1 mb-3">
                         <!-- Default form register -->
-                        <form class="border border-light grey lighten-5 p-5" action="" method="POST">
+                        <form class="p-5" action="" method="POST">
                             <p class="text-center h2 mb-4">My Profile</p>
                             <div class="form-row mb-4">
                                 <div class="col">
@@ -269,8 +272,8 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <input type="submit" class="btn btn-info btn-block my-4" value="Update" />
-                                <input type="reset" class="btn btn-info btn-block my-4" value="Cancel" />
+                                <input type="submit" class="btn btn-danger btn-block my-4" value="Update" />
+                                <input type="reset" class="btn btn-danger btn-block my-4" value="Cancel" />
                             </div>
 
                         </form>

@@ -17,13 +17,34 @@
   <link rel="stylesheet" href="css/mdb.min.css">
   <!-- Your custom styles (optional) -->
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body, html{
+      height: 100%;
+      background-image: url("https://wfh.trendmicro.com.ph/wp-content/uploads/2020/03/bg-login.jpg");
+      height: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    
+    #loginForm {
+      background-color: white;
+    }
+    </style>
+
 </head>
 <body>
     <!--Registration Page-->
-    <div class="container mt-5 mb-5">
+    <div class="container col-5 mb-5 mt-5 bg-red">
         <!-- Default form register -->
-        <form class="border border-light grey lighten-5 p-5" action="" method="POST">
-            <p class="text-center h2 mb-4">Sign up</p>
+        <form id="loginForm" class="mb-5 p-5" action="" method="POST">
+            <div class="text-center">
+                <a class="logo-wrapper waves-effect">
+                    <img src="img/login.jpg" class="img-fluid">
+                </a>
+            </div>
             {% if error %}
             <p class="error">
                 <strong>Error:</strong> {{ error }}
@@ -177,7 +198,7 @@
                     </div>
                 </div>
                 <!-- Sign up button -->
-                <input type="submit" class="btn btn-info my-4 btn-block" value="Sign in" />
+                <button class="btn btn-danger btn-block my-4 waves-effect" type="submit">Sign in</button>
                 <hr>
 
                 <!-- Terms of service -->
