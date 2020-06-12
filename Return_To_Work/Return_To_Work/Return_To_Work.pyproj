@@ -16,6 +16,10 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>Return_To_Work</Name>
     <RootNamespace>Return_To_Work</RootNamespace>
+    <WebBrowserPort>5555</WebBrowserPort>
+    <InterpreterPath>C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\python.exe</InterpreterPath>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <InterpreterId>Global|PythonCore|3.7</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,9 +30,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="api.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
@@ -60,6 +61,105 @@
     <Content Include="static\css\mdb.min.css.map" />
     <Content Include="static\css\modules\animations-extended.min.css" />
     <Content Include="static\css\modules\animations-extended.min.css.map" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.bootstrap.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.bootstrap.min.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.bootstrap4.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.bootstrap4.min.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.dataTables.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.dataTables.min.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.foundation.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.foundation.min.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.jqueryui.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.jqueryui.min.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.semanticui.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.semanticui.min.css" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\common.scss" />
+    <Content Include="static\DataTables\Buttons-1.6.2\css\mixins.scss" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.bootstrap.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.bootstrap.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.bootstrap4.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.bootstrap4.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.colVis.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.colVis.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.flash.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.flash.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.foundation.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.foundation.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.html5.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.html5.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.jqueryui.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.jqueryui.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.print.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.print.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.semanticui.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\buttons.semanticui.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\dataTables.buttons.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\js\dataTables.buttons.min.js" />
+    <Content Include="static\DataTables\Buttons-1.6.2\swf\flashExport.swf" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.bootstrap.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.bootstrap.min.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.bootstrap4.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.bootstrap4.min.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.foundation.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.foundation.min.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.jqueryui.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.jqueryui.min.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.semanticui.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\dataTables.semanticui.min.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\jquery.dataTables.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\css\jquery.dataTables.min.css" />
+    <Content Include="static\DataTables\DataTables-1.10.21\images\sort_asc.png" />
+    <Content Include="static\DataTables\DataTables-1.10.21\images\sort_asc_disabled.png" />
+    <Content Include="static\DataTables\DataTables-1.10.21\images\sort_both.png" />
+    <Content Include="static\DataTables\DataTables-1.10.21\images\sort_desc.png" />
+    <Content Include="static\DataTables\DataTables-1.10.21\images\sort_desc_disabled.png" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.bootstrap.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.bootstrap.min.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.bootstrap4.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.bootstrap4.min.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.foundation.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.foundation.min.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.jqueryui.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.jqueryui.min.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.semanticui.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\dataTables.semanticui.min.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\jquery.dataTables.js" />
+    <Content Include="static\DataTables\DataTables-1.10.21\js\jquery.dataTables.min.js" />
+    <Content Include="static\DataTables\datatables.css" />
+    <Content Include="static\DataTables\datatables.js" />
+    <Content Include="static\DataTables\datatables.min.css" />
+    <Content Include="static\DataTables\datatables.min.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.bootstrap.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.bootstrap.min.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.bootstrap4.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.bootstrap4.min.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.dataTables.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.dataTables.min.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.foundation.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.foundation.min.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.jqueryui.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.jqueryui.min.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.semanticui.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\css\rowGroup.semanticui.min.css" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\dataTables.rowGroup.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\dataTables.rowGroup.min.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.bootstrap.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.bootstrap.min.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.bootstrap4.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.bootstrap4.min.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.dataTables.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.foundation.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.foundation.min.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.jqueryui.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.jqueryui.min.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.semanicui.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.semanticui.js" />
+    <Content Include="static\DataTables\RowGroup-1.1.2\js\rowGroup.semanticui.min.js" />
+    <Content Include="static\img\bg.jpg" />
+    <Content Include="static\img\bg2.jpg" />
+    <Content Include="static\img\bg3.jpg" />
+    <Content Include="static\img\login.jpg" />
+    <Content Include="static\img\RTO.jpg" />
     <Content Include="static\js\addons\datatables-select.min.js" />
     <Content Include="static\js\addons\datatables-select.min.js.map" />
     <Content Include="static\js\addons\datatables-select2.min.js" />
@@ -185,16 +285,11 @@
     <Content Include="static\scss\_custom-variables.scss" />
     <Content Include="static\img\TM.jpg" />
     <Content Include="templates\employeeList.html" />
-    <Content Include="templates\Home.html" />
-    <Content Include="templates\About.html" />
     <Content Include="templates\index.html" />
-    <Content Include="templates\managerview.html" />
     <Content Include="templates\profile.html" />
     <Content Include="templates\register.html" />
-    <Content Include="templates\Template.html" />
     <Content Include="templates\Login.html" />
     <Content Include="templates\update.html" />
-    <Content Include="templates\Test.html" />
     <Content Include="templates\userProfile.html" />
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +298,18 @@
     <Folder Include="static\css\" />
     <Folder Include="static\css\addons\" />
     <Folder Include="static\css\modules\" />
+    <Folder Include="static\DataTables\" />
+    <Folder Include="static\DataTables\Buttons-1.6.2\" />
+    <Folder Include="static\DataTables\Buttons-1.6.2\css\" />
+    <Folder Include="static\DataTables\Buttons-1.6.2\js\" />
+    <Folder Include="static\DataTables\Buttons-1.6.2\swf\" />
+    <Folder Include="static\DataTables\DataTables-1.10.21\" />
+    <Folder Include="static\DataTables\DataTables-1.10.21\css\" />
+    <Folder Include="static\DataTables\DataTables-1.10.21\images\" />
+    <Folder Include="static\DataTables\DataTables-1.10.21\js\" />
+    <Folder Include="static\DataTables\RowGroup-1.1.2\" />
+    <Folder Include="static\DataTables\RowGroup-1.1.2\css\" />
+    <Folder Include="static\DataTables\RowGroup-1.1.2\js\" />
     <Folder Include="static\js\" />
     <Folder Include="static\js\addons\" />
     <Folder Include="static\js\modules\" />
@@ -223,6 +330,9 @@
     <Folder Include="static\scss\free\modules\" />
     <Folder Include="static\scss\free\modules\animations-extended\" />
     <Folder Include="templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.7" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

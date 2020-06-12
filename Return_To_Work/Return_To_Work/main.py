@@ -55,12 +55,12 @@ def home():
             cursor.execute('SELECT * FROM rto WHERE ID = %s', (str(account['A_ID'])))
             temp = cursor.fetchone()
             session['team'] = temp['Team']
-            update()
             cursor.close()
             if str(account['Role']) == 'User':
                 return redirect(url_for('userprofile',error=error))
             if str(account['Role']) == 'Manager':
-                return redirect(url_for('manager',error=error))
+                update()
+                return redirect(url_for('manager'))
         else:
             # Account doesnt exist or username/password incorrect
             error = 'Incorrect Username/Password.'
@@ -94,12 +94,12 @@ def login():
             cursor.execute('SELECT * FROM rto WHERE ID = %s', (str(account['A_ID'])))
             temp = cursor.fetchone()
             session['team'] = temp['Team']
-            update()
             cursor.close()
             if str(account['Role']) == 'User':
                 return redirect(url_for('userprofile',error=error))
             if str(account['Role']) == 'Manager':
-                return redirect(url_for('manager',error=error))
+                update()
+                return redirect(url_for('manager'))
         else:
             # Account doesnt exist or username/password incorrect
             error = 'Incorrect Username/Password.'
@@ -153,6 +153,10 @@ def register():
         inputEmail = request.form['Email']
         inputUName = request.form['UName']
         inputPWord = request.form['PWord']
+        if inputPWord is None:
+            error = 'Password cannot be blank.'
+            cursor.close()
+            return redirect(url_for('userprofile',error=error))
         inputCPWord = request.form['CPWord']
         inputAccountRole = 'User'
         inputBarangay = request.form['Barangay']
@@ -210,32 +214,27 @@ def register():
 
         if inputPWord == inputCPWord:
             #Check if record already exists
-            cursor.execute('SELECT * FROM accounts WHERE Username = %s AND Password = %s', (inputUName,inputPWord))
+            cursor.execute('SELECT * FROM accounts WHERE Username = %s', [inputUName])
             user_exists = cursor.fetchone()
             if user_exists:
                 error='A user with the same Username already exists in the database.'
                 cursor.close()
+                return redirect(url_for('login',error=error))
             else:
                 #Add Account into DB
                 cursor.execute('INSERT INTO accounts (Username,Password,Role) values (%s,%s,%s)', (inputUName,inputPWord,inputAccountRole))
                 mysql.connection.commit()
                 #Add details into DB
-                print(inputProvince)
-                cursor.execute('INSERT INTO rto (FirstName,LastName,Email,Barangay,City,CityID,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update,Processed,Distance) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance))
+                cursor.execute('INSERT INTO rto (FirstName,LastName,Email,Barangay,City,CityID,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update,Processed,Distance,RTO) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,0))
                 mysql.connection.commit()
                 cursor.close()
-                return redirect(url_for('login',error=error))
+                return redirect(url_for('login'))
         else:
             error = 'Password does not match.'
             cursor.close()
             return render_template("register.html",error=error,list1=zip(lista,listaa,listx),list2=zip(listb,listbb))
 
     return render_template("register.html",error=error,list1=zip(lista,listaa,listx),list2=zip(listb,listbb))
-
-
-@app.route("/about")
-def about():
-    return render_template("About.html")
 
 @app.route("/userprofile", methods=['GET', 'POST'])
 def userprofile():
@@ -328,6 +327,10 @@ def userprofile():
         inputEmail = request.form['Email']
         inputUName = request.form['UName']
         inputPWord = request.form['PWord']
+        if inputPWord is None:
+            error = 'Password cannot be blank.'
+            cursor.close()
+            return redirect(url_for('userprofile',error=error))
         inputCPWord = request.form['CPWord']
         inputBarangay = request.form['Barangay']
         inputCityID = request.form['City']
@@ -390,7 +393,7 @@ def userprofile():
                 cursor.execute('UPDATE rto SET FirstName=%s, LastName=%s, Email=%s, Barangay=%s, City=%s, CityID=%s, Province=%s, High_Risk=%s, Slight_Risk=%s, Living_With_High_Risk=%s, Production_Machine=%s, Transportation_Availability=%s, Department=%s, Team=%s, Wilingness=%s, Last_Update=%s, Processed=%s, Distance=%s WHERE ID=%s', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,int(userID)))
                 mysql.connection.commit()
                 cursor.close()
-                return redirect(url_for('userprofile',error=error))
+                return redirect(url_for('userprofile'))
         else:
             error = 'Password does not match.'
             cursor.close()
@@ -449,7 +452,7 @@ def update():
         City = result1['name']
         Count = result1['count']
         Status = result1['quarantineLevel']
-        print(result1['name'])
+        #print(result1['name'])
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         #Add Data to DB
         cursor.execute('SELECT * FROM city WHERE subareaid = %s AND city = %s AND citycasecount = %s', (areaid, City, Count))
@@ -476,6 +479,15 @@ def update():
 def manager():
     Holder = list()
     Output = None
+    listCheckbox = list()
+
+    temperror = []
+    if session.get('errorweights') is not None:
+        error = session['errorweights']
+        print('HERE!')
+    else:
+        error = None
+
     if request.method == 'GET':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM weights')
@@ -497,9 +509,6 @@ def manager():
         Holder.append(str(container['WilingnessOverallWeight']))
         Holder.append(str(container['CityStatusOverallWeight']))
 
-
-
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM rto WHERE Team=%s', [str(session['team'])])
         container = cursor.fetchall()
         listName = list()
@@ -510,6 +519,8 @@ def manager():
         listTeam = list()
         listRTO = list()
         listWiling = list()
+        listID = list()
+        listRTOValue = list()
         for x in container:
             cursor.execute('SELECT * FROM city WHERE idcity = %s', [str(x['CityID'])])
             cityinfo = cursor.fetchone()
@@ -527,6 +538,7 @@ def manager():
             getWilingness = int(x['Wilingness'])
             getDistance = int(x['Distance'])
             getProcessed = int(x['Processed'])
+            getRTO = int(x['RTO'])
 
             if getProcessed == 0:
             
@@ -547,7 +559,7 @@ def manager():
                     TranspoWeight = 0.5
                 if getTransportation == 'Private Vehicle':
                     TranspoWeight = 1
-                LocationScore = (30 - getDistance)/30
+                LocationScore = (int(Weights['DistanceFromRBC']) - getDistance)/int(Weights['DistanceFromRBC'])
                 DTWeight = float((TranspoWeight*LocationScore))
             
                 if getProductionMachine == 'Laptop':
@@ -576,7 +588,6 @@ def manager():
                     WilingnessWeight = float(int(Weights['WilingnessYes'])/100)
                 else:
                     WilingnessWeight = float(int(Weights['WilingnessNo'])/100)
-
                 if getCityStatus == 'General Community Quarantine':
                     StatusWeight = float(int(Weights['GCQ'])/100)
                 if getCityStatus == 'Modified General Community Quarantine':
@@ -597,10 +608,10 @@ def manager():
             Team = '%s / %s' % (str(x['Department']),str(x['Team']))
             listTeam.append(str(Team))
             RTO = None
-            if x['RTODate'] == None:
-                RTO = '-'
-            if x['RTODate'] is not None:
+            if getRTO == 1:
                 RTO = str(x['RTODate'])
+            else:
+                RTO = '-'
             listRTO.append(RTO)
             Wiling = None
             if str(x['Wilingness']) == '1':
@@ -608,71 +619,81 @@ def manager():
             if str(x['Wilingness']) == '0':
                 Wiling = 'No'
             listWiling.append(Wiling)
-            Output = zip(listName,listAddress,listRiskLevel,listProductionMachine,listTransportation,listTeam,listRTO,listWiling)
+            listCheckbox.append('check%s' % str(getUserID))
+            listRTOValue.append(str(getRTO))
+            Output = zip(listName,listAddress,listRiskLevel,listProductionMachine,listTransportation,listTeam,listRTO,listWiling,listCheckbox,listRTOValue)
         cursor.close()
 
 
 
 
     if request.method == 'POST':
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        inputECQ = int(request.form['ECQ'])
-        inputGCQ = int(request.form['GCQ'])
-        inputMECQ = int(request.form['MECQ'])
-        inputMGCQ = int(request.form['MGCQ'])
-        inputWYes = int(request.form['WYes'])
-        inputWNo = int(request.form['WNo'])
-        inputHighRisk = int(request.form['HighRisk'])
-        inputSlightRisk = int(request.form['SlightRisk'])
-        inputLivingWithRisk = int(request.form['LivingWithRisk'])
-        inputDesktop = int(request.form['Desktop'])
-        inputLaptop = int(request.form['Laptop'])
-        inputODT = int(request.form['ODT'])
-        inputOWilingness = int(request.form['OWilingness'])
-        inputOProductionMachine = int(request.form['OProductionMachine'])
-        inputOCityStatus = int(request.form['OCityStatus'])
-        inputORisk = int(request.form['ORisk'])
+        mode = request.form['modes']
+        if mode == 'Save':
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            inputECQ = int(request.form['ECQ'])
+            inputGCQ = int(request.form['GCQ'])
+            inputMECQ = int(request.form['MECQ'])
+            inputMGCQ = int(request.form['MGCQ'])
+            inputWYes = int(request.form['WYes'])
+            inputWNo = int(request.form['WNo'])
+            inputHighRisk = int(request.form['HighRisk'])
+            inputSlightRisk = int(request.form['SlightRisk'])
+            inputLivingWithRisk = int(request.form['LivingWithRisk'])
+            inputDesktop = int(request.form['Desktop'])
+            inputLaptop = int(request.form['Laptop'])
+            inputODT = int(request.form['ODT'])
+            inputOWilingness = int(request.form['OWilingness'])
+            inputOProductionMachine = int(request.form['OProductionMachine'])
+            inputOCityStatus = int(request.form['OCityStatus'])
+            inputORisk = int(request.form['ORisk'])
 
-        cursor.execute('UPDATE weights SET ECQ=%s, GCQ=%s, MECQ=%s, MGCQ=%s, WilingnessYes=%s, WilingnessNo=%s, HighRisk=%s, SlightRisk=%s, LivingWithRisk=%s, Desktop=%s, Laptop=%s, DTOverallWeight=%s, ProductionMachineOverallWeight=%s, HealthRiskOverallWeight=%s, WilingnessOverallWeight=%s, CityStatusOverallWeight=%s WHERE weightID=1', (inputECQ,inputGCQ,inputMECQ,inputMGCQ,inputWYes,inputWNo,inputHighRisk,inputSlightRisk,inputLivingWithRisk,inputDesktop,inputLaptop,inputODT,inputOProductionMachine,inputORisk,inputOWilingness,inputOCityStatus))
-        mysql.connection.commit()
-        cursor.close()
-        return redirect(url_for('manager'))
+            if (inputWYes+inputWNo) != 100 or (inputECQ+inputGCQ+inputMECQ+inputMGCQ) != 100 or (inputDesktop+inputLaptop) != 100 or (inputHighRisk+inputSlightRisk+inputLivingWithRisk) != 100 or (inputODT+inputOWilingness+inputOProductionMachine+inputOCityStatus+inputORisk) != 100:
+                if (inputWYes+inputWNo) != 100:
+                    temperror.append('Wilingness Score')
+                if (inputECQ+inputGCQ+inputMECQ+inputMGCQ) != 100:
+                    temperror.append('Community Quarantine Measures Score')
+                if (inputDesktop+inputLaptop) != 100:
+                    temperror.append('Production Machine Score')
+                if (inputHighRisk+inputSlightRisk+inputLivingWithRisk) != 100:
+                    temperror.append('Health Risk Score')
+                if (inputODT+inputOWilingness+inputOProductionMachine+inputOCityStatus+inputORisk) != 100:
+                    temperror.append('Overall Weights')
+                temp = ", ".join(temperror)
+                error = 'All Scores/Weights must add up to strictly 100. (%s)' % temp
+                session['errorweights'] = error
+                return redirect(url_for('manager',error=error))
 
-    return render_template('employeelist.html',Info=Output,a=Holder)
+            cursor.execute('UPDATE weights SET ECQ=%s, GCQ=%s, MECQ=%s, MGCQ=%s, WilingnessYes=%s, WilingnessNo=%s, HighRisk=%s, SlightRisk=%s, LivingWithRisk=%s, Desktop=%s, Laptop=%s, DTOverallWeight=%s, ProductionMachineOverallWeight=%s, HealthRiskOverallWeight=%s, WilingnessOverallWeight=%s, CityStatusOverallWeight=%s WHERE weightID=1', (inputECQ,inputGCQ,inputMECQ,inputMGCQ,inputWYes,inputWNo,inputHighRisk,inputSlightRisk,inputLivingWithRisk,inputDesktop,inputLaptop,inputODT,inputOProductionMachine,inputORisk,inputOWilingness,inputOCityStatus))
+            mysql.connection.commit()
+            cursor.close()
+            session['errorweights'] = None
+            return redirect(url_for('manager'))
+
+        if mode == 'Update':
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM rto WHERE Team=%s', [str(session['team'])])
+            container = cursor.fetchall()
+            for x in container:
+                if request.form.get('check%s' % str(x['ID'])) == '1':
+                    RTO = int(request.form['check%s' % str(x['ID'])])
+                    today = date.today()
+                    inputDate = today.strftime("%Y/%m/%d")
+                    if RTO == 1:
+                        cursor.execute('UPDATE rto SET RTO=1, RTODate=%s WHERE ID=%s', (inputDate,int(x['ID'])))
+                        mysql.connection.commit()
+                else:
+                    cursor.execute('UPDATE rto SET RTO=0, RTODate=%s WHERE ID=%s', (None,int(x['ID'])))
+                    mysql.connection.commit()   
+            cursor.close()
+            return redirect(url_for('manager'))
+
+    return render_template('employeelist.html',Info=Output,a=Holder,error=error)
 
 
 @app.route("/calculate", methods=['GET', 'POST'])
 def calculate():
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM rto WHERE Team = %s', (str(session['id'])))
-    container = cursor.fetchall()
-    for x in container:
-        cursor.execute('SELECT * FROM city WHERE subareaid = %s', (x['city']))
-        cityinfo = cursor.fetchone()
-        getUserID = str(x['ID'])
-        getCity = str(cityinfo['city'])
-        getCityInfo = str(cityinfo['citystatus'])
-        getProvince = str(x['Province'])
-        getHighRisk = int(x['High_Risk'])
-        getSlightRisk = int(x['Slight_Risk'])
-        getLivingWithRisk = int(x['Living_With_High_Risk'])
-        getProductionMachine = str(x['Product_Machine'])
-        getTransportation = str(x['Transportation_Availability'])
-        getDepartment = str(x['Department'])
-        getTeam = str(x['Team'])
-        getWilingness = int(x['Wilingness'])
-        getProcessed = int(x['Processed'])
-
-
-        if getProcessed == 0:
-            return NONE
-            #FORMULA FOR CALCULATION HERE...
-            StatusWeight = 0
-            WilingnessWeight = 0
-            RiskWeight = 100
-            MachineWeight = 0
-            DTWeight
-
+    
     return NONE
 
 @app.route("/Test", methods=['GET', 'POST'])
@@ -763,9 +784,6 @@ def Test():
                 Name = '%s %s' % (x['FirstName'],x['LastName'])
                 ListResult.append('%s: %s' % (Name,Final))
 
-                #if Final >= 70:
-                #    cursor.execute('UPDATE rto SET Processed=%s WHERE ID=%s', (1,getUserID))
-                #    mysql.connection.commit()
         cursor.close()
         error = ListResult
     return render_template('Test.html',error=error)
