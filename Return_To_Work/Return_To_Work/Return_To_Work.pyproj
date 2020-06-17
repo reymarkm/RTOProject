@@ -288,7 +288,6 @@
     <Content Include="templates\index.html" />
     <Content Include="templates\profile.html" />
     <Content Include="templates\register.html" />
-    <Content Include="templates\Login.html" />
     <Content Include="templates\update.html" />
     <Content Include="templates\userProfile.html" />
   </ItemGroup>

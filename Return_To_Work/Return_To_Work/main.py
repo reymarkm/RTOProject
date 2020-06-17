@@ -52,7 +52,7 @@ def home():
             password = str(account['Password'])
             # Redirect to home page
             error = 'Welcome %s!' % (user)
-            cursor.execute('SELECT * FROM rto WHERE ID = %s', (str(account['A_ID'])))
+            cursor.execute('SELECT * FROM rto WHERE ID = %s' % (str(account['A_ID'])))
             temp = cursor.fetchone()
             session['team'] = temp['Team']
             cursor.close()
@@ -91,7 +91,7 @@ def login():
             password = str(account['Password'])
             # Redirect to home page
             error = 'Welcome %s!' % (user)
-            cursor.execute('SELECT * FROM rto WHERE ID = %s', (str(account['A_ID'])))
+            cursor.execute('SELECT * FROM rto WHERE ID = %s' % (str(account['A_ID'])))
             temp = cursor.fetchone()
             session['team'] = temp['Team']
             cursor.close()
@@ -210,6 +210,7 @@ def register():
         dummy3 = dummy2['elements']
         dummy4 = dummy3[0]
         APIDistance = dummy4['distance']['text']
+        APIDistance = str(APIDistance.replace(",",""))
         CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
 
         if inputPWord == inputCPWord:
@@ -242,6 +243,12 @@ def userprofile():
     error = None
     Holder = None
     userID = str(session['id'])
+
+    if session.get('errorprofile') is not None:
+        error = session['errorprofile']
+    else:
+        error = None
+    
 
     #Get Cities
     temp = cursor.execute('SELECT * FROM city ORDER BY city ASC')   
@@ -278,9 +285,9 @@ def userprofile():
         listbb.append(dummyd) 
 
     if request.method == 'GET':
-        cursor.execute('SELECT * FROM accounts WHERE A_ID = %s', (userID))
+        cursor.execute('SELECT * FROM accounts WHERE A_ID = %s' % (userID))
         account = cursor.fetchone()
-        cursor.execute('SELECT * FROM rto WHERE ID = %s', (userID))
+        cursor.execute('SELECT * FROM rto WHERE ID = %s' % (userID))
         RTORecord = cursor.fetchone()
 
         inputFName = RTORecord['FirstName']
@@ -383,21 +390,46 @@ def userprofile():
         dummy3 = dummy2['elements']
         dummy4 = dummy3[0]
         APIDistance = dummy4['distance']['text']
+        APIDistance = str(APIDistance.replace(",",""))
         CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
 
         if inputPWord == inputCPWord:
+            cursor.execute('SELECT * FROM accounts WHERE Username = %s', [inputUName])
+            print(inputUName)
+            user_exists = cursor.fetchone()
+            if user_exists:
+                cursor.execute('SELECT * FROM accounts WHERE Username=%s AND A_ID=%s', (inputUName,str(session['id'])))
+                same_user = cursor.fetchone()
+                if same_user:
+                    #Add Account into DB
+                    cursor.execute('UPDATE accounts SET Password=%s, Username=%s WHERE A_ID=%s', (inputPWord,inputUName,str(session['id'])))
+                    mysql.connection.commit()
+                    #Add details into DB 
+                    cursor.execute('UPDATE rto SET FirstName=%s, LastName=%s, Email=%s, Barangay=%s, City=%s, CityID=%s, Province=%s, High_Risk=%s, Slight_Risk=%s, Living_With_High_Risk=%s, Production_Machine=%s, Transportation_Availability=%s, Department=%s, Team=%s, Wilingness=%s, Last_Update=%s, Processed=%s, Distance=%s WHERE ID=%s', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,int(userID)))
+                    mysql.connection.commit()
+                    cursor.close()
+                    session['errorprofile'] = None
+                    return redirect(url_for('userprofile'))
+                else:
+                    error = 'A user with the same Username already exists in the database.'
+                    cursor.close()
+                    session['errorprofile'] = error
+                    return redirect(url_for('userprofile'))
+            else:
                 #Add Account into DB
-                cursor.execute('UPDATE accounts SET Password=%s WHERE Username=%s', (inputPWord,inputUName))
+                cursor.execute('UPDATE accounts SET Password=%s, Username=%s WHERE A_ID=%s', (inputPWord,inputUName,str(session['id'])))
                 mysql.connection.commit()
                 #Add details into DB 
                 cursor.execute('UPDATE rto SET FirstName=%s, LastName=%s, Email=%s, Barangay=%s, City=%s, CityID=%s, Province=%s, High_Risk=%s, Slight_Risk=%s, Living_With_High_Risk=%s, Production_Machine=%s, Transportation_Availability=%s, Department=%s, Team=%s, Wilingness=%s, Last_Update=%s, Processed=%s, Distance=%s WHERE ID=%s', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,int(userID)))
                 mysql.connection.commit()
                 cursor.close()
+                session['errorprofile'] = None
                 return redirect(url_for('userprofile'))
         else:
             error = 'Password does not match.'
             cursor.close()
-            return redirect(url_for('userprofile',error=error))
+            session['errorprofile'] = error
+            return redirect(url_for('userprofile'))
 
 
     return render_template("userProfile.html",error=error,list1=zip(lista,listaa,listx),list2=zip(listb,listbb),c=Holder)
@@ -484,7 +516,6 @@ def manager():
     temperror = []
     if session.get('errorweights') is not None:
         error = session['errorweights']
-        print('HERE!')
     else:
         error = None
 

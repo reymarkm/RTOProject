@@ -79,6 +79,9 @@
                         <!-- Default form register -->
                         <form class="p-5" action="" method="POST">
                             <p class="text-center h2 mb-4">My Profile</p>
+                            {% if error %}
+                            <p>{{ error }}</p>
+                            {% endif %}
                             <div class="form-row mb-4">
                                 <div class="col">
                                     <!-- First name -->
