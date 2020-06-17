@@ -52,34 +52,34 @@
                 <div class="form-row mb-4">
                     <div class="col">
                         <!-- First name -->
-                        <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name" name="FName" required>
+                        <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name" name="FName">
                     </div>
                     <div class="col">
                         <!-- Last name -->
-                        <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name" name="LName" required>
+                        <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name" name="LName">
                     </div>
                 </div>
 
                 <!-- E-mail -->
                 <div class="form-row mb-4">
                     <div class="col">
-                        <input type="email" id="defaultRegisterFormEmail" class="form-control" placeholder="E-mail" name="Email" required>
+                        <input type="email" id="defaultRegisterFormEmail" class="form-control" placeholder="E-mail" name="Email">
                     </div>
                     <div class="col">
-                        <input type="text" id="defaultusername" class="form-control" placeholder="Username" name="UName" required>
+                        <input type="text" id="defaultusername" class="form-control" placeholder="Username" name="UName">
                     </div>
                 </div>
 
                 <!-- Password -->
                 <div class="form-row">
                     <div class="col">
-                        <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock" name="PWord" required>
+                        <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock" name="PWord">
                         <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-center text-muted mb-4">
                             At least 8 characters and 1 digit
                         </small>
                     </div>
                     <div class="col">
-                        <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Repeat Password" aria-describedby="defaultRegisterFormPasswordHelpBlock" name="CPWord" required>
+                        <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Repeat Password" aria-describedby="defaultRegisterFormPasswordHelpBlock" name="CPWord">
                     </div>
                 </div>
                 <hr>
@@ -87,7 +87,7 @@
                 <p class="h5 text-center mt-4 mb-4">Address</p>
                 <div class="form-row mb-4">
                     <div class="col">
-                        <select class="browser-default custom-select" id="selectProvince" name="Province" required>
+                        <select class="browser-default custom-select" id="selectProvince" name="Province">
                             <option selected>Select Province</option>
                             {% for a in list2 %}
                             <option value="{{ a[0] }}" class="{{ a[1] }}">{{ a[0] }}</option>
@@ -95,7 +95,7 @@
                         </select>
                     </div>
                     <div class="col">
-                        <select class="browser-default custom-select" id="selectCity" name="City" required>
+                        <select class="browser-default custom-select" id="selectCity" name="City">
                             <option selected>Select City</option>
                             {% for b in list1 %}
                             <option value="{{ b[2] }}" class="{{ b[1] }}">{{ b[0] }}</option>
@@ -107,7 +107,7 @@
                 <div class="form-row mt-4 mb-4">
                     <div class="col">
                         <!-- Barangay -->
-                        <input type="text" id="barangayForm" class="form-control" placeholder="Barangay" name="Barangay" required>
+                        <input type="text" id="barangayForm" class="form-control" placeholder="Barangay" name="Barangay">
                     </div>
                 </div>
                 <hr>
@@ -115,7 +115,7 @@
                 <div class="row">
                     <!-- Risk Factor -->
                     <div class="col">
-                        <p class="h5 mt-4 mb-4">Risk Factor</p>
+                        <p class="h5 mt-4 mb-4">Risk Factor<small class="text-muted">(Check if any applies)</small></p>
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="highrisk" name="High" value="1">
                             <label class="custom-control-label" for="highrisk">High Risk(Asthma, Other major Illnesses)</label>
@@ -136,7 +136,7 @@
                         <p class="h5 mt-4 mb-4">Willingness to go back to office</p>
                         <label class="custom-control-inline">Are you willing to go back to Office?</label>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="yes" name="wilingness" value="True" checked>
+                            <input type="radio" class="custom-control-input" id="yes" name="wilingness" value="True">
                             <label class="custom-control-label" for="yes">Yes</label>
                         </div>
 
@@ -153,7 +153,7 @@
                     <div class="col">
                         <p class="h5 mt-4 mb-4">Production Machine</p>
                         <div class="custom-control custom-radio col-md-10">
-                            <input type="radio" class="custom-control-input" id="desktop" name="prodMachine" value="Desktop" checked>
+                            <input type="radio" class="custom-control-input" id="desktop" name="prodMachine" value="Desktop">
                             <label class="custom-control-label" for="desktop">Desktop Machine</label>
                         </div>
                         <div class="custom-control custom-radio col-md-10">
@@ -165,7 +165,7 @@
                     <div class="col col-sm">
                         <p class="h5 mt-4 mb-4">Transportation Availability</p>
                         <div class="custom-control custom-radio col-md-10">
-                            <input type="radio" class="custom-control-input" id="massTranspo" name="transpoAvail" value="Mass Transportation" checked>
+                            <input type="radio" class="custom-control-input" id="massTranspo" name="transpoAvail" value="Mass Transportation">
                             <label class="radio custom-control-label" for="massTranspo">Mass Transporation</label>
                         </div>
                         <div class="custom-control custom-radio col-md-10">
@@ -178,7 +178,7 @@
                 <div class="row">
                     <div class="col">
                         <p class="h5 mt-4 mb-4">Department</p>
-                        <select class="browser-default custom-select" name="Department" required>
+                        <select class="browser-default custom-select" name="Department">
                             <option selected>Select Department</option>
                             <option value="TS Corporate">TS Corporate</option>
                             <option value="TS Consumer">TS Consumer</option>
@@ -188,17 +188,23 @@
                     </div>
                     <div class="col">
                         <p class="h5 mt-4 mb-4">Team</p>
-                        <select class="browser-default custom-select" name="Team" required>
+                        <select class="browser-default custom-select" name="Team">
                             <option selected>Select Team</option>
                             <option value="GSE Night">GSE Night</option>
                             <option value="GSE Day">GSE Day</option>
                             <option value="GSE Mid">GSE Mid</option>
+                            <option value="WF Night">WF Night</option>
+                            <option value="WF Day">WF Day</option>
+                            <option value="WF Mid">WF Mid</option>
+                            <option value="CSD Night">CSD Night</option>
+                            <option value="CSD Day">CSD Day</option>
+                            <option value="CSD Mid">CSD Mid</option>
                             <option value="AMEA">AMEA</option>
                         </select>
                     </div>
                 </div>
                 <!-- Sign up button -->
-                <button class="btn btn-danger btn-block my-4 waves-effect" type="submit">Sign in</button>
+                <button class="btn btn-danger btn-block my-4 waves-effect" type="submit">Register</button>
                 <hr>
 
                 <!-- Terms of service -->
