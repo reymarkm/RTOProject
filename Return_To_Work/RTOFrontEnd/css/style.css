@@ -1,3 +1,4 @@
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 .sidebar-fixed {
     height:100vh;
@@ -24,3 +25,16 @@
       width:100%;
       position:absolute;
   }
+
+.message_error{
+    margin: 10px 0px;
+    padding: 12px;
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
+
+.message_error i {
+    margin: 10px 22px;
+    font-size: 2em;
+    vertical-align:middle;
+}

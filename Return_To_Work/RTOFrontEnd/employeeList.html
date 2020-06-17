@@ -20,17 +20,26 @@
   <!-- Your custom styles (optional) -->
   <link rel="stylesheet" href="css/style.css">
   <!-- MDBootstrap Datatables  -->
-  
 
   <!--Stylesheet for DataTables-->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
+
+  <style>
+    body, html{
+      height: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    </style>
 </head>
 <body class="grey lighten-3">
     <header>
         <!-- Sidebar -->
-        <div class="position-fixed rgba-blue-strong sidebar-fixed">
-            <!--Trend Micro Logo-->
+        
+        <div class="sidebar-fixed position-fixed">
             <a class="logo-wrapper waves-effect">
                 <img src="img/TM.png" class="img-fluid">
             </a>
@@ -40,12 +49,12 @@
                 <a class="nav-link" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab"
                    aria-controls="v-pills-reports" aria-selected="false">Reports</a>
             </div>
-
         </div>
+        
         <!-- Sidebar -->
     </header>
-    <main class="pt-5 mx-lg-2">
-        <div class="container-fluid">
+    <main class="pt-1 mx-lg-5 mb-5">
+        <div class="container-fluid mt-1">
             <div class="card mb-4 wow fadeIn">
                 <div class="card-body d-sm-flex justify-content-between">
                     <h4 class="mb-2 mb-sm-0 pt-1">
@@ -64,13 +73,15 @@
                     <div class="container mt-1 mb-3">
                         <form class="p-5" style="border:0" action="" method="POST">
                             <h2 class="text-center" style="font-weight: bold;">Manager View</h2>
-                            <fieldset class="border lighten-5"> 
+                             <!--
+                            <fieldset class="border lighten-5">
                                 <legend style="font-weight:bold;">Tasks</legend>
+                                <input type="hidden" name="mode" value="0" />
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">
                                     Launch demo modal
-                                  </button>
-                                  <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                      <!--modal-->
+                                </button>
+                               
+                                <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -79,7 +90,6 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <!--modal body-->
                                             <div class="modal-body">
                                                 ...
                                             </div>
@@ -90,20 +100,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--
-                                <div class="row">
-                                    <div class="col">
-                                        <button type="button" class="btn text-center btn-primary btn-md">View Employee List/What if Scenario</button>
-                                        <button type="button" class="btn text-center btn-primary btn-md">Reset Recommendation Data</button>
-                                        <button type="button" class="btn text-center btn-primary btn-md">Run Recommendation</button>
-                                    </div>
-                                </div>
-                                -->
-                            </fieldset>
                             
+                            </fieldset>
+                            -->
                             <fieldset class="border border-light grey lighten-5 p-3">
                                 <legend style="font-weight:bold;">Point System</legend>
                                 <p style="font-weight:bold" class="mt-2 mb-2">These are the parameters used for the recommendation</p>
+                                {% if error %}
+                                <div class="error_message">
+                                    <i class="fa fa-times-circle"></i>
+                                    {{ error }}
+                                </div>
+
+                                <!--<p style="color:red" class="mt-2 mb-2">{{ error }}</p>-->
+                                {% endif %}
                                 <!--Willingness/Quarantine Status-->
                                 <div class="row">
                                     <div class="col">
@@ -123,7 +133,7 @@
                                         <input style="float: right" class="col-md-2" id="inlineFormCustomSelect" min="0" name="ECQ" value="{{ a[0] }}" type="number">
                                     </div>
                                 </div>
-                                
+
                                 <div class="row">
                                     <div class="col">
                                         <label class="">B - No</label>
@@ -150,6 +160,7 @@
                                     </div>
                                     <div class="col">
                                         <p class="h5 mt-4 mb-4">Health Risk Score</p>
+                                        
                                     </div>
                                 </div>
                                 <div class="row">
@@ -181,7 +192,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col">
-                                        <p class="h5 mt-4 mb-4">Overall Score</p>
+                                        <p class="h5 mt-4 mb-4">Overall Score<small class="text-muted">(Weights)</small></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -212,205 +223,57 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col text-center">
-                                        <input type="submit" class="btn btn-danger" value="Save"/>
-                                        <input type="reset" class="btn btn-danger" value="Reset"/>
+                                        <input type="submit" class="btn btn-danger" name="modes" value="Save" />
+                                        <input type="reset" class="btn btn-danger" value="Reset" />
                                     </div>
                                 </div>
                             </fieldset>
                             <fieldset class="border border-light grey lighten-5 p-5">
                                 <legend style="font-weight:bold;">Table List</legend>
-                                <div class="row">
-                                    <!--Reports Tab-->
-                                    <div class="container">
-                                        <table id="employeeList" class="table table-sm table-bordered table-hover" cellspacing="0" width="200%">
-                                            <thead class="red">
-                                                <tr>
-                                                    <th>RTO</th>
-                                                    <th>Name</th>
-                                                    <th>Address</th>
-                                                    <th>RTO Score</th>
-                                                    <th>Production Machine</th>
-                                                    <th>Transportation Availability</th>
-                                                    <th>Department/Team</th>
-                                                    <th>Return to Office Date</th>
-                                                    <th>Willingness</th>
-                                                </tr>
-                                            </thead>
-                                            
-                                            <tbody>
-                                            <!--
-                                                {% for x in Info %}
-                                                <tr>
-                                                    <td></td>
-                                                    <td>{{ x[0] }}</td>
-                                                    <td>{{ x[1] }}</td>
-                                                    <td>{{ x[2] }}</td>
-                                                    <td>{{ x[3] }}</td>
-                                                    <td>{{ x[4] }}</td>
-                                                    <td>{{ x[5] }}</td>
-                                                    <td>{{ x[6] }}</td>
-                                                    <td>{{ x[7] }}</td>
-                                                </tr>
-                                                {% endfor %}
-                                            -->
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Michael</td>
-                                                    <td>Dwayne</td>
-                                                    <td>Cheng</td>
-                                                    <td>asd</td>
-                                                    <td>asd</td>
-                                                    <td>asd</td>
-                                                    <td>asd</td>
-                                                    <td>asd</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Rey</td>
-                                                    <td>Mark</td>
-                                                    <td>Morillo</td>
-                                                    <td>asd</td>
-                                                    <td>asd</td>
-                                                    <td>asd</td>
-                                                    <td>asd</td>
-                                                    <td>asd</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Janica</td>
-                                                    <td>Gem</td>
-                                                    <td>Abalos</td>
-                                                    <td>123</td>
-                                                    <td>a23sd</td>
-                                                    <td>345</td>
-                                                    <td>63</td>
-                                                    <td>as234d</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Ezekiel</td>
-                                                    <td>pogi</td>
-                                                    <td>ddaw</td>
-                                                    <td>Sana</td>
-                                                    <td>13a</td>
-                                                    <td>2asd2</td>
-                                                    <td>3ascz</td>
-                                                    <td>1234</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>asd1</td>
-                                                    <td>asd12eas</td>
-                                                    <td>Cheng</td>
-                                                    <td>zxcaqwd</td>
-                                                    <td>adasdsd</td>
-                                                    <td>axzcsas</td>
-                                                    <td>azxcsd</td>
-                                                    <td>aszxcd</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>as23 </td>
-                                                    <td>Masasd ark</td>
-                                                    <td>Moasdas rillo</td>
-                                                    <td>Pogi</td>
-                                                    <td>1asdaxc12</td>
-                                                    <td>1235sad2</td>
-                                                    <td>3124adscsa</td>
-                                                    <td>412354</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Justine</td>
-                                                    <td>Care</td>
-                                                    <td>asd12</td>
-                                                    <td>a1asd</td>
-                                                    <td>15aad</td>
-                                                    <td>azxcsd</td>
-                                                    <td>aasdsf vsd</td>
-                                                    <td>asascdadd</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Micheal</td>
-                                                    <td>Peter</td>
-                                                    <td>caballo</td>
-                                                    <td>Pogasd12e4ai</td>
-                                                    <td>1s2121</td>
-                                                    <td>2asda</td>
-                                                    <td>3xcs</td>
-                                                    <td>41231256</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Janica</td>
-                                                    <td>Gem</td>
-                                                    <td>Abalos</td>
-                                                    <td>123</td>
-                                                    <td>a23sd</td>
-                                                    <td>345</td>
-                                                    <td>63</td>
-                                                    <td>as234d</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Ezekiel</td>
-                                                    <td>pogi</td>
-                                                    <td>ddaw</td>
-                                                    <td>Sana</td>
-                                                    <td>13a</td>
-                                                    <td>2asd2</td>
-                                                    <td>3ascz</td>
-                                                    <td>1234</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>asd1</td>
-                                                    <td>asd12eas</td>
-                                                    <td>Cheng</td>
-                                                    <td>zxcaqwd</td>
-                                                    <td>adasdsd</td>
-                                                    <td>axzcsas</td>
-                                                    <td>azxcsd</td>
-                                                    <td>aszxcd</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>as23 </td>
-                                                    <td>Masasd ark</td>
-                                                    <td>Moasdas rillo</td>
-                                                    <td>Pogi</td>
-                                                    <td>1asdaxc12</td>
-                                                    <td>1235sad2</td>
-                                                    <td>3124adscsa</td>
-                                                    <td>412354</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Justine</td>
-                                                    <td>Care</td>
-                                                    <td>asd12</td>
-                                                    <td>a1asd</td>
-                                                    <td>15aad</td>
-                                                    <td>azxcsd</td>
-                                                    <td>aasdsf vsd</td>
-                                                    <td>asascdadd</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Micheal</td>
-                                                    <td>Peter</td>
-                                                    <td>caballo</td>
-                                                    <td>Pogasd12e4ai</td>
-                                                    <td>1s2121</td>
-                                                    <td>2asda</td>
-                                                    <td>3xcs</td>
-                                                    <td>41231256</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <input type="hidden" name="mode" value="1"/>
+                                    <div class="row">
+                                        <!--Reports Tab-->
+                                        <div class="container">
+                                            <table id="employeeList" class="table table-sm table-bordered table-hover" cellspacing="0" style="width: 150%;">
+                                                <thead class="red">
+                                                    <tr style="height:0">
+                                                        <th>RTO</th>
+                                                        <th>Name</th>
+                                                        <th>Address</th>
+                                                        <th>RTO Score</th>
+                                                        <th>Production Machine</th>
+                                                        <th>Transportation Availability</th>
+                                                        <th>Department/Team</th>
+                                                        <th>Return to Office Date</th>
+                                                        <th>Willingness</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for x in Info %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" id="{{ x[8] }}" name="{{ x[8] }}" value="1" {% if x[9] == '1' %}checked{% endif %}/>
+                                                                <label class="custom-control-label" for="{{ x[8] }}">Mark for RTO</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{ x[0] }}</td>
+                                                        <td>{{ x[1] }}</td>
+                                                        <td>{{ x[2] }}</td>
+                                                        <td>{{ x[3] }}</td>
+                                                        <td>{{ x[4] }}</td>
+                                                        <td>{{ x[5] }}</td>
+                                                        <td>{{ x[6] }}</td>
+                                                        <td>{{ x[7] }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="mt-5 mb-5 text-center">
+                                        <input type="submit" class="btn btn-danger btn-block" name="modes" value="Update"/>
+                                    </div>
                             </fieldset>
                             <br>
                             <!-- Export Tables-->
@@ -418,7 +281,7 @@
                                 <legend style="font-weight:bold;">Export Table</legend>
                                     <div class="row">
                                         <div class="col-lg">
-                                            <button id="btnExportToCsv" class="btn btn-danger btn-lg">Export to CSV</button>
+                                            <button id="btnExportToCsv" class="btn btn-danger btn-block btn-lg">Export to CSV</button>
                                         </div>
                                     </div>
                             </fieldset>
@@ -475,16 +338,8 @@
         $(document).ready(function () {
             $('#employeeList').DataTable({
                 "scrollX": true,
-                "scrollY": 350, 
-                columnDefs: [{
-                    orderable: false,
-                    className: 'select-checkbox',
-                    targets: 0
-                }],
-                select: {
-                    style: 'multi',
-                    selector: 'td:first-child'
-                }
+                "scrollY": 350,
+                "order": [[3, "desc"]]
             });
             $('.dataTables_length').addClass('bs-select');
         });
