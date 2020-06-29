@@ -6,17 +6,17 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Return to Office - User Profile</title>
   <!-- MDB icon -->
-  <link rel="icon" href="img/TrendIcon.ico" type="image/x-icon">
+  <link rel="icon" href="/static/img/TrendIcon.ico" type="image/x-icon">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Google Fonts Roboto -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
   <!-- Material Design Bootstrap -->
-  <link rel="stylesheet" href="css/mdb.min.css">
+  <link rel="stylesheet" href="/static/css/mdb.min.css">
   <!-- Your custom styles (optional) -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/static/css/style.css">
 
   <style>
     body, html{
@@ -34,14 +34,13 @@
         <div class="sidebar-fixed position-fixed">
             <!--Trend Micro Logo-->
             <a class="logo-wrapper waves-effect">
-                <img src="img/TM.png" class="img-fluid">
+                <img src="/static/img/TM.png" class="img-fluid">
             </a>
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-                aria-controls="v-pills-profile" aria-selected="false">Profile</a>
-                <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                   aria-controls="v-pills-home" aria-selected="true">Maps</a>
-
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                   aria-controls="v-pills-home" aria-selected="true">Dashboard</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+                   aria-controls="v-pills-profile" aria-selected="false">Profile</a>
             </div>
         </div>
         <!-- Sidebar -->
@@ -70,16 +69,19 @@
           <!-- Dashboard Tab -->
         <div class="card">
             <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                     <div id="map-container" class="z-depth-1-half map-container" style="height: 500px">
                         <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJY96HXyFTQDIRV9opeu-QR3g&key=AIzaSyBw3Knhnxg7gMlCa5VQmnQ2P8C7N3t-zwg" allowfullscreen></iframe>
                     </div>
                 </div>
-                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <div class="container mt-1 mb-3">
                         <!-- Default form register -->
                         <form class="p-5" action="" method="POST">
                             <p class="text-center h2 mb-4">My Profile</p>
+                            {% if error %}
+                            <p>{{ error }}</p>
+                            {% endif %}
                             <div class="form-row mb-4">
                                 <div class="col">
                                     <!-- First name -->
@@ -255,20 +257,20 @@
                                     <p class="h5 mt-4 mb-4">Department</p>
                                     <select class="browser-default custom-select" name="Department">
                                         <option>Select Department</option>
-                                        <option value="TS Corporate" {% if c[15]= ='TS Corporate' %}selected{% endif %}>TS Corporate</option>
-                                        <option value="TS Consumer" {% if c[15]= ='TS Consumer' %}selected{% endif %}>TS Consumer</option>
-                                        <option value="Core Tech" {% if c[15]= ='Core Tech' %}selected{% endif %}>Core Tech</option>
-                                        <option value="IS" {% if c[15]= ='IS' %}selected{% endif %}>IS</option>
+                                        <option value="TS Corporate" {% if c[15]=='TS Corporate' %}selected{% endif %}>TS Corporate</option>
+                                        <option value="TS Consumer" {% if c[15]=='TS Consumer' %}selected{% endif %}>TS Consumer</option>
+                                        <option value="Core Tech" {% if c[15]=='Core Tech' %}selected{% endif %}>Core Tech</option>
+                                        <option value="IS" {% if c[15]=='IS' %}selected{% endif %}>IS</option>
                                     </select>
                                 </div>
                                 <div class="col">
                                     <p class="h5 mt-4 mb-4">Team</p>
                                     <select class="browser-default custom-select" name="Team">
                                         <option>Select Team</option>
-                                        <option value="GSE Night" {% if c[16]= ='GSE Night' %}selected{% endif %}>GSE Night</option>
-                                        <option value="GSE Day" {% if c[16]= ='GSE Day' %}selected{% endif %}>GSE Day</option>
-                                        <option value="GSE Mid" {% if c[16]= ='GSE Mid' %}selected{% endif %}>GSE Mid</option>
-                                        <option value="AMEA" {% if c[16]= ='AMEA' %}selected{% endif %}>AMEA</option>
+                                        <option value="GSE Night" {% if c[16]=='GSE Night' %}selected{% endif %}>GSE Night</option>
+                                        <option value="GSE Day" {% if c[16]=='GSE Day' %}selected{% endif %}>GSE Day</option>
+                                        <option value="GSE Mid" {% if c[16]=='GSE Mid' %}selected{% endif %}>GSE Mid</option>
+                                        <option value="AMEA" {% if c[16]=='AMEA' %}selected{% endif %}>AMEA</option>
                                     </select>
                                 </div>
                             </div>
@@ -306,38 +308,6 @@
                 title: "New York"
             });
         }
-
-        new Chart(document.getElementById("horizontalBar"), {
-            "type": "horizontalBar",
-            "data": {
-                "labels": ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Grey"],
-                "datasets": [{
-                    "label": "My First Dataset",
-                    "data": [22, 33, 55, 12, 86, 23, 14],
-                    "fill": false,
-                    "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
-                        "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)",
-                        "rgba(54, 162, 235, 0.2)",
-                        "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
-                    ],
-                    "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)",
-                        "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)",
-                        "rgb(201, 203, 207)"
-                    ],
-                    "borderWidth": 1
-                }]
-            },
-            "options": {
-                "scales": {
-                    "xAxes": [{
-                        "ticks": {
-                            "beginAtZero": true
-                        }
-                    }]
-                }
-            }
-        });
-
     </script>
 
     <script>
@@ -361,17 +331,17 @@
 
     <!-- End your project here-->
     <!-- jQuery -->
-    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <!-- Bootstrap tooltips -->
-    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="/static/js/popper.min.js"></script>
     <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <script type="text/javascript" src="/static/js/mdb.min.js"></script>
     <!-- Your custom scripts (optional) -->
-    <script type="text/javascript" src="js/custom.js"></script>
+    <script type="text/javascript" src="/static/js/custom.js"></script>
 
-    <script type="text/javascript" src="js/filtercity.js"></script>
+    <script type="text/javascript" src="/static/js/filtercity.js"></script>
 
 </body>
 </html>

@@ -39,9 +39,10 @@
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
                 aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+                <!--
                 <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                    aria-controls="v-pills-home" aria-selected="true">Maps</a>
-
+                -->
             </div>
         </div>
         <!-- Sidebar -->
@@ -68,11 +69,13 @@
           <!-- Dashboard Tab -->
         <div class="card">
             <div class="tab-content" id="v-pills-tabContent">
+                <!--
                 <div class="tab-pane fade" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                     <div id="map-container" class="z-depth-1-half map-container" style="height: 500px">
                         <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJY96HXyFTQDIRV9opeu-QR3g&key=AIzaSyBw3Knhnxg7gMlCa5VQmnQ2P8C7N3t-zwg" allowfullscreen></iframe>
                     </div>
                 </div>
+                -->
                 <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <div class="container mt-1 mb-3">
                         <!-- Default form register -->
@@ -263,16 +266,12 @@
                                     <p class="h5 mt-4 mb-4">Team</p>
                                     <select class="browser-default custom-select" name="Team">
                                         <option>Select Team</option>
-                                        <option value="GSE Night" {% if c[16]=='GSE Night' %}selected{% endif %}>GSE Night</option>
-                                        <option value="GSE Day" {% if c[16]=='GSE Day' %}selected{% endif %}>GSE Day</option>
-                                        <option value="GSE Mid" {% if c[16]=='GSE Mid' %}selected{% endif %}>GSE Mid</option>
-                                        <option value="WF Night" {% if c[16]=='WF Night' %}selected{% endif %}>WF Night</option>
-                                        <option value="WF Day" {% if c[16]=='WF Day' %}selected{% endif %}>WF Day</option>
-                                        <option value="WF Mid" {% if c[16]=='WF Mid' %}selected{% endif %}>WF Mid</option>
-                                        <option value="CSD Night" {% if c[16]=='CSD Night' %}selected{% endif %}>CSD Night</option>
-                                        <option value="CSD Day" {% if c[16]=='CSD Day' %}selected{% endif %}>CSD Day</option>
-                                        <option value="CSD Mid" {% if c[16]=='CSD Mid' %}selected{% endif %}>CSD Mid</option>
-                                        <option value="AMEA" {% if c[16]=='AMEA' %}selected{% endif %}>AMEA</option>
+                                        <option value="GSE Night (SMB)" {% if c[16]=='GSE Night (SMB)' %}selected{% endif %}>GSE Night (SMB)</option>
+                                        <option value="WF Night (SMB)" {% if c[16]=='WF Night (SMB)' %}selected{% endif %}>WF Night (SMB)</option>
+                                        <option value="SMB Day" {% if c[16]=='SMB Day' %}selected{% endif %}>SMB Day</option>
+                                        <option value="SMB Mid" {% if c[16]=='SMB Mid' %}selected{% endif %}>SMB Mid</option>
+                                        <option value="CSD" {% if c[16]=='CSD' %}selected{% endif %}>CSD</option>
+                                        <option value="AMEA COE" {% if c[16]=='AMEA COE' %}selected{% endif %}>AMEA COE</option>
                                     </select>
                                 </div>
                             </div>
@@ -291,6 +290,7 @@
 
     <!--Google Maps JS-->
     <script src="https://maps.google.com/maps/api/js"></script>
+    <!--
     <script>
         // Regular map
         function regular_map() {
@@ -343,7 +343,7 @@
         });
 
     </script>
-
+    -->
     <script>
         function myDashboard() {
             document.getElementById("v-pills-home-tab").click();
