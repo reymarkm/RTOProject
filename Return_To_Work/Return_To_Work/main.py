@@ -34,52 +34,7 @@ mysql = MySQL(app)
 def home():
     error = None
     if session.get('errorlogin') is not None:
-        error = session['errorlogin']
-    else:
-        error = None
-    if request.method == 'POST':
-        inputuser = request.form['username']
-        inputpassword = request.form['password']
-        # Check if account exists using MySQL
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE Username = %s AND Password = %s', (inputuser, inputpassword))
-        # Fetch one record and return result
-        account = cursor.fetchone()
-
-        if account is not None:
-            # Create session data, we can access this data in other routes
-            session['loggedin'] = True
-            session['id'] = account['A_ID']
-            session['username'] = account['Username']
-            # Assign each value of fetched value into variables
-            user = str(account['Username'])
-            password = str(account['Password'])
-            # Redirect to home page
-            error = 'Welcome %s!' % (user)
-            cursor.execute('SELECT * FROM rto WHERE ID = %s' % (str(account['A_ID'])))
-            temp = cursor.fetchone()
-            session['team'] = temp['Team']
-            session['errorlogin'] = None
-            cursor.close()
-            if str(account['Role']) == 'User':
-                return url_for('userprofile',error=error)
-            if str(account['Role']) == 'Manager':
-                update()
-                return redirect(url_for('manager'))
-        else:
-            # Account doesnt exist or username/password incorrect
-            error = 'Incorrect Username/Password.'
-            session['errorlogin'] = 'Incorrect Username/Password.'
-            cursor.close()
-            return url_for('login')
-    # Show the login form with message (if any)
-    return render_template('index.html')
-    
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if session.get('errorlogin') is not None:
-        error = session['errorlogin']
+        error = str(session['errorlogin'])
     else:
         error = None
     if request.method == 'POST':
@@ -116,7 +71,53 @@ def login():
             error = 'Incorrect Username/Password.'
             session['errorlogin'] = error
             cursor.close()
-            return redirect(url_for('login'))
+            return render_template('index.html',error=error)
+    # Show the login form with message (if any)
+    return render_template('index.html')
+    
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if session.get('errorlogin') is not None:
+        error = str(session['errorlogin'])
+    else:
+        error = None
+
+    if request.method == 'POST':
+        inputuser = request.form['username']
+        inputpassword = request.form['password']
+        # Check if account exists using MySQL
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE Username = %s AND Password = %s', (inputuser, inputpassword))
+        # Fetch one record and return result
+        account = cursor.fetchone()
+
+        if account is not None:
+            # Create session data, we can access this data in other routes
+            session['loggedin'] = True
+            session['id'] = account['A_ID']
+            session['username'] = account['Username']
+            # Assign each value of fetched value into variables
+            user = str(account['Username'])
+            password = str(account['Password'])
+            # Redirect to home page
+            error = 'Welcome %s!' % (user)
+            cursor.execute('SELECT * FROM rto WHERE ID = %s' % (str(account['A_ID'])))
+            temp = cursor.fetchone()
+            session['team'] = temp['Team']
+            session['errorlogin'] = None
+            cursor.close()
+            if str(account['Role']) == 'User':
+                return redirect(url_for('userprofile',error=error))
+            if str(account['Role']) == 'Manager':
+                update()
+                return redirect(url_for('manager'))
+        else:
+            # Account doesnt exist or username/password incorrect
+            error = 'Incorrect Username/Password.'
+            session['errorlogin'] = error
+            cursor.close()
+            return render_template('index.html',error=error)
     # Show the login form with message (if any)
     return render_template('index.html')
 
@@ -124,6 +125,11 @@ def login():
 def register():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     error = None
+
+    if session.get('errorreg') is not None:
+        error = str(session['errorreg'])
+    else:
+        error = None
 
     #Get Cities
     temp = cursor.execute('SELECT * FROM city ORDER BY city ASC')   
@@ -164,11 +170,17 @@ def register():
         inputLName = request.form['LName']
         inputEmail = request.form['Email']
         inputUName = request.form['UName']
-        inputPWord = request.form['PWord']
-        if inputPWord is None:
-            error = 'Password cannot be blank.'
+        if inputUName == ' ':
+            error = 'Username cannot be blank.'
+            session['errorreg'] = error
             cursor.close()
-            return redirect(url_for('userprofile',error=error))
+            return redirect(url_for('register',error=error))
+        inputPWord = request.form['PWord']
+        if inputPWord == '':
+            error = 'Password cannot be blank.'
+            session['errorreg'] = error
+            cursor.close()
+            return redirect(url_for('register',error=error))
         inputCPWord = request.form['CPWord']
         inputAccountRole = 'User'
         inputBarangay = request.form['Barangay']
@@ -231,8 +243,9 @@ def register():
             user_exists = cursor.fetchone()
             if user_exists:
                 error='A user with the same Username already exists in the database.'
+                session['errorreg'] = error
                 cursor.close()
-                return redirect(url_for('login',error=error))
+                return redirect(url_for('register',error=error))
             else:
                 #Add Account into DB
                 cursor.execute('INSERT INTO accounts (Username,Password,Role) values (%s,%s,%s)', (inputUName,inputPWord,inputAccountRole))
@@ -241,9 +254,11 @@ def register():
                 cursor.execute('INSERT INTO rto (FirstName,LastName,Email,Barangay,City,CityID,Province,High_Risk,Slight_Risk,Living_With_High_Risk,Production_Machine,Transportation_Availability,Department,Team,Wilingness,Last_Update,Processed,Distance,RTO) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,0))
                 mysql.connection.commit()
                 cursor.close()
+                session['errorreg'] = None
                 return redirect(url_for('login'))
         else:
             error = 'Password does not match.'
+            session['errorreg'] = error
             cursor.close()
             return render_template("register.html",error=error,list1=zip(lista,listaa,listx),list2=zip(listb,listbb))
 
@@ -257,7 +272,7 @@ def userprofile():
     userID = str(session['id'])
 
     if session.get('errorprofile') is not None:
-        error = session['errorprofile']
+        error = str(session['errorprofile'])
     else:
         error = None
     
@@ -347,11 +362,17 @@ def userprofile():
             inputLName = request.form['LName']
             inputEmail = request.form['Email']
             inputUName = request.form['UName']
-            inputPWord = request.form['PWord']
-            if inputPWord is None:
-                error = 'Password cannot be blank.'
+            if inputUName == ' ':
+                error = 'Username cannot be blank.'
+                session['errorreg'] = error
                 cursor.close()
-                return redirect(url_for('userprofile',error=error))
+                return redirect(url_for('register',error=error))
+            inputPWord = request.form['PWord']
+            if inputPWord == '':
+                error = 'Password cannot be blank.'
+                session['errorprofile'] = error
+                cursor.close()
+                return redirect(url_for('userprofile',error1=error))
             inputCPWord = request.form['CPWord']
             inputBarangay = request.form['Barangay']
             inputCityID = request.form['City']
@@ -716,7 +737,7 @@ def manager():
 
         if mode == 'Update':
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM rto WHERE Team=%s', [str(session['team'])])
+            cursor.execute('SELECT * FROM rto')
             container = cursor.fetchall()
             for x in container:
                 if request.form.get('check%s' % str(x['ID'])) == '1':
