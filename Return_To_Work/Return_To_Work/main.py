@@ -33,6 +33,10 @@ mysql = MySQL(app)
 @app.route("/", methods=['GET', 'POST'])
 def home():
     error = None
+    if session.get('errorlogin') is not None:
+        error = session['errorlogin']
+    else:
+        error = None
     if request.method == 'POST':
         inputuser = request.form['username']
         inputpassword = request.form['password']
@@ -55,23 +59,29 @@ def home():
             cursor.execute('SELECT * FROM rto WHERE ID = %s' % (str(account['A_ID'])))
             temp = cursor.fetchone()
             session['team'] = temp['Team']
+            session['errorlogin'] = None
             cursor.close()
             if str(account['Role']) == 'User':
-                return redirect(url_for('userprofile',error=error))
+                return url_for('userprofile',error=error)
             if str(account['Role']) == 'Manager':
                 update()
                 return redirect(url_for('manager'))
         else:
             # Account doesnt exist or username/password incorrect
             error = 'Incorrect Username/Password.'
+            session['errorlogin'] = 'Incorrect Username/Password.'
             cursor.close()
-            return redirect(url_for('login',error=error))
+            return url_for('login')
     # Show the login form with message (if any)
     return render_template('index.html')
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    if session.get('errorlogin') is not None:
+        error = session['errorlogin']
+    else:
+        error = None
     if request.method == 'POST':
         inputuser = request.form['username']
         inputpassword = request.form['password']
@@ -94,6 +104,7 @@ def login():
             cursor.execute('SELECT * FROM rto WHERE ID = %s' % (str(account['A_ID'])))
             temp = cursor.fetchone()
             session['team'] = temp['Team']
+            session['errorlogin'] = None
             cursor.close()
             if str(account['Role']) == 'User':
                 return redirect(url_for('userprofile',error=error))
@@ -103,8 +114,9 @@ def login():
         else:
             # Account doesnt exist or username/password incorrect
             error = 'Incorrect Username/Password.'
+            session['errorlogin'] = error
             cursor.close()
-            return redirect(url_for('login',error=error))
+            return redirect(url_for('login'))
     # Show the login form with message (if any)
     return render_template('index.html')
 
@@ -328,79 +340,96 @@ def userprofile():
         Holder.append(inputDepartment)
         Holder.append(inputTeam)
        
-    if request.method == 'POST':       
-        inputFName = request.form['FName']
-        inputLName = request.form['LName']
-        inputEmail = request.form['Email']
-        inputUName = request.form['UName']
-        inputPWord = request.form['PWord']
-        if inputPWord is None:
-            error = 'Password cannot be blank.'
-            cursor.close()
-            return redirect(url_for('userprofile',error=error))
-        inputCPWord = request.form['CPWord']
-        inputBarangay = request.form['Barangay']
-        inputCityID = request.form['City']
-        cursor.execute('SELECT * FROM city WHERE idcity = %s', [inputCityID]) 
-        tempCity = cursor.fetchone()
-        inputCity = str(tempCity['city'])
-        inputProvince = request.form['Province']
-        if request.form.get('High') == '1':
-            inputHigh = 1
-        else:
-            inputHigh = 0
-        if request.form.get('Slight') == '1':
-            inputSlight = 1
-        else:
-            inputSlight = 0
-        if request.form.get('LHigh') == '1':
-            inputLHigh = 1
-        else:
-            inputLHigh = 0
-        if request.form['wilingness'] == 'True':
-            inputWillingness = 1
-        else:
-            inputWillingness = 0
-        inputProdMachine = request.form['prodMachine']
-        inputTranspo = request.form['transpoAvail']
-        inputDepartment = request.form['Department']
-        inputTeam = request.form['Team']
-        today = date.today()
-        inputDate = today.strftime("%Y/%m/%d")
-        inputProcessed = 0
+    if request.method == 'POST': 
+        mode = request.form['modes']
+        if mode == 'Update':
+            inputFName = request.form['FName']
+            inputLName = request.form['LName']
+            inputEmail = request.form['Email']
+            inputUName = request.form['UName']
+            inputPWord = request.form['PWord']
+            if inputPWord is None:
+                error = 'Password cannot be blank.'
+                cursor.close()
+                return redirect(url_for('userprofile',error=error))
+            inputCPWord = request.form['CPWord']
+            inputBarangay = request.form['Barangay']
+            inputCityID = request.form['City']
+            cursor.execute('SELECT * FROM city WHERE idcity = %s', [inputCityID]) 
+            tempCity = cursor.fetchone()
+            inputCity = str(tempCity['city'])
+            inputProvince = request.form['Province']
+            if request.form.get('High') == '1':
+                inputHigh = 1
+            else:
+                inputHigh = 0
+            if request.form.get('Slight') == '1':
+                inputSlight = 1
+            else:
+                inputSlight = 0
+            if request.form.get('LHigh') == '1':
+                inputLHigh = 1
+            else:
+                inputLHigh = 0
+            if request.form['wilingness'] == 'True':
+                inputWillingness = 1
+            else:
+                inputWillingness = 0
+            inputProdMachine = request.form['prodMachine']
+            inputTranspo = request.form['transpoAvail']
+            inputDepartment = request.form['Department']
+            inputTeam = request.form['Team']
+            today = date.today()
+            inputDate = today.strftime("%Y/%m/%d")
+            inputProcessed = 0
 
-        #Compute Distance from Barangay to RBC
-        container = '%s, %s, %s', (inputBarangay,inputCity,inputProvince)
-        tempresult = str(container).replace("#", "")
-        result = str(tempresult).replace(" ", "+")
-        link = "https://maps.googleapis.com/maps/api/geocode/json?&address=%s&key=AIzaSyA2voIMNubql1et8Uei3ZCLPipEXeXiLk0" % result
-        r = requests.get(link)
-        error = r.json()
-        temp = error['results']
-        temp1 = temp[0]
+            #Compute Distance from Barangay to RBC
+            container = '%s, %s, %s', (inputBarangay,inputCity,inputProvince)
+            tempresult = str(container).replace("#", "")
+            result = str(tempresult).replace(" ", "+")
+            link = "https://maps.googleapis.com/maps/api/geocode/json?&address=%s&key=AIzaSyA2voIMNubql1et8Uei3ZCLPipEXeXiLk0" % result
+            r = requests.get(link)
+            error = r.json()
+            temp = error['results']
+            temp1 = temp[0]
 
-        #Distance Matrix API
-        origin = "%s,%s" % (temp1['geometry']['location']['lat'],temp1['geometry']['location']['lng'])
-        destination = "14.590148,121.067947"
-        link2 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=%s&destinations=%s&mode=driving&key=AIzaSyC2zlaHWthM3MOraTlpAGw7hBF6T8RnmPU" % (origin,destination)
-        r2 = requests.get(link2)
-        dummy = r2.json()
-        dummy1 = dummy['rows']
-        dummy2 = dummy1[0]
-        dummy3 = dummy2['elements']
-        dummy4 = dummy3[0]
-        APIDistance = dummy4['distance']['text']
-        APIDistance = str(APIDistance.replace(",",""))
-        CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
+            #Distance Matrix API
+            origin = "%s,%s" % (temp1['geometry']['location']['lat'],temp1['geometry']['location']['lng'])
+            destination = "14.590148,121.067947"
+            link2 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=%s&destinations=%s&mode=driving&key=AIzaSyC2zlaHWthM3MOraTlpAGw7hBF6T8RnmPU" % (origin,destination)
+            r2 = requests.get(link2)
+            dummy = r2.json()
+            dummy1 = dummy['rows']
+            dummy2 = dummy1[0]
+            dummy3 = dummy2['elements']
+            dummy4 = dummy3[0]
+            APIDistance = dummy4['distance']['text']
+            APIDistance = str(APIDistance.replace(",",""))
+            CalculateDistance = round(float(str(APIDistance).replace(" km","")),2)
 
-        if inputPWord == inputCPWord:
-            cursor.execute('SELECT * FROM accounts WHERE Username = %s', [inputUName])
-            print(inputUName)
-            user_exists = cursor.fetchone()
-            if user_exists:
-                cursor.execute('SELECT * FROM accounts WHERE Username=%s AND A_ID=%s', (inputUName,str(session['id'])))
-                same_user = cursor.fetchone()
-                if same_user:
+            if inputPWord == inputCPWord:
+                cursor.execute('SELECT * FROM accounts WHERE Username = %s', [inputUName])
+                print(inputUName)
+                user_exists = cursor.fetchone()
+                if user_exists:
+                    cursor.execute('SELECT * FROM accounts WHERE Username=%s AND A_ID=%s', (inputUName,str(session['id'])))
+                    same_user = cursor.fetchone()
+                    if same_user:
+                        #Add Account into DB
+                        cursor.execute('UPDATE accounts SET Password=%s, Username=%s WHERE A_ID=%s', (inputPWord,inputUName,str(session['id'])))
+                        mysql.connection.commit()
+                        #Add details into DB 
+                        cursor.execute('UPDATE rto SET FirstName=%s, LastName=%s, Email=%s, Barangay=%s, City=%s, CityID=%s, Province=%s, High_Risk=%s, Slight_Risk=%s, Living_With_High_Risk=%s, Production_Machine=%s, Transportation_Availability=%s, Department=%s, Team=%s, Wilingness=%s, Last_Update=%s, Processed=%s, Distance=%s WHERE ID=%s', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,int(userID)))
+                        mysql.connection.commit()
+                        cursor.close()
+                        session['errorprofile'] = None
+                        return redirect(url_for('userprofile'))
+                    else:
+                        error = 'A user with the same Username already exists in the database.'
+                        cursor.close()
+                        session['errorprofile'] = error
+                        return redirect(url_for('userprofile'))
+                else:
                     #Add Account into DB
                     cursor.execute('UPDATE accounts SET Password=%s, Username=%s WHERE A_ID=%s', (inputPWord,inputUName,str(session['id'])))
                     mysql.connection.commit()
@@ -410,27 +439,18 @@ def userprofile():
                     cursor.close()
                     session['errorprofile'] = None
                     return redirect(url_for('userprofile'))
-                else:
-                    error = 'A user with the same Username already exists in the database.'
-                    cursor.close()
-                    session['errorprofile'] = error
-                    return redirect(url_for('userprofile'))
             else:
-                #Add Account into DB
-                cursor.execute('UPDATE accounts SET Password=%s, Username=%s WHERE A_ID=%s', (inputPWord,inputUName,str(session['id'])))
-                mysql.connection.commit()
-                #Add details into DB 
-                cursor.execute('UPDATE rto SET FirstName=%s, LastName=%s, Email=%s, Barangay=%s, City=%s, CityID=%s, Province=%s, High_Risk=%s, Slight_Risk=%s, Living_With_High_Risk=%s, Production_Machine=%s, Transportation_Availability=%s, Department=%s, Team=%s, Wilingness=%s, Last_Update=%s, Processed=%s, Distance=%s WHERE ID=%s', (inputFName,inputLName,inputEmail,inputBarangay,inputCity,int(inputCityID),inputProvince,int(inputHigh),int(inputSlight),int(inputLHigh),inputProdMachine,inputTranspo,inputDepartment,inputTeam,int(inputWillingness),inputDate,int(inputProcessed),CalculateDistance,int(userID)))
-                mysql.connection.commit()
+                error = 'Password does not match.'
                 cursor.close()
-                session['errorprofile'] = None
+                session['errorprofile'] = error
                 return redirect(url_for('userprofile'))
-        else:
-            error = 'Password does not match.'
-            cursor.close()
-            session['errorprofile'] = error
-            return redirect(url_for('userprofile'))
 
+        if mode == 'Logout':
+            tmp = []
+            tmp = session.keys()
+            for x in tmp:
+                session['%s' % x] = None
+            return redirect(url_for('login'))
 
     return render_template("userProfile.html",error=error,list1=zip(lista,listaa,listx),list2=zip(listb,listbb),c=Holder)
 
@@ -531,6 +551,7 @@ def manager():
         Holder.append(str(container['CityStatusOverallWeight']))
 
         cursor.execute('SELECT * FROM rto WHERE Team=%s', [str(session['team'])])
+        #cursor.execute('SELECT * FROM rto')
         container = cursor.fetchall()
         listName = list()
         listAddress = list()
@@ -713,6 +734,13 @@ def manager():
     
         if mode == 'Export':
             return redirect(url_for('manager'))
+
+        if mode == 'Logout':
+            tmp = []
+            tmp = session.keys()
+            for x in tmp:
+                session['%s' % x] = None
+            return redirect(url_for('login'))
 
     return render_template('employeelist.html',Info=Output,a=Holder,error=error)
 

@@ -38,7 +38,7 @@
 <body class="grey lighten-3">
     <header>
         <!-- Sidebar -->
-        
+
         <div class="sidebar-fixed position-fixed">
             <a class="logo-wrapper waves-effect">
                 <img src="/static/img/TM.png" class="img-fluid">
@@ -46,11 +46,11 @@
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                    aria-controls="v-pills-home" aria-selected="true">Home</a>
-                <a class="nav-link" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab"
-                   aria-controls="v-pills-reports" aria-selected="false">Reports</a>
+                <!--<a class="nav-link" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab"
+       aria-controls="v-pills-reports" aria-selected="false">Reports</a>-->
             </div>
         </div>
-        
+
         <!-- Sidebar -->
     </header>
     <main class="pt-1 mx-lg-5 mb-5">
@@ -61,10 +61,8 @@
                         <a href="employeeList.html" target="_blank">Manager Dashboard</a>
                     </h4>
                     <!-- Logout Button -->
-                    <form class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-default btn-sm" id="logout">
-                            <span class="glyphicon glyphicon-log-out"></span> Log out
-                        </button>
+                    <form class="d-flex justify-content-center" action="" method="POST">
+                        <button class="btn btn-default btn-sm" id="logout" name="modes" value="Logout">Log out</button>
                     </form>
                 </div>
             </div>
@@ -73,14 +71,14 @@
                     <div class="container mt-1 mb-3">
                         <form class="p-5" style="border:0" action="" method="POST">
                             <h2 class="text-center" style="font-weight: bold;">Manager View</h2>
-                             <!--
+                            <!--
                             <fieldset class="border lighten-5">
                                 <legend style="font-weight:bold;">Tasks</legend>
                                 <input type="hidden" name="mode" value="0" />
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">
                                     Launch demo modal
                                 </button>
-                               
+
                                 <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
@@ -100,14 +98,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                             </fieldset>
                             -->
                             <fieldset class="border border-light grey lighten-5 p-3">
                                 <legend style="font-weight:bold;">Point System</legend>
                                 <p style="font-weight:bold" class="mt-2 mb-2">These are the parameters used for the recommendation</p>
                                 {% if error %}
-                                <div class="error_message"> 
+                                <div class="error_message">
                                     <p style="color:red"><i class="fa fa-times-circle"></i>{{ error }}</p>
                                 </div>
 
@@ -159,7 +157,7 @@
                                     </div>
                                     <div class="col">
                                         <p class="h5 mt-4 mb-4">Health Risk Score</p>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -229,60 +227,60 @@
                             </fieldset>
                             <fieldset class="border border-light grey lighten-5 p-5">
                                 <legend style="font-weight:bold;">Table List</legend>
-                                    <input type="hidden" name="mode" value="1"/>
-                                    <div class="row">
-                                        <!--Reports Tab-->
-                                        <div class="container">
-                                            <table id="employeeList" class="table table-sm table-bordered table-hover" cellspacing="0" style="width: 150%;">
-                                                <thead class="red">
-                                                    <tr style="height:0">
-                                                        <th>RTO</th>
-                                                        <th>Name</th>
-                                                        <th>Address</th>
-                                                        <th>RTO Score</th>
-                                                        <th>Production Machine</th>
-                                                        <th>Transportation Availability</th>
-                                                        <th>Department/Team</th>
-                                                        <th>Return to Office Date</th>
-                                                        <th>Willingness</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for x in Info %}
-                                                    <tr>
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input type="checkbox" class="custom-control-input" id="{{ x[8] }}" name="{{ x[8] }}" value="1" {% if x[9] == '1' %}checked{% endif %}/>
-                                                                <label class="custom-control-label" for="{{ x[8] }}">Mark for RTO</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>{{ x[0] }}</td>
-                                                        <td>{{ x[1] }}</td>
-                                                        <td>{{ x[2] }}</td>
-                                                        <td>{{ x[3] }}</td>
-                                                        <td>{{ x[4] }}</td>
-                                                        <td>{{ x[5] }}</td>
-                                                        <td>{{ x[6] }}</td>
-                                                        <td>{{ x[7] }}</td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                <input type="hidden" name="mode" value="1" />
+                                <div class="row">
+                                    <!--Reports Tab-->
+                                    <div class="container">
+                                        <table id="employeeList" class="table table-sm table-bordered table-hover" cellspacing="0" style="width: 150%;">
+                                            <thead class="red">
+                                                <tr style="height:0">
+                                                    <th>RTO</th>
+                                                    <th>Name</th>
+                                                    <th>Address</th>
+                                                    <th>RTO Score</th>
+                                                    <th>Production Machine</th>
+                                                    <th>Transportation Availability</th>
+                                                    <th>Department/Team</th>
+                                                    <th>Return to Office Date</th>
+                                                    <th>Willingness</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for x in Info %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="{{ x[8] }}" name="{{ x[8] }}" value="1" {% if x[9]=='1' %}checked{% endif %} />
+                                                            <label class="custom-control-label" for="{{ x[8] }}">{% if x[9] == '1' %}✓{% endif %}</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ x[0] }}</td>
+                                                    <td>{{ x[1] }}</td>
+                                                    <td>{{ x[2] }}</td>
+                                                    <td>{{ x[3] }}</td>
+                                                    <td>{{ x[4] }}</td>
+                                                    <td>{{ x[5] }}</td>
+                                                    <td>{{ x[6] }}</td>
+                                                    <td>{{ x[7] }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="mt-5 mb-5 text-center">
-                                        <input type="submit" class="btn btn-danger btn-block" name="modes" value="Update"/>
-                                    </div>
+                                </div>
+                                <div class="mt-5 mb-5 text-center">
+                                    <input type="submit" class="btn btn-danger btn-block" name="modes" value="Update" />
+                                </div>
                             </fieldset>
                             <br>
                             <!-- Export Tables-->
                             <fieldset class="border border-light grey lighten-5 p-5">
                                 <legend style="font-weight:bold;">Export Table</legend>
-                                    <div class="row">
-                                        <div class="col-lg">
-                                            <button id="btnExportToCsv" class="btn btn-danger btn-block btn-lg" name="modes" value="Export">Export to CSV</button>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-lg">
+                                        <button id="btnExportToCsv" class="btn btn-danger btn-block btn-lg" name="modes" value="Export">Export to CSV</button>
                                     </div>
+                                </div>
                             </fieldset>
                         </form>
                     </div>
@@ -296,18 +294,18 @@
     <script>
         const dataTable = document.getElementById("employeeList");
         const btnExportToCsv = document.getElementById("btnExportToCsv");
-    
+
         btnExportToCsv.addEventListener("click", () => {
             const exporter = new TableCSVExporter(dataTable);
             const csvOutput = exporter.convertToCSV();
             const csvBlob = new Blob([csvOutput], { type: "text/csv" });
             const blobUrl = URL.createObjectURL(csvBlob);
             const anchorElement = document.createElement("a");
-    
+
             anchorElement.href = blobUrl;
             anchorElement.download = "RTO Recommendation List.csv";
             anchorElement.click();
-    
+
             setTimeout(() => {
                 URL.revokeObjectURL(blobUrl);
             }, 500);
@@ -330,7 +328,7 @@
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
-    
+
     <!--To be edited-->
     <!--dataTable Script-->
     <script>
@@ -338,17 +336,12 @@
             $('#employeeList').DataTable({
                 "scrollX": true,
                 "scrollY": 350,
-                "order": [[3, "desc"]]
+                "order": [[3, "desc"]],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+
             });
             $('.dataTables_length').addClass('bs-select');
         });
-    </script>
-
-    <!--Log out Script-->
-    <script type="text/javascript">
-        document.getElementById("logout").onclick = function () {
-            location.href = "/login";
-        };
     </script>
 
 </body>

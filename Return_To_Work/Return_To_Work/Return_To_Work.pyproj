@@ -16,10 +16,6 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>Return_To_Work</Name>
     <RootNamespace>Return_To_Work</RootNamespace>
-    <WebBrowserPort>5555</WebBrowserPort>
-    <InterpreterPath>C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\python.exe</InterpreterPath>
-    <IsWindowsApplication>False</IsWindowsApplication>
-    <InterpreterId>Global|PythonCore|3.7</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,9 +26,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.py">
+    <Compile Include="api.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="main.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="static\css\addons\datatables-select.min.css" />
@@ -61,6 +58,7 @@
     <Content Include="static\css\mdb.min.css.map" />
     <Content Include="static\css\modules\animations-extended.min.css" />
     <Content Include="static\css\modules\animations-extended.min.css.map" />
+    <Content Include="static\css\style.css" />
     <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.bootstrap.css" />
     <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.bootstrap.min.css" />
     <Content Include="static\DataTables\Buttons-1.6.2\css\buttons.bootstrap4.css" />
@@ -159,7 +157,22 @@
     <Content Include="static\img\bg2.jpg" />
     <Content Include="static\img\bg3.jpg" />
     <Content Include="static\img\login.jpg" />
+    <Content Include="static\img\overlays\01.png" />
+    <Content Include="static\img\overlays\02.png" />
+    <Content Include="static\img\overlays\03.png" />
+    <Content Include="static\img\overlays\04.png" />
+    <Content Include="static\img\overlays\05.png" />
+    <Content Include="static\img\overlays\06.png" />
+    <Content Include="static\img\overlays\07.png" />
+    <Content Include="static\img\overlays\08.png" />
+    <Content Include="static\img\overlays\09.png" />
     <Content Include="static\img\RTO.jpg" />
+    <Content Include="static\img\svg\arrow_left.svg" />
+    <Content Include="static\img\svg\arrow_right.svg" />
+    <Content Include="static\img\TM.jpg" />
+    <Content Include="static\img\TM.png" />
+    <Content Include="static\img\TrendIcon.ico" />
+    <Content Include="static\img\trendlogo.png" />
     <Content Include="static\js\addons\datatables-select.min.js" />
     <Content Include="static\js\addons\datatables-select.min.js.map" />
     <Content Include="static\js\addons\datatables-select2.min.js" />
@@ -205,40 +218,6 @@
     <Content Include="static\js\modules\wow.min.js.map" />
     <Content Include="static\js\popper.js" />
     <Content Include="static\js\popper.min.js" />
-    <Content Include="static\img\overlays\01.png" />
-    <Content Include="static\img\overlays\02.png" />
-    <Content Include="static\img\overlays\03.png" />
-    <Content Include="static\img\overlays\04.png" />
-    <Content Include="static\img\overlays\05.png" />
-    <Content Include="static\img\overlays\06.png" />
-    <Content Include="static\img\overlays\07.png" />
-    <Content Include="static\img\overlays\08.png" />
-    <Content Include="static\img\overlays\09.png" />
-    <Content Include="static\css\style.css" />
-    <Content Include="static\src\js\free\forms-free.js" />
-    <Content Include="static\src\js\free\scrolling-navbar.js" />
-    <Content Include="static\src\js\free\treeview.js" />
-    <Content Include="static\src\js\free\wow.js" />
-    <Content Include="static\src\js\vendor\addons\datatables-select.js" />
-    <Content Include="static\src\js\vendor\addons\datatables-select2.js" />
-    <Content Include="static\src\js\vendor\addons\datatables.js" />
-    <Content Include="static\src\js\vendor\addons\datatables2.js" />
-    <Content Include="static\src\js\vendor\addons\imagesloaded.pkgd.min.js" />
-    <Content Include="static\src\js\vendor\addons\jquery.zmd.hierarchical-display.js" />
-    <Content Include="static\src\js\vendor\addons\masonry.pkgd.min.js" />
-    <Content Include="static\src\js\vendor\addons\rating.js" />
-    <Content Include="static\src\js\vendor\free\bs-custom-file-input.js" />
-    <Content Include="static\src\js\vendor\free\chart.js" />
-    <Content Include="static\src\js\vendor\free\chartjs-datalabels.js" />
-    <Content Include="static\src\js\vendor\free\enhanced-modals.js" />
-    <Content Include="static\src\js\vendor\free\jquery.easing.js" />
-    <Content Include="static\src\js\vendor\free\velocity.js" />
-    <Content Include="static\src\js\vendor\free\waves.js" />
-    <Content Include="static\img\svg\arrow_left.svg" />
-    <Content Include="static\img\svg\arrow_right.svg" />
-    <Content Include="static\img\TM.png" />
-    <Content Include="static\img\TrendIcon.ico" />
-    <Content Include="static\img\trendlogo.png" />
     <Content Include="static\scss\addons\_datatables-select.scss" />
     <Content Include="static\scss\addons\_datatables-select2.scss" />
     <Content Include="static\scss\addons\_datatables.scss" />
@@ -283,7 +262,25 @@
     <Content Include="static\scss\mdb-lite-free.scss" />
     <Content Include="static\scss\_custom-styles.scss" />
     <Content Include="static\scss\_custom-variables.scss" />
-    <Content Include="static\img\TM.jpg" />
+    <Content Include="static\src\js\free\forms-free.js" />
+    <Content Include="static\src\js\free\scrolling-navbar.js" />
+    <Content Include="static\src\js\free\treeview.js" />
+    <Content Include="static\src\js\free\wow.js" />
+    <Content Include="static\src\js\vendor\addons\datatables-select.js" />
+    <Content Include="static\src\js\vendor\addons\datatables-select2.js" />
+    <Content Include="static\src\js\vendor\addons\datatables.js" />
+    <Content Include="static\src\js\vendor\addons\datatables2.js" />
+    <Content Include="static\src\js\vendor\addons\imagesloaded.pkgd.min.js" />
+    <Content Include="static\src\js\vendor\addons\jquery.zmd.hierarchical-display.js" />
+    <Content Include="static\src\js\vendor\addons\masonry.pkgd.min.js" />
+    <Content Include="static\src\js\vendor\addons\rating.js" />
+    <Content Include="static\src\js\vendor\free\bs-custom-file-input.js" />
+    <Content Include="static\src\js\vendor\free\chart.js" />
+    <Content Include="static\src\js\vendor\free\chartjs-datalabels.js" />
+    <Content Include="static\src\js\vendor\free\enhanced-modals.js" />
+    <Content Include="static\src\js\vendor\free\jquery.easing.js" />
+    <Content Include="static\src\js\vendor\free\velocity.js" />
+    <Content Include="static\src\js\vendor\free\waves.js" />
     <Content Include="templates\employeeList.html" />
     <Content Include="templates\index.html" />
     <Content Include="templates\profile.html" />
@@ -309,18 +306,12 @@
     <Folder Include="static\DataTables\RowGroup-1.1.2\" />
     <Folder Include="static\DataTables\RowGroup-1.1.2\css\" />
     <Folder Include="static\DataTables\RowGroup-1.1.2\js\" />
+    <Folder Include="static\img\" />
+    <Folder Include="static\img\overlays\" />
+    <Folder Include="static\img\svg\" />
     <Folder Include="static\js\" />
     <Folder Include="static\js\addons\" />
     <Folder Include="static\js\modules\" />
-    <Folder Include="static\img\" />
-    <Folder Include="static\img\overlays\" />
-    <Folder Include="static\src\" />
-    <Folder Include="static\src\js\" />
-    <Folder Include="static\src\js\free\" />
-    <Folder Include="static\src\js\vendor\" />
-    <Folder Include="static\src\js\vendor\addons\" />
-    <Folder Include="static\src\js\vendor\free\" />
-    <Folder Include="static\img\svg\" />
     <Folder Include="static\scss\" />
     <Folder Include="static\scss\addons\" />
     <Folder Include="static\scss\core\" />
@@ -328,10 +319,13 @@
     <Folder Include="static\scss\free\" />
     <Folder Include="static\scss\free\modules\" />
     <Folder Include="static\scss\free\modules\animations-extended\" />
+    <Folder Include="static\src\" />
+    <Folder Include="static\src\js\" />
+    <Folder Include="static\src\js\free\" />
+    <Folder Include="static\src\js\vendor\" />
+    <Folder Include="static\src\js\vendor\addons\" />
+    <Folder Include="static\src\js\vendor\free\" />
     <Folder Include="templates\" />
-  </ItemGroup>
-  <ItemGroup>
-    <InterpreterReference Include="Global|PythonCore|3.7" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

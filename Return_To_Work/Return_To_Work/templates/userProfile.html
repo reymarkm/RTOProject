@@ -56,10 +56,8 @@
                     <h4 class="mb-2 mb-sm-0 pt-1">
                         <a href="userprofile" target="_blank">Profile Page</a>
                     </h4>
-                    <form class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-default btn-sm" id="logout">
-                            <span class="glyphicon glyphicon-log-out"></span> Log out
-                        </button>
+                    <form class="d-flex justify-content-center" action="" method="POST">
+                        <button class="btn btn-default btn-sm" id="logout" name="modes" value="Logout">Log out</button>
                     </form>
                 </div>
             </div>
@@ -255,25 +253,31 @@
                                     <p class="h5 mt-4 mb-4">Department</p>
                                     <select class="browser-default custom-select" name="Department">
                                         <option>Select Department</option>
-                                        <option value="TS Corporate" {% if c[15]= ='TS Corporate' %}selected{% endif %}>TS Corporate</option>
-                                        <option value="TS Consumer" {% if c[15]= ='TS Consumer' %}selected{% endif %}>TS Consumer</option>
-                                        <option value="Core Tech" {% if c[15]= ='Core Tech' %}selected{% endif %}>Core Tech</option>
-                                        <option value="IS" {% if c[15]= ='IS' %}selected{% endif %}>IS</option>
+                                        <option value="TS Corporate" {% if c[15]=='TS Corporate' %}selected{% endif %}>TS Corporate</option>
+                                        <option value="TS Consumer" {% if c[15]=='TS Consumer' %}selected{% endif %}>TS Consumer</option>
+                                        <option value="Core Tech" {% if c[15]=='Core Tech' %}selected{% endif %}>Core Tech</option>
+                                        <option value="IS" {% if c[15]=='IS' %}selected{% endif %}>IS</option>
                                     </select>
                                 </div>
                                 <div class="col">
                                     <p class="h5 mt-4 mb-4">Team</p>
                                     <select class="browser-default custom-select" name="Team">
                                         <option>Select Team</option>
-                                        <option value="GSE Night" {% if c[16]= ='GSE Night' %}selected{% endif %}>GSE Night</option>
-                                        <option value="GSE Day" {% if c[16]= ='GSE Day' %}selected{% endif %}>GSE Day</option>
-                                        <option value="GSE Mid" {% if c[16]= ='GSE Mid' %}selected{% endif %}>GSE Mid</option>
-                                        <option value="AMEA" {% if c[16]= ='AMEA' %}selected{% endif %}>AMEA</option>
+                                        <option value="GSE Night" {% if c[16]=='GSE Night' %}selected{% endif %}>GSE Night</option>
+                                        <option value="GSE Day" {% if c[16]=='GSE Day' %}selected{% endif %}>GSE Day</option>
+                                        <option value="GSE Mid" {% if c[16]=='GSE Mid' %}selected{% endif %}>GSE Mid</option>
+                                        <option value="WF Night" {% if c[16]=='WF Night' %}selected{% endif %}>WF Night</option>
+                                        <option value="WF Day" {% if c[16]=='WF Day' %}selected{% endif %}>WF Day</option>
+                                        <option value="WF Mid" {% if c[16]=='WF Mid' %}selected{% endif %}>WF Mid</option>
+                                        <option value="CSD Night" {% if c[16]=='CSD Night' %}selected{% endif %}>CSD Night</option>
+                                        <option value="CSD Day" {% if c[16]=='CSD Day' %}selected{% endif %}>CSD Day</option>
+                                        <option value="CSD Mid" {% if c[16]=='CSD Mid' %}selected{% endif %}>CSD Mid</option>
+                                        <option value="AMEA" {% if c[16]=='AMEA' %}selected{% endif %}>AMEA</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <input type="submit" class="btn btn-danger btn-block my-4" value="Update" />
+                                <input type="submit" class="btn btn-danger btn-block my-4" name="modes" value="Update" />
                                 <input type="reset" class="btn btn-danger btn-block my-4" value="Cancel" />
                             </div>
 
@@ -352,11 +356,6 @@
             }
             return true;
         }
-    </script>
-    <script type="text/javascript">
-        document.getElementById("logout").onclick = function () {
-            location.href = "/login";
-        };
     </script>
 
     <!-- End your project here-->
